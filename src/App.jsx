@@ -3,18 +3,21 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Preferences from '../src/Preferences.jsx'
 
-import Header from './Header'
+import Home from './Home'
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            view:'', 
+            groups: [1,2,3,4,5],
+        };
     }
     
     render(){
         return (
             <div>
-            <Header/>
+            <Home groups={this.state.groups}/>
             <h1>HI DOT</h1>
             <Button variant="contained" color="primary">
                 Hello World
