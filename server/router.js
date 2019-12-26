@@ -5,6 +5,9 @@ const router = Router();
 // POST to /signup adds users to db
 
 // GET /login verify user login --> google auth?
+router.get('/login', (req, res) => {
+  // Handle request to login endpoint here
+});
 
 // GET / renders home page, with info about active groups and sleeping groups
 
