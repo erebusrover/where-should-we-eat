@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // serve static assets
-const CLIENT_PATH = path.resolve(__dirname, '../client/public');
+const CLIENT_PATH = path.resolve(__dirname, '../public');
 
 app.use(express.static(CLIENT_PATH));
 
