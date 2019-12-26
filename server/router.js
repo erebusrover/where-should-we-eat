@@ -2,7 +2,10 @@ const { Router } = require('express');
 
 const router = Router();
 
-// POST to /signup adds users to db
+// POST to /signup adds users to db --> google auth?
+router.post('/signup', (req, res) => {
+  // get username from req body
+});
 
 // GET /login verify user login --> google auth?
 
