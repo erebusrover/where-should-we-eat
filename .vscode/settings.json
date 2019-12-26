@@ -1,0 +1,8 @@
+{
+  "appService.zipIgnorePattern": [
+    "node_modules{,/**}",
+    ".vscode{,/**}"
+  ],
+  "appService.defaultWebAppToDeploy": "/subscriptions/cab1709f-9c2d-471a-89ef-d257064553bf/resourceGroups/where-should-we-eat/providers/Microsoft.Web/sites/where-should-we-eat",
+  "appService.deploySubpath": ""
+}
