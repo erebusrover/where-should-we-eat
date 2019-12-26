@@ -3,6 +3,8 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Preferences from '../src/Preferences.jsx'
 
+import Header from './Header'
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -11,7 +13,8 @@ class App extends React.Component {
     
     render(){
         return (
-        <div>
+            <div>
+            <Header/>
             <h1>HI DOT</h1>
             <Button variant="contained" color="primary">
                 Hello World
