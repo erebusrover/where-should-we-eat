@@ -3,6 +3,7 @@
  *   mysql -u root < schema.sql
  sudo mysql -u root < schema.sql
  */
+--  groupp has 2 p's for now because otherwise excaping reserved words was frustrating
 
 DROP DATABASE IF EXISTS wswe;
 CREATE DATABASE wswe;
