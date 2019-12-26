@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
+import Preferences from '../src/Preferences.jsx'
 
 class App extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class App extends React.Component {
             <Button variant="contained" color="primary">
                 Hello World
             </Button>
+            <Preferences />
         </div>
 )
     }
