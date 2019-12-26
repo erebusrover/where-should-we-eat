@@ -14,9 +14,11 @@ const router = Router();
 
 // GET /group:id renders given group page
 
-// GET /winner renders winner page for given user, who is presented with option to make the choice or pass
+// GET /winner renders winner page for given user,
+// who is presented with option to make the choice or pass
 
-// GET /passed renders page with 'PASSED: -5' message to user, has link to get back to main group page (GET /group:id)
+// GET /passed renders page with 'PASSED: -5' message to user,
+// has link to get back to main group page (GET /group:id)
 
 // GET /choices renders page with a few choices of where to eat, with a timer.
 // clicking on a given choice will ...render choices:id page for all users?
