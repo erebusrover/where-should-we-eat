@@ -33,8 +33,7 @@ const addNewGroup = (newGroup) => {
 
 // TODO: toggle group's active state between true and false
 // (when a decision has been initiated or closed)
-const toggleGroupStatus = (group) => {
-  const { id, status } = group;
+const toggleGroupStatus = (id, status) => {
   const sql = `UPDATE groupp SET active="${status}" WHERE id=${id}`;
   return query(sql);
 };

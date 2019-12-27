@@ -44,7 +44,8 @@ router.post('/createGroup', (req, res) => {
 
 // PATCH /group:id/active toggles group 'active' property between true and false
 router.patch('/group:id/active', (req, res) => {
-  toggleGroupStatus().then(() => {
+  const { id, status } = req.body;
+  toggleGroupStatus(id, status).then(() => {
     res.send();
   }).catch(() => {
     res.sendStatus(400);
