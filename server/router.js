@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const passport = require('passport');
 const { addNewUser, toggleGroupStatus } = require('./db/helpers');
 
 const router = Router();
@@ -19,14 +18,7 @@ router.post('/signup', (req, res) => {
   });
 });
 
-// GET /login verify user login using Passport --> google auth?
-router.get('/login', passport.authenticate('google', {
-  scope: ['profile', 'email', 'openid'],
-}));
-
-// GET /logout logs user out using Passport
-router.get('/logout');
-
+// GET /login verify user login --> google auth?
 
 // GET / renders home page, with info about active groups and sleeping groups
 
@@ -50,7 +42,6 @@ router.post('/createGroup', (req, res) => {
 
 // GET /choices:id renders directions and info about choice
 
-
 // PATCH /group:id/active toggles group 'active' property between true and false
 router.patch('/group:id/active', (req, res) => {
   const { id, status } = req.body;
@@ -60,6 +51,3 @@ router.patch('/group:id/active', (req, res) => {
     res.sendStatus(400);
   });
 });
-
-module.exports = router;
-
