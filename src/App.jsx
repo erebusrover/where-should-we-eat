@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Preferences from '../src/Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx'
-// import Home from './Home.jsx';
+import Home from './Home.jsx';
 
 // cosnt views = ['/Preferences', '/Login', '/Home']
 
@@ -16,30 +16,28 @@ class App extends React.Component {
             groups: [1,2,3,4,5],
         };
 
-        this.HandleLoginView = this.HandleLoginView.bind(this);
+        this.HandleViewChange = this.HandleViewChange.bind(this);
     }
     
-
-
-    HandleLoginView(){
-        console.log('clicked')
-        this.setState({view: '/Login'}, () => {
-            console.log('error')
+    HandleViewChange(view){
+        console.log(`${view} button clicked`)
+        this.setState({view:`/${view}`}, () => {
+            console.log(this.state)
+            console.log('done')
         })
     }
   
 
     render(){
-        let {view} = this.state
+        let {view, groups} = this.state
         return (
             <div>
-                <Header handleLoginClick={this.HandleLoginView} />
-            {/* <Home groups={this.state.groups}/> */}
-            <div>{view === '/Login' ? <SignIn /> : <Preferences />}</div>
+                <Header HandleViewChange={this.HandleViewChange} />
+            <Home groups={groups}/>
+            <div>{view === '/login' ? <SignIn /> : <Preferences />}</div>
             <Button variant="contained" color="primary">
                 Hello World
             </Button>
-            <Preferences />
         </div>
 )
     }
