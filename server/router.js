@@ -5,6 +5,7 @@ const router = Router();
 // POST to /signup adds users to db --> google auth?
 router.post('/signup', (req, res) => {
   // get username from req body
+  // use db helper function to add new user to db
 });
 
 // GET /login verify user login --> google auth?
@@ -14,6 +15,9 @@ router.post('/signup', (req, res) => {
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
 
 // POST /createGroup adds new group to db
+router.post('/createGroup', (req, res) => {
+  // use db helper function to add new group to db
+})
 
 // GET /group:id renders given group page
 
