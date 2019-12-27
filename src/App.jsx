@@ -30,16 +30,23 @@ class App extends React.Component {
 
     render(){
         let {view, groups} = this.state
+        let View;
+        if(view === '/login'){
+           View = <SignIn />
+        } else if(view === '/profile'){
+           View = <Preferences />
+               
+        } else {
+            View =<Home  groups={groups}/>  
+        }
+
         return (
             <div>
                 <Header HandleViewChange={this.HandleViewChange} />
-            <Home groups={groups}/>
-            <div>{view === '/login' ? <SignIn /> : <Preferences />}</div>
-            <Button variant="contained" color="primary">
-                Hello World
-            </Button>
+                {View}
         </div>
-)
-    }
-}
+        )
+        }
+    } 
+
 export default App;
