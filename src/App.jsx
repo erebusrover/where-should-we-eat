@@ -1,11 +1,11 @@
-import React from 'react'
+
+import React from 'react';
+
 import Button from '@material-ui/core/Button';
 import Preferences from '../src/Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx'
-// import Home from './Home.jsx';
-//change
-// cosnt views = ['/Preferences', '/Login', '/Home']
+import Home from './Home.jsx';
 
 class App extends React.Component {
     constructor(props) {
@@ -15,32 +15,40 @@ class App extends React.Component {
             groups: [1,2,3,4,5],
         };
 
-        this.HandleLoginView = this.HandleLoginView.bind(this);
+        this.HandleViewChange = this.HandleViewChange.bind(this);
     }
     
-
-
-    HandleLoginView(){
-        console.log('clicked')
-        this.setState({view: '/Login'}, () => {
-            console.log('error')
+    HandleViewChange(view){
+        console.log(`${view} button clicked`)
+        this.setState({view:`/${view}`}, () => {
+            console.log(this.state)
+            console.log('done')
         })
     }
   
 
     render(){
-        let {view} = this.state
+        let {view, groups} = this.state
+        let View;
+        if(view === '/login'){
+           View = <SignIn />
+        } else if(view === '/profile'){
+           View = <Preferences />
+               
+        } else {
+            View =<Home  groups={groups}/>  
+        }
+
         return (
             <div>
-                <Header handleLoginClick={this.HandleLoginView} />
-            {/* <Home groups={this.state.groups}/> */}
-            <div>{view === '/Login' ? <SignIn /> : <Preferences />}</div>
-            <Button variant="contained" color="primary">
-                Hello World
-            </Button>
-            <Preferences />
+                <Header HandleViewChange={this.HandleViewChange} />
+                {View}
         </div>
-)
-    }
-} //j
+
+        )
+        }
+    } 
+
+
+
 export default App;
