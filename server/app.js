@@ -20,12 +20,12 @@ const CLIENT_PATH = path.resolve(__dirname, '../build');
 // serve react app
 app.use(express.static(CLIENT_PATH));
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.render(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 // app.use('/api', router);
 
