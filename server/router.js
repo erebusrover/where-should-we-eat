@@ -1,11 +1,21 @@
 const { Router } = require('express');
+const { addNewUser } = require('./db/helpers');
 
 const router = Router();
 
-// POST to /signup adds users to db --> google auth?
+// POST to /signup adds users to db --> how will google auth be involved in this?
 router.post('/signup', (req, res) => {
   // get username from req body
+  const newUser = {
+    userName: req.body.userName,
+    userStatus: req.body.userStatus,
+  };
   // use db helper function to add new user to db
+  addNewUser(newUser).then(() => {
+    res.send();
+  }).catch(() => {
+    res.sendStatus(400);
+  });
 });
 
 // GET /login verify user login --> google auth?
