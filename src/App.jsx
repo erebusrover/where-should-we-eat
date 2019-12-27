@@ -1,11 +1,10 @@
-import React from 'react';
-
+import React from 'react'
 import Button from '@material-ui/core/Button';
 import Preferences from '../src/Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx'
 // import Home from './Home.jsx';
-
+//change
 // cosnt views = ['/Preferences', '/Login', '/Home']
 
 class App extends React.Component {
