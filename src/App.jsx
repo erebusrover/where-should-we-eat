@@ -1,7 +1,5 @@
 
 import React from 'react';
-
-// import Button from '@material-ui/core/Button';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx';
