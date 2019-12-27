@@ -15,7 +15,7 @@ const Preferences = () => (
         <h2> Select Dietary Restricitons</h2>
         <RadioGroup aria-label="dietary restriction" name="dietary restriction">
           <FormControlLabel value="one"  control={<Radio />} label="Vegan" />
-          <FormControlLabel value="two" control={<Radio />} label="Vagitarian" />
+          <FormControlLabel value="two" control={<Radio />} label="Vegitarian" />
           <FormControlLabel value="three" control={<Radio />} label="Kosher" />
           <FormControlLabel value="three" control={<Radio />} label="Gluten Free" />
           <FormControlLabel value="three" control={<Radio />} label="Halal" />
