@@ -1,7 +1,7 @@
 /**
  * Execute this file from the command line by typing:
  *   mysql -u root < schema.sql
- sudo mysql -u root < schema.sql
+    sudo mysql -u root < schema.sql
  */
 --  groupp has 2 p's for now because otherwise excaping reserved words was frustrating
 
@@ -35,14 +35,7 @@ CREATE TABLE groupp(
     pricePoint int NOT NULL,
     PRIMARY KEY (grouppid)
 );
--- CREATE TABLE Orders (
---     OrderID int NOT NULL,
---     OrderNumber int NOT NULL,
---     PersonID int,
---     PRIMARY KEY (OrderID),
---     CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID)
---     REFERENCES Persons(PersonID)
--- );
+
 -- unsure if best way to create join table between user and group to know which user belongs to a group
 CREATE TABLE user_group (
     userGroup_id int NOT NULL AUTO_INCREMENT,

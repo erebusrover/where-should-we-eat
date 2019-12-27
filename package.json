@@ -4,12 +4,14 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.8.1",
+    "@material/top-app-bar": "^4.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mysql": "^2.17.1",
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
@@ -18,6 +20,7 @@
     "react-scripts": "3.3.0",
     "sequelize": "^5.21.3"
   },
+  "homepage": "https://where-should-we-eat.azurewebsites.net",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
