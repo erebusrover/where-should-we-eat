@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { addNewUser } = require('./db/helpers');
+const { addNewUser, toggleGroupStatus } = require('./db/helpers');
 
 const router = Router();
 
@@ -41,3 +41,12 @@ router.post('/createGroup', (req, res) => {
 // clicking on a given choice will ...render choices:id page for all users?
 
 // GET /choices:id renders directions and info about choice
+
+// PATCH /group:id/active toggles group 'active' property between true and false
+router.patch('/group:id/active', (req, res) => {
+  toggleGroupStatus().then(() => {
+    res.send();
+  }).catch(() => {
+    res.sendStatus(400);
+  });
+});
