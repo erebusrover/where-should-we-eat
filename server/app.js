@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { router } = require('./router');
 
-
+// call express
 const app = express();
 
 // call middleware functions
@@ -13,15 +13,16 @@ app.use(cors());
 
 // serve static assets
 const CLIENT_PATH = path.resolve(__dirname, '../build');
-
-// api routers from router.js
-app.use('/api', router);
-
-// serve react app
 app.use(express.static(CLIENT_PATH));
+// send users to main index page on all endpoints
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.render(path.join(__dirname, 'build', 'index.html'));
 });
 
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
+// api routers from router.js
+// app.use('/api', router);
 module.exports.app = app;

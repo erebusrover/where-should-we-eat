@@ -1,12 +1,11 @@
+
 import React from 'react';
-//change for the sake of change
+
 import Button from '@material-ui/core/Button';
 import Preferences from '../src/Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx'
 import Home from './Home.jsx';
-
-// cosnt views = ['/Preferences', '/Login', '/Home']
 
 class App extends React.Component {
     constructor(props) {
@@ -45,8 +44,11 @@ class App extends React.Component {
                 <Header HandleViewChange={this.HandleViewChange} />
                 {View}
         </div>
+
         )
         }
     } 
+
+
 
 export default App;
