@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 //! 13:00 https://www.youtube.com/watch?v=xm4LX5fJKZ8  moving these imports to the index file to get them out of the way
 
 const Header = (props) => {
-  const {handleLoginClick} = props
+  const {HandleViewChange} = props
   return (
   <AppBar position="static">
   <Toolbar>
@@ -17,9 +17,9 @@ const Header = (props) => {
     <Typography variant="h6" className='two'>
       Where Should We Eat
     </Typography>
-    <Button color="inherit" >Home</Button>
-    <Button color="inherit" onClick={()=>{handleLoginClick()}}>Login</Button>
-    <Button color="inherit">Profile</Button>
+    <Button color="inherit" value='home' onClick={()=>{HandleViewChange('home')}}>Home</Button>
+    <Button color="inherit" value='login' onClick={()=>{HandleViewChange('login')}}>Login</Button>
+    <Button color="inherit" value='profile' onClick={()=>{HandleViewChange('profile')}}>Profile</Button>
   </Toolbar>
 </AppBar>
 
