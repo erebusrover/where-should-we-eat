@@ -1,13 +1,19 @@
 const { Router } = require('express');
+const passport = require('passport');
+
 
 const router = Router();
 
 // POST to /signup adds users to db
 
-// GET /login verify user login --> google auth?
-router.get('/login', (req, res) => {
-  // Handle request to login endpoint here
-});
+// GET /login verify user login using Passport --> google auth?
+router.get('/login', passport.authenticate('google', {
+  scope: ['profile', 'email', 'openid'],
+}));
+
+// GET /logout logs user out using Passport
+router.get('/logout');
+
 
 // GET / renders home page, with info about active groups and sleeping groups
 
@@ -27,3 +33,5 @@ router.get('/login', (req, res) => {
 // clicking on a given choice will ...render choices:id page for all users?
 
 // GET /choices:id renders directions and info about choice
+
+module.exports = router;

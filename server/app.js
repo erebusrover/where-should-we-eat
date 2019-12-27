@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { router } = require('./router');
+const passportSetup = require('./config/passport-setup');
 
 
 const app = express();
