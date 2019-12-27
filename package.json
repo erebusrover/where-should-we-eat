@@ -17,6 +17,7 @@
     "react-scripts": "3.3.0",
     "sequelize": "^5.21.3"
   },
+  "homepage": "https://azure-branch.azurewebsites.net",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
