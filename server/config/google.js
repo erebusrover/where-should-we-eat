@@ -1,17 +1,41 @@
+const axios = require('axios');
+const googleMaps = require('@google/maps');
 const { API_KEY } = require('./keys.js').googleMaps;
 
-// write function(s) to call to google routes api
+// create new Google Maps client object, use Promises
+const googleMapsClient = googleMaps.createClient({
+  key: API_KEY,
+  Promise: Promise,
+});
 
 
-// TODO: use geolocation API to get user's current location
 // From Google docs:
 // The Geolocation API returns a location and accuracy radius based on information
 // about cell towers and WiFi nodes that the mobile client can detect.
 // POST to:
 // https://www.googleapis.com/geolocation/v1/geolocate?key=YOUR_API_KEY
+
+// get user's current location
 const userLocation = () => {
-  
+  // googleMapsClient.geolocate()
+  //   .asPromise()
+  //   .then((response) => {
+  //     console.log(response);
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+
+  const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`;
+  axios.post(url).then((response) => {
+    const { location } = response.data;
+    console.log(location);
+  }).catch((error) => {
+    console.log(error);
+  });
 };
+
+userLocation();
 
 
 // Directions API
