@@ -8,6 +8,11 @@ const connection = mysql.createConnection(mysqlConfig);
 const query = util.promisify(connection.query).bind(connection);
 
 // add new user to db
+// newUser should look something like:
+// {
+//   userName,
+//   userStatus
+// }
 const addNewUser = (newUser) => {
   const { userName, userStatus } = newUser;
   const sql = `INSERT into user (userName, userStatus) VALUES ("${userName}", "${userStatus}")`;
