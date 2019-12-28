@@ -2,12 +2,12 @@ const axios = require('axios');
 const { API_KEY } = require('./keys.js').googleMaps;
 
 // make api call to google to get user location
-const userLocation = () => {
+const getUserLocation = () => {
   const geolocateUrl = `https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`;
   return axios.post(geolocateUrl);
 };
 
-module.exports.userLocation = userLocation;
+module.exports.getUserLocation = getUserLocation;
 
 // NOTE --> the rest of this file may be unnecessary.
 // might make more sense to just provide users with a url
