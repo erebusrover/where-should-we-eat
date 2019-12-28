@@ -26,13 +26,23 @@ const userLocation = () => {
   //     console.log(error);
   //   });
 
-  const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`;
-  axios.post(url).then((response) => {
+  // get lat/lng
+  const geolocateUrl = `https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`;
+  axios.post(geolocateUrl).then((response) => {
     const { location } = response.data;
     console.log(location);
-  }).catch((error) => {
-    console.log(error);
-  });
+    return location;
+  })
+  // .then((location) => {
+  //   // change to user-friendly location info?
+  //   const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${API_KEY}`
+  //   axios.get(geocodeUrl).then((response) => {
+  //     console.log(response);
+  //   });
+  // })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 userLocation();
@@ -40,6 +50,5 @@ userLocation();
 
 // Directions API
 // main endpoint: https://maps.googleapis.com/maps/api/directions
-// set origin and destination, follow with api key
 // example request route:
 // https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Universal+Studios+Hollywood&key=YOUR_API_KEY
