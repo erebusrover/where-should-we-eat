@@ -3,7 +3,6 @@ build/*
 
 #api keys
 server/config/keys.js
-**config
 
 # Logs
 logs
