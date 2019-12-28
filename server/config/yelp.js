@@ -22,9 +22,37 @@ const getRestaurants = (query) => {
 
   // search url should look something like this:
   // https://api.yelp.com/v3/businesses/search?latitude=29.985996800000002&longitude=-90.08414719999999&radius=40000&categories=vegan&limit=5&sort_by=rating&price=1, 2& Authorization=Bearer API_KEY
-  const url = `https://api.yelp.com/v3/businesses/search?latitude=29.985996800000002&longitude=-90.08414719999999&radius=40000&categories=vegan&limit=5&sort_by=rating&price=1, 2& Authorization=Bearer ${API_KEY}`
-  return axios.get(url);
+  
+  // destructure vars from query arg obj
+  const {
+    latitude,
+    longitude,
+    radius,
+    categories,
+    price,
+  } = query;
+
+  // provide api key
+  const headers = {
+    Authorization: `Bearer ${API_KEY}`,
+  };
+  const url = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&limit=5&sort_by=rating&price=${price}`;
+  // const url = 'https://api.yelp.com/v3/businesses/search?latitude=29.985996800000002&longitude=-90.08414719999999&radius=40000&categories=italian&limit=5&sort_by=rating&price=1, 2& Authorization=BearerQOG7LMVSSI1h9KdCz3VJbbGbJkBe8Qref4Kf4hdOf20UZR8bAAWnHXUJEgRbS25zVg66TMUXgzB3KZVsWjhDX0NznR54MMSnonqXg75jA6Kz8j4mEE4hJBl125EHXnYx';
+  return axios.get(url, { headers });
 };
+
+// getRestaurants({
+//   latitude: 29.985996800000002,
+//   longitude: -90.08414719999999,
+//   radius: 40000,
+//   categories: 'italian',
+//   price: '1,2',
+// }).then((response) => {
+//   console.log(response.data.businesses);
+// }).catch(() => {
+//   console.log('there was an error');
+// });
+
 
 module.exports.getRestaurants = getRestaurants;
 
