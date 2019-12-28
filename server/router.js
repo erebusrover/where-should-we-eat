@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { addNewUser, toggleGroupStatus } = require('./db/helpers');
 const { getRestaurants } = require('./config/yelp');
+const { getUserLocation } = require('./config/google');
 
 const router = Router();
 
@@ -43,6 +44,11 @@ router.post('/createGroup', (req, res) => {
 
 // GET /choices renders page with a few choices of where to eat, with a timer.
 // clicking on a given choice will ...render choices:id page for all users?
+router.get('/choices', (req, res) => {
+  // 
+  // call getRestaurants
+  // req body should contain query argument for get Restaurants (see config/yelp.js)
+});
 
 // GET /choices:id renders directions and info about choice
 
