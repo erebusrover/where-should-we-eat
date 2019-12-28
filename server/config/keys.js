@@ -6,7 +6,7 @@ module.exports = {
     clientSecret: '',
   },
   googleMaps: {
-    API_KEY: 'AIzaSyA_D1RTPKlmuPtmjJhmy8sLEhcjuBfUozM',
+    API_KEY: 'AIzaSyBzt9ZXHKl4Qh7IYslW3MKBT3ay4lekXaY',
   },
   yelp: {
     CLIENT_ID: 'L-JR_3MGN49jN_uzOVHXlA',
