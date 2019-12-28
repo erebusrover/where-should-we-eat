@@ -3,26 +3,6 @@ const { API_KEY } = require('./keys').yelp;
 
 // write function for yelp api calls here
 const getRestaurants = (query) => {
-  // query argument should include the following properties:
-    // user lat/lng: --> retrieved from call to google api
-      // latitude
-      // longitude
-    // radius --> part of user preferences or chosen for each new decision?
-    // categories --> derived from group/user preferences
-    // price --> derived from group/user preferences
-
-  // so something like this:
-  // query = {
-  //   latitude: user.lat,
-  //   longitude: user.lng,
-  //   radius: 10000,
-  //   categories: 'vegan, italian',
-  //   price: '1, 2',
-  // }
-
-  // search url should look something like this:
-  // https://api.yelp.com/v3/businesses/search?latitude=29.985996800000002&longitude=-90.08414719999999&radius=40000&categories=vegan&limit=5&sort_by=rating&price=1, 2& Authorization=Bearer API_KEY
-  
   // destructure vars from query arg obj
   const {
     latitude,
@@ -41,6 +21,32 @@ const getRestaurants = (query) => {
   return axios.get(url, { headers });
 };
 
+module.exports.getRestaurants = getRestaurants;
+
+
+// NOTES:
+// query argument should include the following properties:
+// user lat/lng: --> retrieved from call to google api
+// latitude
+// longitude
+// radius --> part of user preferences or chosen for each new decision?
+// categories --> derived from group/user preferences
+// price --> derived from group/user preferences
+
+// so something like this:
+// query = {
+//   latitude: user.lat,
+//   longitude: user.lng,
+//   radius: 10000,
+//   categories: 'vegan, italian',
+//   price: '1, 2',
+// }
+
+// search url should look something like this:
+// https://api.yelp.com/v3/businesses/search?latitude=29.985996800000002&longitude=-90.08414719999999&radius=40000&categories=vegan&limit=5&sort_by=rating&price=1, 2& Authorization=Bearer API_KEY
+
+
+// // test call:
 // getRestaurants({
 //   latitude: 29.985996800000002,
 //   longitude: -90.08414719999999,
@@ -54,7 +60,7 @@ const getRestaurants = (query) => {
 // });
 
 
-module.exports.getRestaurants = getRestaurants;
+
 
 // search params:
 // location or lat/lng
