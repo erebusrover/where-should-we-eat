@@ -1,5 +1,5 @@
-const axios 
-const { CLIENT_ID, API_KEY } = require('./keys').yelp;
+const axios = require('axios');
+const { API_KEY } = require('./keys').yelp;
 
 // write function for yelp api calls here
 const getRestaurants = (query) => {
@@ -10,6 +10,7 @@ const getRestaurants = (query) => {
     // radius --> part of user preferences or chosen for each new decision?
     // categories --> derived from group/user preferences
     // price --> derived from group/user preferences
+
   // so something like this:
   // query = {
   //   latitude: user.lat,
@@ -18,9 +19,10 @@ const getRestaurants = (query) => {
   //   categories: 'vegan, italian',
   //   price: '1, 2',
   // }
+
   // search url should look something like this:
   // https://api.yelp.com/v3/businesses/search?latitude=29.985996800000002&longitude=-90.08414719999999&radius=40000&categories=vegan&limit=5&sort_by=rating&price=1, 2& Authorization=Bearer API_KEY
-
+  const url = `https://api.yelp.com/v3/businesses/search?latitude=29.985996800000002&longitude=-90.08414719999999&radius=40000&categories=vegan&limit=5&sort_by=rating&price=1, 2& Authorization=Bearer ${API_KEY}`
   return axios.get(url);
 };
 
