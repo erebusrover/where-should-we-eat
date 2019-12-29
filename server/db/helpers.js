@@ -96,7 +96,12 @@ const addToGroupHistory = (group) => {
   return query(sql, [groupName, location]);
 };
 
-// get group history/choices
+// get group location history
+const getGroupHistory = (groupName) => {
+  const sql = `SELECT location_id from groupHistory WHERE 
+                (SELECT groupp_id from groupp WHERE groupName = ?) = groupp_id`;
+  return query(sql, [groupName]);
+};
 
 // TODO: add user image/avatar to userImages table
 
@@ -104,12 +109,15 @@ const addToGroupHistory = (group) => {
 
 // TODO: obtain group info from db
 
-module.exports.addNewUser = addNewUser;
-module.exports.updateUserStatus = updateUserStatus;
-module.exports.addUserDietaryRestrictions = addUserDietaryRestrictions;
-module.exports.deleteUserDietaryRestriction = deleteUserDietaryRestriction;
-module.exports.addNewGroup = addNewGroup;
-module.exports.changeGroupName = changeGroupName;
-module.exports.changeGroupPricePoint = changeGroupPricePoint;
-module.exports.addToGroupHistory = addToGroupHistory;
-module.exports.toggleGroupStatus = toggleGroupStatus;
+module.exports = {
+  addNewUser,
+  updateUserStatus,
+  addUserDietaryRestrictions,
+  deleteUserDietaryRestriction,
+  addNewGroup,
+  changeGroupName,
+  changeGroupPricePoint,
+  addToGroupHistory,
+  getGroupHistory,
+  toggleGroupStatus,
+};

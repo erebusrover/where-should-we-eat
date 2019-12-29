@@ -8,8 +8,9 @@ const {
   addNewGroup,
   changeGroupName,
   changeGroupPricePoint,
-  toggleGroupStatus,
   addToGroupHistory,
+  getGroupHistory,
+  toggleGroupStatus,
 } = require('./db/helpers');
 // require Google and Yelp API functions
 const { getRestaurants } = require('./config/yelp');
