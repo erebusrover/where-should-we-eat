@@ -4,6 +4,7 @@ const {
   addNewGroup,
   toggleGroupStatus,
   addUserDietaryRestrictions,
+  deleteUserDietaryRestriction,
   addToGroupHistory,
 } = require('./db/helpers');
 const { getRestaurants } = require('./config/yelp');
@@ -14,10 +15,7 @@ const router = Router();
 // POST to /users to add user to db --> how will google auth be involved in this?
 router.post('/users', (req, res) => {
   // get username from req body
-  const newUser = {
-    userName: req.body.userName,
-    userStatus: req.body.userStatus,
-  };
+  const { newUser } = req.body;
   // use db helper function to add new user to db
   addNewUser(newUser).then(() => {
     res.sendStatus(201);
@@ -43,20 +41,25 @@ router.post('/users/:username/dietaryRestrictions', (req, res) => {
 
 // DELETE a dietary restriction for a given user
 router.delete('/users/:username/dietaryRestrictions', (req, res) => {
-
+  const { user } = req.body;
+  deleteUserDietaryRestriction(user).then(() => {
+    res.sendStatus(200);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
 });
 
 // POST /history adds a new place to the grouphistory table
 // whenever a choice is made
 // how are we storing the locations in this table? by name? id?
-router.post('/history', (req, res) => {
-  const { groupName, chosenLocation } = req.body;
-  addToGroupHistory(groupName, chosenLocation).then(() => {
+router.post('/locationHistory', (req, res) => {
+  const { group } = req.body;
+  addToGroupHistory(group).then(() => {
     res.sendStatus(201);
   }).catch((error) => {
     console.log(error);
     res.sendStatus(400);
-  })
+  });
 });
 
 // GET /login verify user login using Passport --> google auth?
