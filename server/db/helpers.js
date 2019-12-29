@@ -39,7 +39,7 @@ const addUserDietaryRestrictions = (user) => {
 const deleteUserDietaryRestriction = (user) => {
   const { userName, restriction } = user;
   const sql = `DELETE FROM dietaryRestrictions WHERE restriction = ? 
-                & userid = (SELECT userid FROM user WHERE userName = ?)`;
+                AND userid = (SELECT userid FROM user WHERE userName = ?)`;
   return query(sql, [restriction, userName]);
 };
 
