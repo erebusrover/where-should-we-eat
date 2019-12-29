@@ -16,9 +16,12 @@ const query = util.promisify(connection.query).bind(connection);
 const addNewUser = (newUser) => {
   const { userName, userStatus } = newUser;
   const sql = `INSERT into user (userName, userStatus) VALUES ("${userName}", "${userStatus}")
-                ON DUPLICATE KEY UPDATE userStatus="${userStatus}"`;
+                ON DUPLICATE KEY UPDATE userStatus = "${userStatus}"`;
   return query(sql);
 };
+
+// const sql = `INSERT into phrases (kor, eng, rom, status) VALUES ("${korean}", "${english}", "${romanized}", "Not yet")
+// ON DUPLICATE KEY UPDATE kor = VALUES(kor)`;
 
 // TODO: add dietary restrictions to dietaryRestrictions table
 // once user has selected dietary restrictions within their preferences
@@ -32,6 +35,7 @@ const addUserDietaryRestrictions = (user) => {
     return query(sql);
   });
 };
+
 
 // TODO: add new group to db
 const addNewGroup = (newGroup) => {
