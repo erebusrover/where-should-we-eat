@@ -12,6 +12,7 @@ const app = express();
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors());
+app.use('/api', router);
 
 // serve static assets
 const CLIENT_PATH = path.resolve(__dirname, '../build');
@@ -26,5 +27,4 @@ app.get('/*', (req, res) => {
 // });
 
 // api routers from router.js
-// app.use('/api', router);
 module.exports.app = app;
