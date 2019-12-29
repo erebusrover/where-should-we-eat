@@ -65,6 +65,13 @@ const addNewGroup = (newGroup) => {
   return query(sql, [groupName, pricePoint, pricePoint]);
 };
 
+// add users and group to join table?
+const addToUserGroupJoinTable = (userName, groupName) => {
+  const sql = `INSERT into user_group (user_id, groupp_id) VALUES 
+                ((SELECT user_id from user WHERE userName = ?), (SELECT groupp_id from groupp WHERE groupName = ?))`;
+  return query(sql, [userName, groupName]);
+};
+
 // allow users to change group name
 const changeGroupName = (group) => {
   const { groupName, newName } = group;
@@ -117,6 +124,7 @@ module.exports = {
   addUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
+  addToUserGroupJoinTable,
   changeGroupName,
   changeGroupPricePoint,
   addToGroupHistory,

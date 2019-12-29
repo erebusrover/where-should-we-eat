@@ -6,6 +6,7 @@ const {
   addUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
+  addToUserGroupJoinTable,
   changeGroupName,
   changeGroupPricePoint,
   addToGroupHistory,
@@ -76,6 +77,8 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   });
 });
 
+// GET dietary restrictions for a given user
+
 // DELETE a dietary restriction for a given user
 router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
   const { restriction } = req.body;
@@ -88,10 +91,11 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
     res.sendStatus(200);
   }).catch(() => {
     res.sendStatus(400);
-  })
+  });
 });
 
 // POST /groups to add new group to db
+// should also add whichever user created the group to the user_group join table
 router.post('/groups', (req, res) => {
   const { groupName, pricePoint } = req.body;
   const newGroup = {
@@ -103,6 +107,18 @@ router.post('/groups', (req, res) => {
     res.sendStatus(201);
   }).catch(() => {
     res.sendStatus(400);
+  });
+});
+
+// POST /user_group adds fields to user_group table
+// to indicate which users belong to which group
+router.post('/user_group', (req, res) => {
+  const { userName, groupName } = req.body;
+  addToUserGroupJoinTable(userName, groupName).then(() => {
+    res.send(201);
+  }).catch((error) => {
+    console.log(error);
+    res.send(400);
   });
 });
 
