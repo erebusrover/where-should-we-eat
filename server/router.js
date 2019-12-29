@@ -4,6 +4,7 @@ const {
   addNewUser,
   updateUserStatus,
   addUserDietaryRestrictions,
+  getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
   addToUserGroupJoinTable,
@@ -63,7 +64,7 @@ router.patch('/users/:userName/newUserName', (req, res) => {
 
 // POST to add dietary restrictions for a given user
 router.post('/users/:userName/dietaryRestrictions', (req, res) => {
-  // restrictions should be an array
+  // restrictions must be an array
   const { restrictions } = req.body;
   const { userName } = req.params;
   const user = {
@@ -78,6 +79,16 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
 });
 
 // GET dietary restrictions for a given user
+router.get('/users/:userName/dietaryRestrictions', (req, res) => {
+  const { userName } = req.params;
+  getUserDietaryRestrictions(userName).then((response) => {
+    res.status(200);
+    res.send(response);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+});
 
 // DELETE a dietary restriction for a given user
 router.delete('/users/:userName/dietaryRestrictions', (req, res) => {

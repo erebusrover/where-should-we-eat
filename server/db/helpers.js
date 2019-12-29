@@ -41,6 +41,13 @@ const addUserDietaryRestrictions = (user) => {
   }));
 };
 
+// get user dietary restrictions
+const getUserDietaryRestrictions = (userName) => {
+  const sql = `SELECT restriction FROM dietaryRestrictions 
+                  WHERE (SELECT user_id from user WHERE userName = ?)`;
+  return query(sql, [userName]);
+};
+
 // delete dietary restriction for a user
 // right now this is set up to just remove one restriction at a time
 const deleteUserDietaryRestriction = (user) => {
@@ -110,8 +117,6 @@ const getGroupHistory = (groupName) => {
   return query(sql, [groupName]);
 };
 
-getGroupHistory('my group');
-
 // TODO: add user image/avatar to userImages table
 
 // TODO: obtain user info from db
@@ -122,6 +127,7 @@ module.exports = {
   addNewUser,
   updateUserStatus,
   addUserDietaryRestrictions,
+  getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
   addToUserGroupJoinTable,
