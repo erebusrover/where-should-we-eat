@@ -6,7 +6,7 @@ const { getUserLocation } = require('./config/google');
 const router = Router();
 
 // POST to /signup adds users to db --> how will google auth be involved in this?
-router.post('/signup', (req, res) => {
+router.post('/users', (req, res) => {
   // get username from req body
   const newUser = {
     userName: req.body.userName,
@@ -30,12 +30,18 @@ router.post('/signup', (req, res) => {
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
 // call addUserDietaryRestrictions here
 
-// POST /createGroup adds new group to db
-router.post('/createGroup', (req, res) => {
+// POST /groups adds new group to db
+router.post('/groups', (req, res) => {
   // use db helper function to add new group to db
+  addNewGroup().then(() => {
+
+  }).catch(() => {
+
+  });
 });
 
-// GET /group:id renders given group page
+
+// GET /groups:id renders given group page
 
 // GET /winner renders winner page for given user,
 // who is presented with option to make the choice or pass
@@ -74,8 +80,8 @@ router.get('/choices', (req, res) => {
 
 // GET /choices:id renders directions and info about choice
 
-// PATCH /group:id/active toggles group 'active' property between true and false
-router.patch('/group:id/active', (req, res) => {
+// PATCH /groups:id/active toggles group 'active' property between true and false
+router.patch('/groups:id/active', (req, res) => {
   const { id, status } = req.body;
   toggleGroupStatus(id, status).then(() => {
     res.send();
