@@ -25,10 +25,21 @@ router.post('/users', (req, res) => {
 });
 
 
-// PATCH to /users/:username to update user status or username
-router.patch('/users/:username', (req, res) => {
+// PATCH to /users/:username/newStatus to update user status
+router.patch('/users/:userName/newStatus', (req, res) => {
+  // get username from params and new status from body
+  const { userName } = req.params;
+  const { newStatus } = req.body;
+  console.log(newStatus);
+ });
 
-});
+// PATCH to /users/:userName/newUserName to update username
+router.patch('/users/:userName/newUserName', (req, res) => {
+  // get username from params and new username from body
+  const { userName } = req.params;
+  const { newUserName } = req.body;
+
+ });
 
 // POST to add dietary restrictions for a given user
 router.post('/users/:userName/dietaryRestrictions', (req, res) => {
