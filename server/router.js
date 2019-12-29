@@ -33,8 +33,8 @@ router.post('/users', (req, res) => {
 });
 
 
-// PATCH to /users/:username/newStatus to update user status
-router.patch('/users/:userName/newStatus', (req, res) => {
+// PATCH to /users/:username/status to update user status
+router.patch('/users/:userName/status', (req, res) => {
   // get username from params and new status from body
   const { userName } = req.params;
   const { newStatus } = req.body;
