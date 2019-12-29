@@ -1,4 +1,5 @@
 const { Router } = require('express');
+// require DB helpers
 const {
   addNewUser,
   addUserDietaryRestrictions,
@@ -8,6 +9,7 @@ const {
   toggleGroupStatus,
   addToGroupHistory,
 } = require('./db/helpers');
+// require Google and Yelp API functions
 const { getRestaurants } = require('./config/yelp');
 const { getUserLocation } = require('./config/google');
 
@@ -16,11 +18,16 @@ const router = Router();
 // POST to /users to add user to db --> how will google auth be involved in this?
 router.post('/users', (req, res) => {
   // get username from req body
-  const newUser = req.body;
+  const { userName, userStatus } = req.body;
+  const newUser = {
+    userName,
+    userStatus,
+  };
   // use db helper function to add new user to db
   addNewUser(newUser).then(() => {
     res.sendStatus(201);
-  }).catch(() => {
+  }).catch((error) => {
+    console.log(error);
     res.sendStatus(400);
   });
 });
@@ -42,7 +49,8 @@ router.patch('/users/:userName/newStatus', (req, res) => {
   });
 });
 
-// PATCH to /users/:userName/newUserName to update username
+// PATCH to /users/:userName/newUserName to update username?
+// not sure if this is necessary/desirable functionality
 router.patch('/users/:userName/newUserName', (req, res) => {
   // get username from params and new username from body
   const { userName } = req.params;
