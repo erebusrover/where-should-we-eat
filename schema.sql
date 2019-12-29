@@ -12,8 +12,8 @@ USE wswe;
 -- >>
 CREATE TABLE user (
   userid int NOT NULL AUTO_INCREMENT,
-  userName varchar(25) NOT NULL,
-  userStatus varchar(50) NOT NULL,
+  userName varchar(25) NOT NULL UNIQUE,
+  userStatus varchar(50),
   PRIMARY KEY (userid)
 );
 
@@ -23,7 +23,7 @@ CREATE TABLE dietaryRestrictions(
     userid int NOT NULL,
     FOREIGN KEY (userid)
         REFERENCES user(userid),
-    restriction int NOT NULL   
+    restriction varchar(100) NOT NULL UNIQUE
 );
 
 -- choice column should probably reference location id from api varchar is placeholder
