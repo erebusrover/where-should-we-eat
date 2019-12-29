@@ -12,7 +12,7 @@ USE wswe;
 -- >>
 CREATE TABLE user (
   userid int NOT NULL AUTO_INCREMENT,
-  userName varchar(25) NOT NULL,
+  userName varchar(25) NOT NULL UNIQUE,
   userStatus varchar(50) NOT NULL,
   PRIMARY KEY (userid)
 );
