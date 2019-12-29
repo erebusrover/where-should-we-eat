@@ -41,8 +41,15 @@ router.post('/users/:username/dietaryRestrictions', (req, res) => {
 
 // DELETE a dietary restriction for a given user
 router.delete('/users/:username/dietaryRestrictions', (req, res) => {
-  const { user } = req.body;
+  const { restriction } = req.body;
+  const { userName } = req.params;
+  const user = {
+    userName,
+    restriction,
+  };
+  console.log(user);
   deleteUserDietaryRestriction(user).then(() => {
+    console.log('restriction deleted');
     res.sendStatus(200);
   }).catch(() => {
     res.sendStatus(400);
@@ -136,3 +143,5 @@ router.patch('/groups:id/active', (req, res) => {
     res.sendStatus(400);
   });
 });
+
+module.exports.router = router;
