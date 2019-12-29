@@ -7,8 +7,6 @@ const connection = mysql.createConnection(mysqlConfig);
 // Just like `connection.query`, but returns a promise!
 const query = util.promisify(connection.query).bind(connection);
 
-// TODO: work on sql injection issue
-
 // add new user to db
 // newUser arg should look something like:
 // {
@@ -37,6 +35,7 @@ const addUserDietaryRestrictions = (user) => {
 };
 
 // delete dietary restriction for a user
+// right now this is set up to just remove one restriction at a time
 const deleteUserDietaryRestriction = (user) => {
   const { userName, restriction } = user;
   const sql = `DELETE FROM dietaryRestrictions WHERE restriction = ? 
