@@ -29,7 +29,7 @@ CREATE TABLE dietaryRestrictions(
 -- choice column should probably reference location id from api varchar is placeholder
 CREATE TABLE groupp(
     grouppid int NOT NULL AUTO_INCREMENT,
-    groupName varchar(20) NOT NULL,
+    groupName varchar(20) NOT NULL UNIQUE,
     active boolean NOT NULL,
     choice varchar(50),
     pricePoint int NOT NULL,
