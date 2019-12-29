@@ -7,6 +7,8 @@ const connection = mysql.createConnection(mysqlConfig);
 // Just like `connection.query`, but returns a promise!
 const query = util.promisify(connection.query).bind(connection);
 
+// TODO: work on sql injection issue
+
 // add new user to db
 // newUser arg should look something like:
 // {
@@ -34,6 +36,13 @@ const addUserDietaryRestrictions = (user) => {
   });
 };
 
+// TODO: delete dietary restriction for a user
+const deleteUserDietaryRestriction = (user) => {
+  const { userName, restriction } = user;
+  const sql = `DELETE FROM dietaryRestrictions WHERE restriction = "${restriction}" 
+    & userid = (SELECT userid FROM user WHERE userName = "${userName}")`;
+  return query(sql);
+};
 
 // add new group to db
 // newGroup arg should look something like:
@@ -52,14 +61,16 @@ const addNewGroup = (newGroup) => {
 
 // TODO: toggle group's active state between true and false
 // (when a decision has been initiated or closed)
-const toggleGroupStatus = (id, status) => {
+const toggleGroupStatus = (group) => {
+  const { id, status } = group;
   const sql = `UPDATE groupp SET active="${status}" WHERE id=${id}`;
   return query(sql);
 };
 
 // add chosen location to grouphistory table
 // TODO: figure out how location is being stored. Are we assigning them ids?
-const addToGroupHistory = (groupName, chosenLocation) => {
+const addToGroupHistory = (group) => {
+  const { groupName, chosenLocation } = group;
   const sql = `INSERT into grouphistory (groupid, location_id) VALUES 
     ((SELECT groupid from groupp WHERE groupName = "${groupName}"), "${chosenLocation}")`;
   return query(sql);
@@ -74,5 +85,6 @@ const addToGroupHistory = (groupName, chosenLocation) => {
 module.exports.addNewUser = addNewUser;
 module.exports.addNewGroup = addNewGroup;
 module.exports.addUserDietaryRestrictions = addUserDietaryRestrictions;
+module.exports.deleteUserDietaryRestriction = deleteUserDietaryRestriction;
 module.exports.addToGroupHistory = addToGroupHistory;
 module.exports.toggleGroupStatus = toggleGroupStatus;
