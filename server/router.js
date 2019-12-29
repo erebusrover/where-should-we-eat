@@ -31,8 +31,15 @@ router.patch('/users/:username', (req, res) => {
 });
 
 // POST to add dietary restrictions for a given user
-router.post('/users/:username/dietaryRestrictions', (req, res) => {
-  addUserDietaryRestrictions().then(() => {
+router.post('/users/:userName/dietaryRestrictions', (req, res) => {
+  // restrictions should be an array
+  const { restrictions } = req.body;
+  const { userName } = req.params;
+  const user = {
+    userName,
+    restrictions,
+  };
+  addUserDietaryRestrictions(user).then(() => {
     res.sendStatus(201);
   }).catch(() => {
     res.sendStatus(400);
@@ -40,18 +47,18 @@ router.post('/users/:username/dietaryRestrictions', (req, res) => {
 });
 
 // DELETE a dietary restriction for a given user
-router.delete('/users/:username/dietaryRestrictions', (req, res) => {
+router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
   const { restriction } = req.body;
   const { userName } = req.params;
   const user = {
     userName,
     restriction,
   };
-  console.log(user);
   deleteUserDietaryRestriction(user).then(() => {
     console.log('restriction deleted');
     res.sendStatus(200);
-  }).catch(() => {
+  }).catch((error) => {
+    console.log(error);
     res.sendStatus(400);
   });
 });
