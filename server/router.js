@@ -93,11 +93,17 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
 
 // POST /groups to add new group to db
 router.post('/groups', (req, res) => {
+  const { groupName, pricePoint } = req.body;
+  const newGroup = {
+    groupName,
+    pricePoint,
+  };
   // use db helper function to add new group to db
-  addNewGroup().then(() => {
-
-  }).catch(() => {
-
+  addNewGroup(newGroup).then(() => {
+    res.sendStatus(201);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(400);
   });
 });
 

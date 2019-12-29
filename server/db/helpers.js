@@ -61,7 +61,7 @@ const deleteUserDietaryRestriction = (user) => {
 const addNewGroup = (newGroup) => {
   const { groupName, pricePoint } = newGroup;
   const sql = `INSERT into groupp (groupName, active, pricePoint) VALUES(?, true, ?)
-                ON DUPLICATE KEY UPDATE userStatus = ?`;
+                ON DUPLICATE KEY UPDATE pricePoint = ?`;
   return query(sql, [groupName, pricePoint, pricePoint]);
 };
 
