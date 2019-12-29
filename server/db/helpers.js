@@ -103,6 +103,8 @@ const getGroupHistory = (groupName) => {
   return query(sql, [groupName]);
 };
 
+getGroupHistory('my group');
+
 // TODO: add user image/avatar to userImages table
 
 // TODO: obtain user info from db

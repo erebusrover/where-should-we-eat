@@ -161,6 +161,18 @@ router.post('/groupHistory', (req, res) => {
   });
 });
 
+// GET /groupHistory retrieves group history
+router.get('/groupHistory', (req, res) => {
+  const { groupName } = req.body;
+  getGroupHistory(groupName).then((response) => {
+    res.status(200);
+    res.send(response);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(400);
+  })
+})
+
 // GET /login verify user login using Passport --> google auth?
 // router.get('/login', passport.authenticate('google', {
 // scope: ['profile', 'email', 'openid'],
