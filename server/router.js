@@ -29,8 +29,7 @@ router.post('/users', (req, res) => {
   // use db helper function to add new user to db
   addNewUser(newUser).then(() => {
     res.sendStatus(201);
-  }).catch((error) => {
-    console.log(error);
+  }).catch(() => {
     res.sendStatus(400);
   });
 });
@@ -86,10 +85,8 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
     restriction,
   };
   deleteUserDietaryRestriction(user).then(() => {
-    console.log('restriction deleted');
     res.sendStatus(200);
-  }).catch((error) => {
-    console.log(error);
+  }).catch(() => {
     res.sendStatus(400);
   })
 });
@@ -104,8 +101,7 @@ router.post('/groups', (req, res) => {
   // use db helper function to add new group to db
   addNewGroup(newGroup).then(() => {
     res.sendStatus(201);
-  }).catch((error) => {
-    console.log(error);
+  }).catch(() => {
     res.sendStatus(400);
   });
 });
@@ -138,8 +134,7 @@ router.patch('/groups/:groupName/pricePoint', (req, res) => {
   };
   changeGroupPricePoint(group).then(() => {
     res.sendStatus(201);
-  }).catch((error) => {
-    console.log(error);
+  }).catch(() => {
     res.sendStatus(400);
   });
 });
@@ -155,8 +150,7 @@ router.post('/groupHistory', (req, res) => {
   };
   addToGroupHistory(group).then(() => {
     res.sendStatus(201);
-  }).catch((error) => {
-    console.log(error);
+  }).catch(() => {
     res.sendStatus(400);
   });
 });
@@ -167,11 +161,10 @@ router.get('/groupHistory', (req, res) => {
   getGroupHistory(groupName).then((response) => {
     res.status(200);
     res.send(response);
-  }).catch((error) => {
-    console.log(error);
+  }).catch(() => {
     res.sendStatus(400);
-  })
-})
+  });
+});
 
 // GET /login verify user login using Passport --> google auth?
 // router.get('/login', passport.authenticate('google', {
@@ -217,7 +210,6 @@ router.get('/choices', (req, res) => {
       res.send(restaurants);
     })
     .catch(() => {
-      console.log('there was an error');
       res.sendStatus(400);
     });
 });
