@@ -15,7 +15,7 @@ const router = Router();
 // POST to /users to add user to db --> how will google auth be involved in this?
 router.post('/users', (req, res) => {
   // get username from req body
-  const { newUser } = req.body;
+  const newUser = req.body;
   // use db helper function to add new user to db
   addNewUser(newUser).then(() => {
     res.sendStatus(201);
