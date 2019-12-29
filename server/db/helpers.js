@@ -22,6 +22,7 @@ const addNewUser = (newUser) => {
   return query(sql, [userName, userStatus, userStatus]);
 };
 
+// BUG/TODO: currently cannot have multiple users with the same restriction
 // add dietary restrictions to dietaryRestrictions table
 const addUserDietaryRestrictions = (user) => {
   // dietaryRestrictions should be an array
