@@ -1,6 +1,9 @@
 build/*
 !build/index.html
 
+#api keys
+server/config/keys.js
+
 # Logs
 logs
 *.log
