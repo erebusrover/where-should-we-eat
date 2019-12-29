@@ -31,7 +31,7 @@ CREATE TABLE groupp(
     grouppid int NOT NULL AUTO_INCREMENT,
     groupName varchar(20) NOT NULL,
     active boolean NOT NULL,
-    choice varchar(50) NOT NULL,
+    choice varchar(50),
     pricePoint int NOT NULL,
     PRIMARY KEY (grouppid)
 );
