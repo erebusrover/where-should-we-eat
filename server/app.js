@@ -1,4 +1,5 @@
 const path = require('path');
+const helmet = require('helmet');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -8,8 +9,10 @@ const { router } = require('./router');
 const app = express();
 
 // call middleware functions
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors());
+app.use('/api', router);
 
 // serve static assets
 const CLIENT_PATH = path.resolve(__dirname, '../build');
@@ -24,5 +27,4 @@ app.get('/*', (req, res) => {
 // });
 
 // api routers from router.js
-// app.use('/api', router);
 module.exports.app = app;

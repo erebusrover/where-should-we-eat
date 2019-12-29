@@ -1,21 +1,105 @@
 const { Router } = require('express');
-const { addNewUser, toggleGroupStatus } = require('./db/helpers');
+// require DB helpers
+const {
+  addNewUser,
+  addUserDietaryRestrictions,
+  deleteUserDietaryRestriction,
+  updateUserStatus,
+  addNewGroup,
+  toggleGroupStatus,
+  addToGroupHistory,
+} = require('./db/helpers');
+// require Google and Yelp API functions
 const { getRestaurants } = require('./config/yelp');
 const { getUserLocation } = require('./config/google');
 
 const router = Router();
 
-// POST to /signup adds users to db --> how will google auth be involved in this?
-router.post('/signup', (req, res) => {
+// POST to /users to add user to db --> how will google auth be involved in this?
+router.post('/users', (req, res) => {
   // get username from req body
+  const { userName, userStatus } = req.body;
   const newUser = {
-    userName: req.body.userName,
-    userStatus: req.body.userStatus,
+    userName,
+    userStatus,
   };
   // use db helper function to add new user to db
   addNewUser(newUser).then(() => {
-    res.send();
+    res.sendStatus(201);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+});
+
+
+// PATCH to /users/:username/newStatus to update user status
+router.patch('/users/:userName/newStatus', (req, res) => {
+  // get username from params and new status from body
+  const { userName } = req.params;
+  const { newStatus } = req.body;
+  const user = {
+    userName,
+    newStatus,
+  };
+  updateUserStatus(user).then(() => {
+    res.sendStatus(201);
   }).catch(() => {
+    res.sendStatus(400);
+  });
+});
+
+// PATCH to /users/:userName/newUserName to update username?
+// not sure if this is necessary/desirable functionality
+router.patch('/users/:userName/newUserName', (req, res) => {
+  // get username from params and new username from body
+  const { userName } = req.params;
+  const { newUserName } = req.body;
+
+});
+
+// POST to add dietary restrictions for a given user
+router.post('/users/:userName/dietaryRestrictions', (req, res) => {
+  // restrictions should be an array
+  const { restrictions } = req.body;
+  const { userName } = req.params;
+  const user = {
+    userName,
+    restrictions,
+  };
+  addUserDietaryRestrictions(user).then(() => {
+    res.sendStatus(201);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
+});
+
+// DELETE a dietary restriction for a given user
+router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
+  const { restriction } = req.body;
+  const { userName } = req.params;
+  const user = {
+    userName,
+    restriction,
+  };
+  deleteUserDietaryRestriction(user).then(() => {
+    console.log('restriction deleted');
+    res.sendStatus(200);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+});
+
+// POST /history adds a new place to the grouphistory table
+// whenever a choice is made
+// how are we storing the locations in this table? by name? id?
+router.post('/locationHistory', (req, res) => {
+  const { group } = req.body;
+  addToGroupHistory(group).then(() => {
+    res.sendStatus(201);
+  }).catch((error) => {
+    console.log(error);
     res.sendStatus(400);
   });
 });
@@ -28,13 +112,25 @@ router.post('/signup', (req, res) => {
 // GET / renders home page, with info about active groups and sleeping groups
 
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
+// call addUserDietaryRestrictions here
 
-// POST /createGroup adds new group to db
-router.post('/createGroup', (req, res) => {
+// POST /groups to add new group to db
+router.post('/groups', (req, res) => {
   // use db helper function to add new group to db
+  addNewGroup().then(() => {
+
+  }).catch(() => {
+
+  });
 });
 
-// GET /group:id renders given group page
+// PATCH /groups/:group to update group info
+router.patch('/groups/:group', (req, res) => {
+
+});
+
+
+// GET /groups:id renders given group page
 
 // GET /winner renders winner page for given user,
 // who is presented with option to make the choice or pass
@@ -71,10 +167,10 @@ router.get('/choices', (req, res) => {
     });
 });
 
-// GET /choices:id renders directions and info about choice
+// GET /choices:/id renders directions and info about choice
 
-// PATCH /group:id/active toggles group 'active' property between true and false
-router.patch('/group:id/active', (req, res) => {
+// PATCH /groups/:id/active toggles group 'active' property between true and false
+router.patch('/groups:id/active', (req, res) => {
   const { id, status } = req.body;
   toggleGroupStatus(id, status).then(() => {
     res.send();
@@ -82,3 +178,5 @@ router.patch('/group:id/active', (req, res) => {
     res.sendStatus(400);
   });
 });
+
+module.exports.router = router;
