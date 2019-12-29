@@ -27,6 +27,8 @@ const updateUserStatus = (user) => {
   return query(sql, [newStatus, userName]);
 };
 
+// TODO: delete user
+
 // BUG/TODO: currently cannot have multiple users with the same restriction
 // add dietary restrictions to dietaryRestrictions table
 const addUserDietaryRestrictions = (user) => {
@@ -101,6 +103,25 @@ const toggleGroupStatus = (group) => {
   return query(sql, [status, id]);
 };
 
+// delete a group from join table
+const deleteGroupFromUserGroupJoinTable = (groupName) => {
+  const sql = `DELETE from user_group 
+                WHERE groupp_id = (SELECT groupp_id from groupp WHERE groupName = ?)`;
+  return query(sql, [groupName]);
+};
+
+const deleteGroupFromGroupHistory = (groupName) => {
+  const sql = `DELETE from groupHistory
+                WHERE groupp_id = (SELECT groupp_id from groupp WHERE groupName = ?)`;
+  return query(sql, [groupName]);
+};
+
+// delete a group from groupp table
+const deleteGroup = (groupName) => {
+  const sql = 'DELETE from groupp WHERE groupName = ?';
+  return query(sql, [groupName]);
+};
+
 // add chosen location to grouphistory table
 // TODO: figure out how location is being stored. Are we assigning them ids?
 const addToGroupHistory = (group) => {
@@ -133,6 +154,9 @@ module.exports = {
   addToUserGroupJoinTable,
   changeGroupName,
   changeGroupPricePoint,
+  deleteGroup,
+  deleteGroupFromUserGroupJoinTable,
+  deleteGroupFromGroupHistory,
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,

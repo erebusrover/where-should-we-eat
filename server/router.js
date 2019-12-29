@@ -10,6 +10,9 @@ const {
   addToUserGroupJoinTable,
   changeGroupName,
   changeGroupPricePoint,
+  deleteGroup,
+  deleteGroupFromUserGroupJoinTable,
+  deleteGroupFromGroupHistory,
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,
@@ -120,6 +123,21 @@ router.post('/groups', (req, res) => {
     res.sendStatus(201);
   }).catch(() => {
     res.sendStatus(400);
+  });
+});
+
+// DELETE /groups deletes a group from groupp and from user_group
+router.delete('/groups', (req, res) => {
+  const { groupName } = req.body;
+  deleteGroupFromUserGroupJoinTable(groupName).then(() => {
+    deleteGroupFromGroupHistory(groupName);
+  }).then(() => {
+    deleteGroup(groupName);
+  }).then(() => {
+    res.send(200);
+  }).catch((error) => {
+    console.log(error);
+    res.send(400);
   });
 });
 
