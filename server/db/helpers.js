@@ -23,15 +23,15 @@ const addNewUser = (newUser) => {
 };
 
 // add dietary restrictions to dietaryRestrictions table
-// once user has selected dietary restrictions within their preferences
 const addUserDietaryRestrictions = (user) => {
   // dietaryRestrictions should be an array
-  const { userName, dietaryRestrictions } = user;
+  const { userName, restrictions } = user;
   // for each dietary restriction, add it to table with id of user
-  dietaryRestrictions.map((dietaryRestriction) => {
-    const sql = `INSERT into dietaryRestrictions (restriction, userid) 
-                  VALUES (?, (SELECT userid FROM user WHERE userName = ?))`;
-    return query(sql, [dietaryRestriction, userName]);
+  restrictions.map((restriction) => {
+    const sql = `INSERT into dietaryRestrictions (userid, restriction) 
+                  VALUES ((SELECT userid FROM user WHERE userName = ?), ?)
+                  ON DUPLICATE KEY UPDATE restriction=?`;
+    return query(sql, [userName, restriction, restriction]);
   });
 };
 

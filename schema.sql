@@ -23,7 +23,7 @@ CREATE TABLE dietaryRestrictions(
     userid int NOT NULL,
     FOREIGN KEY (userid)
         REFERENCES user(userid),
-    restriction varchar(100) NOT NULL   
+    restriction varchar(100) NOT NULL UNIQUE
 );
 
 -- choice column should probably reference location id from api varchar is placeholder
