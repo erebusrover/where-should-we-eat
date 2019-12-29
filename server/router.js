@@ -19,7 +19,7 @@ router.post('/users', (req, res) => {
   };
   // use db helper function to add new user to db
   addNewUser(newUser).then(() => {
-    res.send();
+    res.sendStatus(201);
   }).catch(() => {
     res.sendStatus(400);
   });
@@ -34,9 +34,9 @@ router.patch('/users/:username', (req, res) => {
 // POST to add dietary restrictions for a given user
 router.post('/users/:username/dietaryRestrictions', (req, res) => {
   addUserDietaryRestrictions().then(() => {
-
+    res.sendStatus(201);
   }).catch(() => {
-
+    res.sendStatus(400);
   });
 });
 
