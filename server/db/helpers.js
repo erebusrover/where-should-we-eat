@@ -21,9 +21,13 @@ const addNewUser = (newUser) => {
 
 // TODO: add dietary restrictions to dietaryRestrictions table
 // once user has selected dietary restrictions within their preferences
-// NOTE: looks like table only allows for one restriction at this point
 const addUserDietaryRestrictions = (user) => {
-  const { userName, dietaryRestriction } = user;
+  const { userName, dietaryRestrictions } = user;
+  // for each dietary restriction, add it to table with id of user
+  dietaryRestrictions.forEach((dietaryRestriction) => {
+    const sql = `INSERT into user (restriction) VALUES ("${dietaryRestriction}, SELECT id FROM users WHERE userName = "${userName}")`;
+    return query(sql);
+  });
 };
 
 
@@ -44,4 +48,5 @@ const toggleGroupStatus = (id, status) => {
 };
 
 module.exports.addNewUser = addNewUser;
+module.exports.addUserDietaryRestrictions = addUserDietaryRestrictions;
 module.exports.toggleGroupStatus = toggleGroupStatus;
