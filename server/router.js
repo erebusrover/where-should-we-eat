@@ -3,7 +3,8 @@ const {
   addNewUser,
   addNewGroup,
   toggleGroupStatus,
-  addUserDietaryRestrictions
+  addUserDietaryRestrictions,
+  addToGroupHistory,
 } = require('./db/helpers');
 const { getRestaurants } = require('./config/yelp');
 const { getUserLocation } = require('./config/google');
@@ -43,6 +44,19 @@ router.post('/users/:username/dietaryRestrictions', (req, res) => {
 // DELETE a dietary restriction for a given user
 router.delete('/users/:username/dietaryRestrictions', (req, res) => {
 
+});
+
+// POST /history adds a new place to the grouphistory table
+// whenever a choice is made
+// how are we storing the locations in this table? by name? id?
+router.post('/history', (req, res) => {
+  const { groupName, chosenLocation } = req.body;
+  addToGroupHistory(groupName, chosenLocation).then(() => {
+    res.sendStatus(201);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(400);
+  })
 });
 
 // GET /login verify user login using Passport --> google auth?
