@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { addNewUser, toggleGroupStatus, addUserDietaryRestrictions } = require('./db/helpers');
+const { addNewUser, addNewGroup, toggleGroupStatus, addUserDietaryRestrictions } = require('./db/helpers');
 const { getRestaurants } = require('./config/yelp');
 const { getUserLocation } = require('./config/google');
 
