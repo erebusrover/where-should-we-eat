@@ -17,11 +17,10 @@ const query = util.promisify(connection.query).bind(connection);
 // }
 const addNewUser = (newUser) => {
   const { userName, userStatus } = newUser;
-  const sql = `INSERT into user (userName, userStatus) VALUES ("${userName}", "${userStatus}")
-                ON DUPLICATE KEY UPDATE userStatus = "${userStatus}"`;
-  return query(sql);
+  const sql = `INSERT into user (userName, userStatus) VALUES (?, ?)
+                ON DUPLICATE KEY UPDATE userStatus = ?`;
+  return query(sql, [userName, userStatus, userStatus]);
 };
-
 
 // add dietary restrictions to dietaryRestrictions table
 // once user has selected dietary restrictions within their preferences
@@ -31,17 +30,17 @@ const addUserDietaryRestrictions = (user) => {
   // for each dietary restriction, add it to table with id of user
   dietaryRestrictions.map((dietaryRestriction) => {
     const sql = `INSERT into dietaryRestrictions (restriction, userid) 
-                  VALUES ("${dietaryRestriction}", (SELECT userid FROM user WHERE userName = "${userName}"))`;
-    return query(sql);
+                  VALUES (?, (SELECT userid FROM user WHERE userName = ?))`;
+    return query(sql, [dietaryRestriction, userName]);
   });
 };
 
 // TODO: delete dietary restriction for a user
 const deleteUserDietaryRestriction = (user) => {
   const { userName, restriction } = user;
-  const sql = `DELETE FROM dietaryRestrictions WHERE restriction = "${restriction}" 
-    & userid = (SELECT userid FROM user WHERE userName = "${userName}")`;
-  return query(sql);
+  const sql = `DELETE FROM dietaryRestrictions WHERE restriction = ? 
+                & userid = (SELECT userid FROM user WHERE userName = ?)`;
+  return query(sql, [restriction, userName]);
 };
 
 // add new group to db
@@ -53,9 +52,9 @@ const deleteUserDietaryRestriction = (user) => {
 // }
 const addNewGroup = (newGroup) => {
   const { groupName, pricePoint } = newGroup;
-  const sql = `INSERT into groupp (groupName, active, pricePoint) VALUES("${groupName}", true, "${pricePoint}")
-  ON DUPLICATE KEY UPDATE userStatus = "${pricePoint}"`;
-  return query(sql);
+  const sql = `INSERT into groupp (groupName, active, pricePoint) VALUES(?, true, ?)
+                ON DUPLICATE KEY UPDATE userStatus = ?`;
+  return query(sql, [groupName, pricePoint, pricePoint]);
 };
 
 
@@ -63,8 +62,8 @@ const addNewGroup = (newGroup) => {
 // (when a decision has been initiated or closed)
 const toggleGroupStatus = (group) => {
   const { id, status } = group;
-  const sql = `UPDATE groupp SET active="${status}" WHERE id=${id}`;
-  return query(sql);
+  const sql = 'UPDATE groupp SET active=? WHERE id=?';
+  return query(sql, [status, id]);
 };
 
 // add chosen location to grouphistory table
@@ -72,8 +71,8 @@ const toggleGroupStatus = (group) => {
 const addToGroupHistory = (group) => {
   const { groupName, chosenLocation } = group;
   const sql = `INSERT into grouphistory (groupid, location_id) VALUES 
-    ((SELECT groupid from groupp WHERE groupName = "${groupName}"), "${chosenLocation}")`;
-  return query(sql);
+    ((SELECT groupid from groupp WHERE groupName = ?), ?)`;
+  return query(sql, [groupName, chosenLocation]);
 };
 
 // TODO: add user image/avatar to userImages table
