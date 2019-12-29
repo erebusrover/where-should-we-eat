@@ -90,11 +90,13 @@ const toggleGroupStatus = (group) => {
 // add chosen location to grouphistory table
 // TODO: figure out how location is being stored. Are we assigning them ids?
 const addToGroupHistory = (group) => {
-  const { groupName, chosenLocation } = group;
-  const sql = `INSERT into grouphistory (groupid, location_id) VALUES 
-    ((SELECT groupid from groupp WHERE groupName = ?), ?)`;
-  return query(sql, [groupName, chosenLocation]);
+  const { groupName, location } = group;
+  const sql = `INSERT into groupHistory (groupp_id, location_id) VALUES 
+    ((SELECT groupp_id from groupp WHERE groupName = ?), ?)`;
+  return query(sql, [groupName, location]);
 };
+
+// get group history/choices
 
 // TODO: add user image/avatar to userImages table
 

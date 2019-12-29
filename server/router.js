@@ -143,11 +143,15 @@ router.patch('/groups/:groupName/pricePoint', (req, res) => {
   });
 });
 
-// POST /locationHistory adds a new place to the grouphistory table
+// POST /groupHistory adds a new place to the grouphistory table
 // whenever a choice is made
 // how are we storing the locations in this table? by name? id?
-router.post('/locationHistory', (req, res) => {
-  const { group } = req.body;
+router.post('/groupHistory', (req, res) => {
+  const { groupName, location } = req.body;
+  const group = {
+    groupName,
+    location,
+  };
   addToGroupHistory(group).then(() => {
     res.sendStatus(201);
   }).catch((error) => {
