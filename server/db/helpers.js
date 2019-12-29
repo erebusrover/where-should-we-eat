@@ -35,12 +35,19 @@ const addUserDietaryRestrictions = (user) => {
   }));
 };
 
-// TODO: delete dietary restriction for a user
+// delete dietary restriction for a user
 const deleteUserDietaryRestriction = (user) => {
   const { userName, restriction } = user;
   const sql = `DELETE FROM dietaryRestrictions WHERE restriction = ? 
                 AND userid = (SELECT userid FROM user WHERE userName = ?)`;
   return query(sql, [restriction, userName]);
+};
+
+// TODO: change user status
+const updateUserStatus = (user) => {
+  const { userName, newStatus } = user;
+  const sql = 'UPDATE user SET userStatus=? WHERE userName=?';
+  return query(sql, [newStatus, userName]);
 };
 
 // add new group to db
@@ -82,8 +89,9 @@ const addToGroupHistory = (group) => {
 // TODO: obtain group info from db
 
 module.exports.addNewUser = addNewUser;
-module.exports.addNewGroup = addNewGroup;
 module.exports.addUserDietaryRestrictions = addUserDietaryRestrictions;
 module.exports.deleteUserDietaryRestriction = deleteUserDietaryRestriction;
+module.exports.updateUserStatus = updateUserStatus;
+module.exports.addNewGroup = addNewGroup;
 module.exports.addToGroupHistory = addToGroupHistory;
 module.exports.toggleGroupStatus = toggleGroupStatus;

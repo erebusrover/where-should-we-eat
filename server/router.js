@@ -1,10 +1,11 @@
 const { Router } = require('express');
 const {
   addNewUser,
-  addNewGroup,
-  toggleGroupStatus,
   addUserDietaryRestrictions,
   deleteUserDietaryRestriction,
+  updateUserStatus,
+  addNewGroup,
+  toggleGroupStatus,
   addToGroupHistory,
 } = require('./db/helpers');
 const { getRestaurants } = require('./config/yelp');
@@ -30,8 +31,16 @@ router.patch('/users/:userName/newStatus', (req, res) => {
   // get username from params and new status from body
   const { userName } = req.params;
   const { newStatus } = req.body;
-  console.log(newStatus);
- });
+  const user = {
+    userName,
+    newStatus,
+  };
+  updateUserStatus(user).then(() => {
+    res.sendStatus(201);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
+});
 
 // PATCH to /users/:userName/newUserName to update username
 router.patch('/users/:userName/newUserName', (req, res) => {
@@ -39,7 +48,7 @@ router.patch('/users/:userName/newUserName', (req, res) => {
   const { userName } = req.params;
   const { newUserName } = req.body;
 
- });
+});
 
 // POST to add dietary restrictions for a given user
 router.post('/users/:userName/dietaryRestrictions', (req, res) => {
