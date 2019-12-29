@@ -15,21 +15,23 @@ const query = util.promisify(connection.query).bind(connection);
 // }
 const addNewUser = (newUser) => {
   const { userName, userStatus } = newUser;
-  const sql = `INSERT into user (userName, userStatus) VALUES ("${userName}", "${userStatus}")`;
+  const sql = `INSERT into user (userName, userStatus) VALUES ("${userName}", "${userStatus}")
+                ON DUPLICATE KEY UPDATE userStatus="${userStatus}"`;
   return query(sql);
 };
 
 // TODO: add dietary restrictions to dietaryRestrictions table
 // once user has selected dietary restrictions within their preferences
 const addUserDietaryRestrictions = (user) => {
+  // dietaryRestrictions should be an array
   const { userName, dietaryRestrictions } = user;
   // for each dietary restriction, add it to table with id of user
-  dietaryRestrictions.forEach((dietaryRestriction) => {
-    const sql = `INSERT into user (restriction) VALUES ("${dietaryRestriction}, SELECT id FROM users WHERE userName = "${userName}")`;
+  dietaryRestrictions.map((dietaryRestriction) => {
+    const sql = `INSERT into dietaryRestrictions (resßtriction, userid) 
+                  VALUES ("${dietaryRestriction}", (SELECT userid FROM user WHERE userName = "${userName}"))`;
     return query(sql);
   });
 };
-
 
 // TODO: add new group to db
 const addNewGroup = (newGroup) => {
