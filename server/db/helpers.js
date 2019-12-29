@@ -34,8 +34,8 @@ const addUserDietaryRestrictions = (user) => {
   const { userName, restrictions } = user;
   // for each dietary restriction, add it to table with id of user
   return Promise.all(restrictions.map((restriction) => {
-    const sql = `INSERT into dietaryRestrictions (userid, restriction) 
-                  VALUES ((SELECT userid FROM user WHERE userName = ?), ?)
+    const sql = `INSERT into dietaryRestrictions (user_id, restriction) 
+                  VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)
                   ON DUPLICATE KEY UPDATE restriction=?`;
     return query(sql, [userName, restriction, restriction]);
   }));
@@ -46,7 +46,7 @@ const addUserDietaryRestrictions = (user) => {
 const deleteUserDietaryRestriction = (user) => {
   const { userName, restriction } = user;
   const sql = `DELETE FROM dietaryRestrictions WHERE restriction = ? 
-                AND userid = (SELECT userid FROM user WHERE userName = ?)`;
+                AND user_id = (SELECT user_id FROM user WHERE userName = ?)`;
   return query(sql, [restriction, userName]);
 };
 
