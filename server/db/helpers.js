@@ -20,6 +20,13 @@ const addNewUser = (newUser) => {
   return query(sql, [userName, userStatus, userStatus]);
 };
 
+// TODO: change user status
+const updateUserStatus = (user) => {
+  const { userName, newStatus } = user;
+  const sql = 'UPDATE user SET userStatus=? WHERE userName=?';
+  return query(sql, [newStatus, userName]);
+};
+
 // BUG/TODO: currently cannot have multiple users with the same restriction
 // add dietary restrictions to dietaryRestrictions table
 const addUserDietaryRestrictions = (user) => {
@@ -43,12 +50,6 @@ const deleteUserDietaryRestriction = (user) => {
   return query(sql, [restriction, userName]);
 };
 
-// TODO: change user status
-const updateUserStatus = (user) => {
-  const { userName, newStatus } = user;
-  const sql = 'UPDATE user SET userStatus=? WHERE userName=?';
-  return query(sql, [newStatus, userName]);
-};
 
 // add new group to db
 // newGroup arg should look something like:
@@ -89,9 +90,9 @@ const addToGroupHistory = (group) => {
 // TODO: obtain group info from db
 
 module.exports.addNewUser = addNewUser;
+module.exports.updateUserStatus = updateUserStatus;
 module.exports.addUserDietaryRestrictions = addUserDietaryRestrictions;
 module.exports.deleteUserDietaryRestriction = deleteUserDietaryRestriction;
-module.exports.updateUserStatus = updateUserStatus;
 module.exports.addNewGroup = addNewGroup;
 module.exports.addToGroupHistory = addToGroupHistory;
 module.exports.toggleGroupStatus = toggleGroupStatus;

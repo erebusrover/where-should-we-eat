@@ -2,9 +2,9 @@ const { Router } = require('express');
 // require DB helpers
 const {
   addNewUser,
+  updateUserStatus,
   addUserDietaryRestrictions,
   deleteUserDietaryRestriction,
-  updateUserStatus,
   addNewGroup,
   toggleGroupStatus,
   addToGroupHistory,
@@ -88,10 +88,25 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
   }).catch((error) => {
     console.log(error);
     res.sendStatus(400);
+  })
+});
+
+// POST /groups to add new group to db
+router.post('/groups', (req, res) => {
+  // use db helper function to add new group to db
+  addNewGroup().then(() => {
+
+  }).catch(() => {
+
   });
 });
 
-// POST /history adds a new place to the grouphistory table
+// PATCH /groups/:group to update group info
+router.patch('/groups/:group', (req, res) => {
+
+});
+
+// POST /locationHistory adds a new place to the grouphistory table
 // whenever a choice is made
 // how are we storing the locations in this table? by name? id?
 router.post('/locationHistory', (req, res) => {
@@ -114,20 +129,6 @@ router.post('/locationHistory', (req, res) => {
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
 // call addUserDietaryRestrictions here
 
-// POST /groups to add new group to db
-router.post('/groups', (req, res) => {
-  // use db helper function to add new group to db
-  addNewGroup().then(() => {
-
-  }).catch(() => {
-
-  });
-});
-
-// PATCH /groups/:group to update group info
-router.patch('/groups/:group', (req, res) => {
-
-});
 
 
 // GET /groups:id renders given group page
