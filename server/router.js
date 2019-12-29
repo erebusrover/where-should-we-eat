@@ -1,11 +1,16 @@
 const { Router } = require('express');
-const { addNewUser, addNewGroup, toggleGroupStatus, addUserDietaryRestrictions } = require('./db/helpers');
+const {
+  addNewUser,
+  addNewGroup,
+  toggleGroupStatus,
+  addUserDietaryRestrictions
+} = require('./db/helpers');
 const { getRestaurants } = require('./config/yelp');
 const { getUserLocation } = require('./config/google');
 
 const router = Router();
 
-// POST to /signup adds users to db --> how will google auth be involved in this?
+// POST to /users to add user to db --> how will google auth be involved in this?
 router.post('/users', (req, res) => {
   // get username from req body
   const newUser = {
@@ -20,6 +25,26 @@ router.post('/users', (req, res) => {
   });
 });
 
+
+// PATCH to /users/:username to update user status or username
+router.patch('/users/:username', (req, res) => {
+
+});
+
+// POST to add dietary restrictions for a given user
+router.post('/users/:username/dietaryRestrictions', (req, res) => {
+  addUserDietaryRestrictions().then(() => {
+
+  }).catch(() => {
+
+  });
+});
+
+// DELETE a dietary restriction for a given user
+router.delete('/users/:username/dietaryRestrictions', (req, res) => {
+
+});
+
 // GET /login verify user login using Passport --> google auth?
 // router.get('/login', passport.authenticate('google', {
 // scope: ['profile', 'email', 'openid'],
@@ -30,7 +55,7 @@ router.post('/users', (req, res) => {
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
 // call addUserDietaryRestrictions here
 
-// POST /groups adds new group to db
+// POST /groups to add new group to db
 router.post('/groups', (req, res) => {
   // use db helper function to add new group to db
   addNewGroup().then(() => {
@@ -38,6 +63,11 @@ router.post('/groups', (req, res) => {
   }).catch(() => {
 
   });
+});
+
+// PATCH /groups/:group to update group info
+router.patch('/groups/:group', (req, res) => {
+
 });
 
 
@@ -78,9 +108,9 @@ router.get('/choices', (req, res) => {
     });
 });
 
-// GET /choices:id renders directions and info about choice
+// GET /choices:/id renders directions and info about choice
 
-// PATCH /groups:id/active toggles group 'active' property between true and false
+// PATCH /groups/:id/active toggles group 'active' property between true and false
 router.patch('/groups:id/active', (req, res) => {
   const { id, status } = req.body;
   toggleGroupStatus(id, status).then(() => {
