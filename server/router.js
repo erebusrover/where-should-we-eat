@@ -97,13 +97,15 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
 // POST /groups to add new group to db
 // should also add whichever user created the group to the user_group join table
 router.post('/groups', (req, res) => {
-  const { groupName, pricePoint } = req.body;
+  const { groupName, pricePoint, userName } = req.body;
   const newGroup = {
     groupName,
     pricePoint,
   };
   // use db helper function to add new group to db
   addNewGroup(newGroup).then(() => {
+    addToUserGroupJoinTable(userName, groupName);
+  }).then(() => {
     res.sendStatus(201);
   }).catch(() => {
     res.sendStatus(400);
