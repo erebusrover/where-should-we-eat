@@ -59,7 +59,7 @@ CREATE TABLE userImages(
 
 
 -- table to store the past choices of a group location_id should come from the api
-CREATE TABLE grouphistory (
+CREATE TABLE groupHistory (
     groupp_id int NOT NULL,
     FOREIGN KEY (groupp_id)
         REFERENCES groupp(groupp_id),
