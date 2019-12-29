@@ -7,6 +7,7 @@ const {
   deleteUserDietaryRestriction,
   addNewGroup,
   changeGroupName,
+  changeGroupPricePoint,
   toggleGroupStatus,
   addToGroupHistory,
 } = require('./db/helpers');
@@ -108,8 +109,8 @@ router.post('/groups', (req, res) => {
   });
 });
 
-// PATCH /groups/:group to change group name
-router.patch('/groups/:groupName/newName', (req, res) => {
+// PATCH /groups/:groupName/groupName to change group name
+router.patch('/groups/:groupName/groupName', (req, res) => {
   const { groupName } = req.params;
   const { newName } = req.body;
   const group = {
@@ -118,7 +119,26 @@ router.patch('/groups/:groupName/newName', (req, res) => {
   };
   changeGroupName(group).then(() => {
     res.sendStatus(201);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
+});
+
+// PATCH /groups/:groupName/pricePoint to change group price point
+router.patch('/groups/:groupName/pricePoint', (req, res) => {
+  const { groupName } = req.params;
+  // for now, price point must be single integer
+  // what if we wanted to include multiple price points
+  // when is price point set, and by whom?
+  const { newPricePoint } = req.body;
+  const group = {
+    groupName,
+    newPricePoint,
+  };
+  changeGroupPricePoint(group).then(() => {
+    res.sendStatus(201);
   }).catch((error) => {
+    console.log(error);
     res.sendStatus(400);
   });
 });

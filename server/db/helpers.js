@@ -72,6 +72,13 @@ const changeGroupName = (group) => {
   return query(sql, [newName, groupName]);
 };
 
+// allow users to change group price point
+const changeGroupPricePoint = (group) => {
+  const { groupName, newPricePoint } = group;
+  const sql = 'UPDATE groupp SET pricePoint = ? WHERE groupName = ?';
+  return query(sql, [newPricePoint, groupName]);
+};
+
 // toggle group's active state between true and false
 // (when a decision has been initiated or closed)
 const toggleGroupStatus = (group) => {
@@ -101,5 +108,6 @@ module.exports.addUserDietaryRestrictions = addUserDietaryRestrictions;
 module.exports.deleteUserDietaryRestriction = deleteUserDietaryRestriction;
 module.exports.addNewGroup = addNewGroup;
 module.exports.changeGroupName = changeGroupName;
+module.exports.changeGroupPricePoint = changeGroupPricePoint;
 module.exports.addToGroupHistory = addToGroupHistory;
 module.exports.toggleGroupStatus = toggleGroupStatus;
