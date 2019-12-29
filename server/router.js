@@ -6,6 +6,7 @@ const {
   addUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
+  changeGroupName,
   toggleGroupStatus,
   addToGroupHistory,
 } = require('./db/helpers');
@@ -107,9 +108,19 @@ router.post('/groups', (req, res) => {
   });
 });
 
-// PATCH /groups/:group to update group info
-router.patch('/groups/:group', (req, res) => {
-
+// PATCH /groups/:group to change group name
+router.patch('/groups/:groupName/newName', (req, res) => {
+  const { groupName } = req.params;
+  const { newName } = req.body;
+  const group = {
+    groupName,
+    newName,
+  };
+  changeGroupName(group).then(() => {
+    res.sendStatus(201);
+  }).catch((error) => {
+    res.sendStatus(400);
+  });
 });
 
 // POST /locationHistory adds a new place to the grouphistory table

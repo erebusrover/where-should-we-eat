@@ -65,8 +65,14 @@ const addNewGroup = (newGroup) => {
   return query(sql, [groupName, pricePoint, pricePoint]);
 };
 
+// allow users to change group name
+const changeGroupName = (group) => {
+  const { groupName, newName } = group;
+  const sql = 'UPDATE groupp SET groupName = ? WHERE groupName = ?';
+  return query(sql, [newName, groupName]);
+};
 
-// TODO: toggle group's active state between true and false
+// toggle group's active state between true and false
 // (when a decision has been initiated or closed)
 const toggleGroupStatus = (group) => {
   const { id, status } = group;
@@ -94,5 +100,6 @@ module.exports.updateUserStatus = updateUserStatus;
 module.exports.addUserDietaryRestrictions = addUserDietaryRestrictions;
 module.exports.deleteUserDietaryRestriction = deleteUserDietaryRestriction;
 module.exports.addNewGroup = addNewGroup;
+module.exports.changeGroupName = changeGroupName;
 module.exports.addToGroupHistory = addToGroupHistory;
 module.exports.toggleGroupStatus = toggleGroupStatus;
