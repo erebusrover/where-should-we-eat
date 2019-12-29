@@ -20,6 +20,7 @@ const addNewUser = (newUser) => {
   return query(sql);
 };
 
+
 // add dietary restrictions to dietaryRestrictions table
 // once user has selected dietary restrictions within their preferences
 const addUserDietaryRestrictions = (user) => {
@@ -34,7 +35,7 @@ const addUserDietaryRestrictions = (user) => {
 };
 
 
-// TODO: add new group to db
+// add new group to db
 // newGroup arg should look something like:
 // {
 //   groupName,
@@ -48,9 +49,6 @@ const addNewGroup = (newGroup) => {
   return query(sql);
 };
 
-// TODO: obtain user info from db
-
-// TODO: obtain group info from db
 
 // TODO: toggle group's active state between true and false
 // (when a decision has been initiated or closed)
@@ -59,7 +57,22 @@ const toggleGroupStatus = (id, status) => {
   return query(sql);
 };
 
+// add chosen location to grouphistory table
+// TODO: figure out how location is being stored. Are we assigning them ids?
+const addToGroupHistory = (groupName, chosenLocation) => {
+  const sql = `INSERT into grouphistory (groupid, location_id) VALUES 
+    ((SELECT groupid from groupp WHERE groupName = "${groupName}"), "${chosenLocation}")`;
+  return query(sql);
+};
+
+// TODO: add user image/avatar to userImages table
+
+// TODO: obtain user info from db
+
+// TODO: obtain group info from db
+
 module.exports.addNewUser = addNewUser;
 module.exports.addNewGroup = addNewGroup;
 module.exports.addUserDietaryRestrictions = addUserDietaryRestrictions;
+module.exports.addToGroupHistory = addToGroupHistory;
 module.exports.toggleGroupStatus = toggleGroupStatus;
