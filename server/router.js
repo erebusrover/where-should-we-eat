@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { addNewUser, toggleGroupStatus } = require('./db/helpers');
+const { addNewUser, toggleGroupStatus, addUserDietaryRestrictions } = require('./db/helpers');
 const { getRestaurants } = require('./config/yelp');
 const { getUserLocation } = require('./config/google');
 
@@ -28,6 +28,7 @@ router.post('/signup', (req, res) => {
 // GET / renders home page, with info about active groups and sleeping groups
 
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
+// call addUserDietaryRestrictions here
 
 // POST /createGroup adds new group to db
 router.post('/createGroup', (req, res) => {
