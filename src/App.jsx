@@ -12,7 +12,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       view: '',
-      user: null,
+      user: 'Joanna',
       groups: [1, 2, 3, 4, 5],
       dietaryRestriction: null,
       image: null,
@@ -30,15 +30,16 @@ class App extends React.Component {
   HandleViewChange(view) {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` }, () => {
-      console.log(this.state);
-      console.log('done');
     });
   }
 
+
+  //! Being checked with Auth Dec 29
   HandleSignInWithGoogle() {
     axios.get('/api/login')
       .then(console.log('success'))
       .then(this.setState({ user: 'DOT' }))
+      .then(console.log(this.state))
       .catch((err) => {
         console.log('error in handsigninwithgoogle', err);
       // send error back to client
@@ -46,10 +47,18 @@ class App extends React.Component {
   }
 
   HandlePreferenceChange(k, v) {
-    this.setState({ [k]: v }, () => {
-      console.log(this.state);
-    });
+    axios.patch(`/api/users/:${this.state.user}/${k}`, {
+      k: v
+    })
+      .then(
+        this.setState({ [k]: v }))
+      .then(
+        console.log('Yay'))
+      .catch(err => {
+        console.error('error handleprefeerence change', err)
+      })
   }
+      
 
   render() {
     const { view, groups } = this.state;
