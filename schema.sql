@@ -22,7 +22,8 @@ CREATE TABLE user (
 CREATE TABLE dietaryRestrictions(
     user_id int NOT NULL,
     FOREIGN KEY (user_id)
-        REFERENCES user(user_id),
+        REFERENCES user(user_id)
+        ON DELETE CASCADE,
     restriction varchar(100) NOT NULL UNIQUE
 );
 
@@ -42,9 +43,11 @@ CREATE TABLE user_group (
     user_id int NOT NULL,
     groupp_id int NOT NULL,
     FOREIGN KEY (user_id)
-        REFERENCES user(user_id),
+        REFERENCES user(user_id)
+        ON DELETE CASCADE,
     FOREIGN KEY (groupp_id)
-        REFERENCES groupp(groupp_id),
+        REFERENCES groupp(groupp_id)
+        ON DELETE CASCADE,
     PRIMARY KEY (userGroup_id)
 );
 
@@ -53,7 +56,8 @@ CREATE TABLE user_group (
 CREATE TABLE userImages(
     user_id int NOT NULL,
     FOREIGN KEY (user_id)
-        REFERENCES user(user_id),
+        REFERENCES user(user_id)
+        ON DELETE CASCADE,
     image int NOT NULL
 );
 
@@ -63,6 +67,7 @@ CREATE TABLE userImages(
 CREATE TABLE groupHistory (
     groupp_id int NOT NULL,
     FOREIGN KEY (groupp_id)
-        REFERENCES groupp(groupp_id),
+        REFERENCES groupp(groupp_id)
+        ON DELETE CASCADE,
     location_id varchar (50)
 );
