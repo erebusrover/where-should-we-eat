@@ -6,7 +6,8 @@ const {
   deleteUser,
   updateUserStatus,
   updateUserName,
-  addUserDietaryRestrictions,
+  updateUserDietaryRestrictions,
+  updateUserImage,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
@@ -28,17 +29,29 @@ const router = Router();
 // TODO: separate userstatus change from here
 router.post('/users', (req, res) => {
   // get username from req body
-  const { userName, userStatus } = req.body;
-  const newUser = {
+  const {
     userName,
     userStatus,
-  };
-  // use db helper function to add new user to db
-  addNewUser(newUser).then(() => {
-    res.sendStatus(201);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+    restrictions,
+    image,
+  } = req.body;
+  // use db helper function to add new user to db, setting default values for status, diet, image
+  addNewUser(userName)
+    .then(() => {
+      updateUserStatus(userName, userStatus);
+    })
+    .then(() => {
+      updateUserDietaryRestrictions(userName, restrictions);
+    })
+    .then(() => {
+      updateUserImage(userName, image);
+    })
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
 // DELETE /groups/:userName to delete a user from a particular group
@@ -61,16 +74,14 @@ router.delete('/users/:userName', (req, res) => {
   });
 });
 
+// TODO: PATCH /users/:user/image
+
 // PATCH to /users/:username/status to update user status
 router.patch('/users/:userName/status', (req, res) => {
   // get username from params and new status from body
   const { userName } = req.params;
   const { newStatus } = req.body;
-  const user = {
-    userName,
-    newStatus,
-  };
-  updateUserStatus(user).then(() => {
+  updateUserStatus(userName, newStatus).then(() => {
     res.sendStatus(201);
   }).catch(() => {
     res.sendStatus(400);
@@ -82,11 +93,7 @@ router.patch('/users/:userName/newUserName', (req, res) => {
   // get username from params and new username from body
   const { userName } = req.params;
   const { newUserName } = req.body;
-  const user = {
-    userName,
-    newUserName,
-  };
-  updateUserName(user).then(() => {
+  updateUserName(userName, newUserName).then(() => {
     res.sendStatus(201);
   }).catch(() => {
     res.sendStatus(400);
@@ -94,7 +101,7 @@ router.patch('/users/:userName/newUserName', (req, res) => {
 });
 
 // POST to add dietary restrictions for a given user
-router.post('/users/:userName/dietaryRestrictions', (req, res) => {
+router.patch('/users/:userName/dietaryRestrictions', (req, res) => {
   // restrictions must be an array
   const { restrictions } = req.body;
   const { userName } = req.params;
@@ -102,7 +109,7 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
     userName,
     restrictions,
   };
-  addUserDietaryRestrictions(user).then(() => {
+  updateUserDietaryRestrictions(user).then(() => {
     res.sendStatus(201);
   }).catch(() => {
     res.sendStatus(400);

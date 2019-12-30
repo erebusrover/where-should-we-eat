@@ -13,22 +13,19 @@ const query = util.promisify(connection.query).bind(connection);
 //   userName,
 //   userStatus
 // }
-const addNewUser = (newUser) => {
-  const { userName, userStatus } = newUser;
-  const sql = `INSERT into user (userName, userStatus) VALUES (?, ?)
-                ON DUPLICATE KEY UPDATE userStatus = ?`;
-  return query(sql, [userName, userStatus, userStatus]);
+const addNewUser = (userName) => {
+  const sql = `INSERT into user (userName) VALUES (?)
+                ON DUPLICATE KEY UPDATE userName = ?`;
+  return query(sql, [userName, userName]);
 };
 
 // TODO: change user status
-const updateUserStatus = (user) => {
-  const { userName, newStatus } = user;
+const updateUserStatus = (userName, newStatus) => {
   const sql = 'UPDATE user SET userStatus=? WHERE userName=?';
   return query(sql, [newStatus, userName]);
 };
 
-const updateUserName = (user) => {
-  const { userName, newUserName } = user;
+const updateUserName = (userName, newUserName) => {
   const sql = 'UPDATE user SET userName=? WHERE userName=?';
   return query(sql, [newUserName, userName]);
 };
@@ -49,9 +46,8 @@ const deleteUser = (userName) => {
 
 // BUG/TODO: currently cannot have multiple users with the same restriction
 // add dietary restrictions to dietaryRestrictions table
-const addUserDietaryRestrictions = (user) => {
-  // dietaryRestrictions should be an array
-  const { userName, restrictions } = user;
+const updateUserDietaryRestrictions = (userName, restrictions) => {
+  // restrictions should be an array
   // for each dietary restriction, add it to table with id of user
   return Promise.all(restrictions.map((restriction) => {
     const sql = `INSERT into dietaryRestrictions (user_id, restriction) 
@@ -168,7 +164,7 @@ module.exports = {
   deleteUser,
   updateUserStatus,
   updateUserName,
-  addUserDietaryRestrictions,
+  updateUserDietaryRestrictions,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
