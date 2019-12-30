@@ -6,8 +6,8 @@ passport.use(
   new GoogleStrategy([
     // options for google strategy
     // Rethink this callback URI to make with work with Single Page App
-    clientID: keys.google.clientID,
-    clientSecret: keys.google.clientSecret,
+    clientID: keys.googleAuth.clientID,
+    clientSecret: keys.googleAuth.clientSecret,
     callbackURL: 'http://localhost'
   ], (accessToken, refreshToken, profile, email, openid, done) => {
     // passport callback function

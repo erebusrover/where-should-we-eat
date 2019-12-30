@@ -1,11 +1,10 @@
 
 import React from 'react';
-
-// import Button from '@material-ui/core/Button';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx';
 import Home from './Home.jsx';
+import CreateGroup from './CreateGroup.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,9 +12,16 @@ class App extends React.Component {
     this.state = {
       view: '',
       groups: [1, 2, 3, 4, 5],
+      dietaryRestriction: null,
+      image: null,
+      group: {
+        groupName: null,
+        pricePoint: '',
+      },
     };
 
     this.HandleViewChange = this.HandleViewChange.bind(this);
+    this.HandlePreferenceChange = this.HandlePreferenceChange.bind(this);
   }
 
   HandleViewChange(view) {
@@ -26,21 +32,29 @@ class App extends React.Component {
     });
   }
 
+  HandlePreferenceChange(k, v) {
+    this.setState({ [k]: v }, () => {
+      console.log(this.state);
+    });
+  }
 
   render() {
     const { view, groups } = this.state;
+    const { HandlePreferenceChange, HandleViewChange } = this;
     let View;
     if (view === '/login') {
       View = <SignIn />;
     } else if (view === '/profile') {
-      View = <Preferences />;
+      View = <Preferences PreferenceChange={HandlePreferenceChange}/>;
+    } else if (view === '/createGroup') {
+      View = <CreateGroup HandleViewChange={HandleViewChange}/>;
     } else {
       View = <Home groups={groups}/>;
     }
 
     return (
             <div>
-                <Header HandleViewChange={this.HandleViewChange} />
+                <Header HandleViewChange={HandleViewChange} />
                 {View}
         </div>
 
