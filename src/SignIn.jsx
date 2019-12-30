@@ -2,11 +2,14 @@ import React from 'react';
 
 import Button from '@material-ui/core/Button';
 
-const SignIn = () => (
+const SignIn = (props) => {
+  const { HandleSignInWithGoogle } = props;
 
-    <Button color="inherit">Sign In With Google</Button>
-    
-);
-  
+  return (
+        <Button color="inherit" onClick={HandleSignInWithGoogle} >Sign In With Google</Button>
+
+  );
+};
+
 
 export default SignIn;
