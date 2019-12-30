@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 
 const CreateGroup = (props) => {
-  const { HandleViewChange, HandleNewGroupName } = props;
+  const { HandleViewChange, HandleNewGroupName, HandleNewGroupPricePoint } = props;
   return (
       <div>
           <br />
@@ -16,10 +16,10 @@ const CreateGroup = (props) => {
           </form>
              <h3> Select a Price </h3>
         <RadioGroup aria-label="dietary restriction" name="dietary restriction">
-          <FormControlLabel value="$" control={<Radio />} label="$" />
-          <FormControlLabel value="$$" control={<Radio />} label="$$" />
-          <FormControlLabel value="$$$" control={<Radio />} label="$$$" />
-          <FormControlLabel value="$$$$" control={<Radio />} label="$$$$" />
+          <FormControlLabel value="$" control={<Radio />} label="$" onClick={() => HandleNewGroupPricePoint( '$')} />
+          <FormControlLabel value="$$" control={<Radio />} label="$$" onClick={() => HandleNewGroupPricePoint( '$$')}  />
+          <FormControlLabel value="$$$" control={<Radio />} label="$$$" onClick={() => HandleNewGroupPricePoint( '$$$')} />
+          <FormControlLabel value="$$$$" control={<Radio />} label="$$$$" onClick={() => HandleNewGroupPricePoint( '$$$$')} />
         </RadioGroup>
         {/* //! user needs feedback on submit */}
         <Button color="inherit" value='profile' onClick={() => { HandleViewChange('home'); }}>Submit</Button>

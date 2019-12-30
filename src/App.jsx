@@ -28,6 +28,7 @@ class App extends React.Component {
     this.HandlePreferenceChange = this.HandlePreferenceChange.bind(this);
     this.HandleSignInWithGoogle = this.HandleSignInWithGoogle.bind(this);
     this.HandleNewGroupName = this.HandleNewGroupName.bind(this);
+    this.HandleNewGroupPricePoint = this.HandleNewGroupPricePoint.bind(this);
   }
 
   HandleViewChange(view) {
@@ -63,6 +64,16 @@ class App extends React.Component {
       });
   }
 
+  HandleNewGroupPricePoint(newPricePoint) {
+    this.setState({
+      group: {
+        groupName: this.state.group.groupName,
+        pricePoint: newPricePoint,
+      },
+    });
+    console.log(this.state);
+  }
+
   HandleNewGroupName(e) {
     this.setState({
       group: {
@@ -76,7 +87,7 @@ class App extends React.Component {
   render() {
     const { view, groups } = this.state;
     const {
-      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName,
+      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint,
     } = this;
     let View;
     if (view === '/login') {
@@ -84,7 +95,12 @@ class App extends React.Component {
     } else if (view === '/profile') {
       View = <Preferences PreferenceChange={HandlePreferenceChange}/>;
     } else if (view === '/createGroup') {
-      View = <CreateGroup HandleViewChange={HandleViewChange} HandleNewGroupName={HandleNewGroupName}/>;
+      View = <CreateGroup
+      HandleViewChange={HandleViewChange}
+      HandleNewGroupName={HandleNewGroupName}
+      HandlePreferenceChange={HandlePreferenceChange}
+      HandleNewGroupPricePoint={HandleNewGroupPricePoint}
+      />;
     } else {
       View = <Home groups={groups}/>;
     }
