@@ -5,6 +5,7 @@ const {
   deleteUserFromGroup,
   deleteUser,
   updateUserStatus,
+  updateUserName,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
@@ -76,13 +77,20 @@ router.patch('/users/:userName/status', (req, res) => {
   });
 });
 
-// PATCH to /users/:userName/newUserName to update username?
-// not sure if this is necessary/desirable functionality
+// PATCH to /users/:userName/newUserName to update username
 router.patch('/users/:userName/newUserName', (req, res) => {
   // get username from params and new username from body
   const { userName } = req.params;
   const { newUserName } = req.body;
-  
+  const user = {
+    userName,
+    newUserName,
+  };
+  updateUserName(user).then(() => {
+    res.sendStatus(201);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
 });
 
 // POST to add dietary restrictions for a given user

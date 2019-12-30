@@ -27,6 +27,12 @@ const updateUserStatus = (user) => {
   return query(sql, [newStatus, userName]);
 };
 
+const updateUserName = (user) => {
+  const { userName, newUserName } = user;
+  const sql = 'UPDATE user SET userName=? WHERE userName=?';
+  return query(sql, [newUserName, userName]);
+};
+
 // delete user from a group
 const deleteUserFromGroup = (userName, groupName) => {
   const sql = `DELETE FROM user_group 
@@ -34,13 +40,6 @@ const deleteUserFromGroup = (userName, groupName) => {
                 AND groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
   return query(sql, [userName, groupName]);
 };
-
-// // delete user from all groups
-// const deleteUserFromAllGroups = (userName) => {
-//   const sql = `DELETE FROM user_group
-//                 WHERE user_id = (SELECT user_id FROM user WHERE userName = ?)`;
-//   return query(sql, [userName]);
-// };
 
 // delete user from user table
 const deleteUser = (userName) => {
@@ -93,7 +92,7 @@ const addNewGroup = (newGroup) => {
   return query(sql, [groupName, pricePoint, pricePoint]);
 };
 
-// add users and group to join table?
+// add users and group to join table
 const addUserToGroup = (userName, groupName) => {
   const sql = `INSERT into user_group (user_id, groupp_id) VALUES 
                 ((SELECT user_id FROM user WHERE userName = ?), (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
@@ -168,6 +167,7 @@ module.exports = {
   deleteUserFromGroup,
   deleteUser,
   updateUserStatus,
+  updateUserName,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
