@@ -112,6 +112,7 @@ router.patch('/users/:userName/image', (req, res) => {
 });
 
 // POST to add dietary restrictions for a given user
+// BUG: currently does not account for dupliaces
 router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   // restrictions must be an array
   const { restrictions } = req.body;
@@ -120,7 +121,7 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
     .then(() => {
       res.sendStatus(201);
     })
-    .catch(() => {
+    .catch((err) => {
       res.sendStatus(400);
     });
 });
@@ -210,8 +211,7 @@ router.get('/groups/:groupName/users', (req, res) => {
       res.status(200);
       res.send(response);
     })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
       res.send(400);
     });
 });
@@ -224,8 +224,7 @@ router.get('/users/:userName/groups', (req, res) => {
       res.status(200);
       res.send(response);
     })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
       res.send(400);
     });
 });
@@ -233,11 +232,27 @@ router.get('/users/:userName/groups', (req, res) => {
 // get all active groups for a given user
 router.get('/groups/:userName/groups/active', (req, res) => {
   const { userName } = req.params;
+  getAllActiveUserGroups(userName)
+    .then((response) => {
+      res.status(200);
+      res.send(response);
+    })
+    .catch(() => {
+      res.send(400);
+    });
 });
 
 // get all inactive groups for a given user
 router.get('/groups/:userName/groups/inactive', (req, res) => {
   const { userName } = req.params;
+  getAllInactiveUserGroups(userName)
+    .then((response) => {
+      res.status(200);
+      res.send(response);
+    })
+    .catch(() => {
+      res.send(400);
+    });
 });
 
 // DELETE /groups/:userName to delete a user from a particular group

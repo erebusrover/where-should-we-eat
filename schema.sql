@@ -24,7 +24,7 @@ CREATE TABLE dietaryRestrictions(
     FOREIGN KEY (user_id)
         REFERENCES user(user_id)
         ON DELETE CASCADE,
-    restriction varchar(100) NOT NULL UNIQUE
+    restriction varchar(100) NOT NULL
 );
 
 -- choice column should probably reference location id from api varchar is placeholder

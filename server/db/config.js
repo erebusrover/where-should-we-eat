@@ -1,3 +1,4 @@
+
 const mysql = require('mysql');
 const dotenv = require('dotenv');
 // const SSL = require('../../BaltimoreCyberTrustRoot.crt.pem');
@@ -37,3 +38,4 @@ connection.connect((err) => {
 });
 
 module.exports.connection = connection;
+
