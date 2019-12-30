@@ -12,8 +12,6 @@ const {
   changeGroupName,
   changeGroupPricePoint,
   deleteGroup,
-  deleteGroupFromUserGroupJoinTable,
-  deleteGroupFromGroupHistory,
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,
@@ -25,6 +23,7 @@ const { getUserLocation } = require('./config/google');
 const router = Router();
 
 // POST to /users to add user to db --> how will google auth be involved in this?
+// TODO: separate userstatus change from here
 router.post('/users', (req, res) => {
   // get username from req body
   const { userName, userStatus } = req.body;
@@ -46,7 +45,6 @@ router.delete('/user_group/', (req, res) => {
   deleteUserFromGroup(userName, groupName).then(() => {
     res.send(200);
   }).catch((error) => {
-    console.log(error);
     res.send(400);
   });
 });
@@ -54,6 +52,9 @@ router.delete('/user_group/', (req, res) => {
 // DELETE /users/:username to delete a user account from db
 router.delete('users/:userName', (req, res) => {
   const { userName } = req.params;
+  deleteUserFromGroup(userName).then(() => {
+    
+  })
 });
 
 // PATCH to /users/:username/status to update user status

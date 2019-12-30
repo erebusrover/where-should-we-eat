@@ -35,7 +35,18 @@ const deleteUserFromGroup = (userName, groupName) => {
   return query(sql, [userName, groupName]);
 };
 
-// delete user from db
+// // delete user from all groups
+// const deleteUserFromAllGroups = (userName) => {
+//   const sql = `DELETE FROM user_group
+//                 WHERE user_id = (SELECT user_id FROM user WHERE userName = ?)`;
+//   return query(sql, [userName]);
+// };
+
+// delete user from user table
+const deleteUser = (userName) => {
+  const sql = 'DELETE FROM user WHERE userName = ?';
+  return query(sql, [userName]);
+};
 
 // BUG/TODO: currently cannot have multiple users with the same restriction
 // add dietary restrictions to dietaryRestrictions table
@@ -111,18 +122,18 @@ const toggleGroupStatus = (group) => {
   return query(sql, [status, id]);
 };
 
-// delete a group from join table
-const deleteGroupFromUserGroupJoinTable = (groupName) => {
-  const sql = `DELETE FROM user_group 
-                WHERE groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
-  return query(sql, [groupName]);
-};
+// // delete a group from join table
+// const deleteGroupFromUserGroupJoinTable = (groupName) => {
+//   const sql = `DELETE FROM user_group 
+//                 WHERE groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
+//   return query(sql, [groupName]);
+// };
 
-const deleteGroupFromGroupHistory = (groupName) => {
-  const sql = `DELETE FROM groupHistory
-                WHERE groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
-  return query(sql, [groupName]);
-};
+// const deleteGroupFromGroupHistory = (groupName) => {
+//   const sql = `DELETE FROM groupHistory
+//                 WHERE groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
+//   return query(sql, [groupName]);
+// };
 
 // delete a group from groupp table
 const deleteGroup = (groupName) => {
@@ -155,6 +166,8 @@ const getGroupHistory = (groupName) => {
 module.exports = {
   addNewUser,
   deleteUserFromGroup,
+  // deleteUserFromAllGroups,
+  deleteUser,
   updateUserStatus,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
@@ -164,8 +177,8 @@ module.exports = {
   changeGroupName,
   changeGroupPricePoint,
   deleteGroup,
-  deleteGroupFromUserGroupJoinTable,
-  deleteGroupFromGroupHistory,
+  // deleteGroupFromUserGroupJoinTable,
+  // deleteGroupFromGroupHistory,
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,
