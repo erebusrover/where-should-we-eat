@@ -114,12 +114,18 @@ const getAllUserGroups = (userName) => {
 
 // get all active groups for a given user
 const getAllActiveUserGroups = (userName) => {
-
+  const sql = `SELECT * FROM groupp WHERE active = true AND groupp_id IN  
+                (SELECT groupp_id FROM user_group WHERE user_id IN 
+                  (SELECT user_id FROM user WHERE userName = ?))`;
+  return query(sql, [userName]);
 };
 
 // get all inactive groups for a given user
 const getAllInactiveUserGroups = (userName) => {
-
+  const sql = `SELECT * FROM groupp WHERE active = false AND groupp_id IN  
+                (SELECT groupp_id FROM user_group WHERE user_id IN 
+                  (SELECT user_id FROM user WHERE userName = ?))`;
+  return query(sql, [userName]);
 };
 
 // allow users to change group name
