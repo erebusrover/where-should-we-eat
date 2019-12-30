@@ -28,10 +28,11 @@ const updateUserStatus = (user) => {
 };
 
 // delete user from a group
-const deleteUserFromGroup = (userName) => {
+const deleteUserFromGroup = (userName, groupName) => {
   const sql = `DELETE FROM user_group 
-                WHERE user_id = (SELECT user_id from user WHERE userName = ?)`;
-  return query(sql, [userName]);
+                WHERE user_id = (SELECT user_id FROM user WHERE userName = ?)
+                AND groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
+  return query(sql, [userName, groupName]);
 };
 
 // delete user from db

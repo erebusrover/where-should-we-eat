@@ -40,20 +40,20 @@ router.post('/users', (req, res) => {
   });
 });
 
-// TODO: FIX!!!
 // DELETE /groups/:userName to delete a user from a particular group
-router.delete('/groups/:userName', (req, res) => {
-  const { userName } = req.params;
-  deleteUserFromGroup(userName).then(() => {
+router.delete('/user_group/', (req, res) => {
+  const { userName, groupName } = req.body;
+  deleteUserFromGroup(userName, groupName).then(() => {
     res.send(200);
-  }).catch(() => {
+  }).catch((error) => {
+    console.log(error);
     res.send(400);
   });
 });
 
 // DELETE /users/:username to delete a user account from db
 router.delete('users/:userName', (req, res) => {
-
+  const { userName } = req.params;
 });
 
 // PATCH to /users/:username/status to update user status
