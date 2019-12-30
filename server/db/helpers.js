@@ -1,6 +1,7 @@
 // database connection and helper functions
 const mysql = require('mysql');
 const util = require('util');
+const dotenv = require('dotenv');
 const mysqlConfig = require('./config.js');
 
 const connection = mysql.createConnection(mysqlConfig);
