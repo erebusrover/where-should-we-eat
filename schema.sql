@@ -33,7 +33,7 @@ CREATE TABLE groupp(
     groupName varchar(50) NOT NULL UNIQUE,
     active boolean NOT NULL,
     choice varchar(50),
-    pricePoint int NOT NULL,
+    pricePoint varchar(20) NOT NULL,
     PRIMARY KEY (groupp_id)
 );
 
