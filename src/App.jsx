@@ -9,6 +9,7 @@ import Header from './Header.jsx';
 import Home from './Home.jsx';
 import CreateGroup from './CreateGroup.jsx';
 import UserSettings from './UserSettings.jsx';
+import Group from './Group.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class App extends React.Component {
       group: {
         groupName: null,
         pricePoint: '',
+        members: [],
       },
     };
 
@@ -36,8 +38,7 @@ class App extends React.Component {
 
   HandleViewChange(view) {
     console.log(`${view} button clicked`);
-    this.setState({ view: `/${view}` }, () => {
-    });
+    this.setState({ view: `/${view}` });
   }
 
   HandleSignInWithGoogle() {
@@ -52,8 +53,9 @@ class App extends React.Component {
       });
   }
 
-
-
+  hideToDo() {
+    const hi = this;
+  // wrapping to do in function so I can hide them and they do not stress me out
   // TODO add user to group axios.post(/user_group)
   // TODO get all members from given group axios.get(/groups/:groupName/users)
   // TODO get all groups from given user axios.get(/groups/:userName/groups)
@@ -68,6 +70,8 @@ class App extends React.Component {
   // TODO create button to reset dietary restrictions axios.delete(/users/:usesrName/dietaryRestriction)
   // TODO delete group axios.delete('/groups)
   // TODO create button and write funciton to delete useraccount from db axios.delete(/users/:userName)
+  }
+
   HandleUserSettings(k, v) {
     axios.post(`/api/users/:${this.state.user}/${k}`, {
       k: v,
@@ -81,6 +85,23 @@ class App extends React.Component {
         console.error('error handleprefeerence change', err);
       });
     // TODO send error to client
+  }
+
+  GetGroupMembers(group) {
+    const groupMembers = [];
+    axios.get(`/api/groups/:${group}/users`)
+      .then((members) => {
+        members.map((member) => {
+          groupMembers.push(member);
+        });
+      })
+      .then(this.setState({
+        group: {
+          groupName: this.state.group.groupName,
+          pricePoint: this.state.group.pricePoint,
+          members: groupMembers,
+        },
+      }));
   }
 
   HandlePreferenceChange(k, v) {
@@ -104,6 +125,7 @@ class App extends React.Component {
       group: {
         groupName: this.state.group.groupName,
         pricePoint: newPricePoint,
+        members: this.state.group.members,
       },
     });
     console.log(this.state);
@@ -127,13 +149,16 @@ class App extends React.Component {
       group: {
         groupName: e.target.value,
         pricePoint: this.state.group.pricePoint,
+        members: this.state.group.members,
       },
     });
   }
 
 
   render() {
-    const { view, groups } = this.state;
+    const {
+      view, groups, group, members,
+    } = this.state;
     const {
       HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
     } = this;
@@ -152,8 +177,10 @@ class App extends React.Component {
       />;
     } else if (view === '/userSetting') {
       View = <UserSettings HandleUserSettings={HandleUserSettings}/>;
+    } else if (view === '/group') {
+      View = <Group group={group} groupMembers={members}/>;
     } else {
-      View = <Home groups={groups}/>;
+      View = <Home groups={groups} HandleViewChange={HandleViewChange}/>;
     }
 
     return (
