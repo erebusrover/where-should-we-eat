@@ -8,10 +8,10 @@ const connection = mysql.createConnection(mysqlConfig);
 const query = util.promisify(connection.query).bind(connection);
 
 // add new user to db
-const addNewUser = (userName, userStatus) => {
-  const sql = `INSERT into user (userName, status) VALUES (?, ?)
+const addNewUser = (userName) => {
+  const sql = `INSERT into user (userName) VALUES (?)
                 ON DUPLICATE KEY UPDATE userName = ?`;
-  return query(sql, [userName, userStatus, userName]);
+  return query(sql, [userName, userName]);
 };
 
 // allow user to change their username
@@ -123,19 +123,6 @@ const toggleGroupStatus = (group) => {
   const sql = 'UPDATE groupp SET active=? WHERE id=?';
   return query(sql, [status, id]);
 };
-
-// // delete a group from join table
-// const deleteGroupFromUserGroupJoinTable = (groupName) => {
-//   const sql = `DELETE FROM user_group 
-//                 WHERE groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
-//   return query(sql, [groupName]);
-// };
-
-// const deleteGroupFromGroupHistory = (groupName) => {
-//   const sql = `DELETE FROM groupHistory
-//                 WHERE groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
-//   return query(sql, [groupName]);
-// };
 
 // delete a group from groupp table
 const deleteGroup = (groupName) => {
