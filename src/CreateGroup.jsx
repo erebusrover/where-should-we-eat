@@ -8,6 +8,8 @@ const CreateGroup = (props) => {
   const { HandleViewChange } = props;
   return (
       <div>
+          <br />
+          <h1>Group Name</h1>
           <input type='text'></input>
              <h3> Select a Price </h3>
         <RadioGroup aria-label="dietary restriction" name="dietary restriction">
