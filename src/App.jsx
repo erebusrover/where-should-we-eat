@@ -40,7 +40,7 @@ class App extends React.Component {
       .then(console.log('success'))
       .then(this.setState({ user: 'DOT' }))
       .catch((err) => {
-        console.log('error in handsigninwithgoogle', err);
+        console.log('error handling signin with google', err);
       // send error back to client
       });
   }
