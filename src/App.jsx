@@ -1,4 +1,6 @@
-
+//! dot you are working on the on change function for the group name input there seem
+//! to be a problem with event.target.value, event is undefined
+//! need to figure out what react magic you want
 import React from 'react';
 import axios from 'axios';
 import Preferences from './Preferences.jsx';
@@ -12,9 +14,9 @@ class App extends React.Component {
     super(props);
     this.state = {
       view: '',
-      user: 'Joanna',
+      user: 'newUser',
       groups: [1, 2, 3, 4, 5],
-      dietaryRestriction: null,
+      dietaryRestriction: 'none',
       image: null,
       group: {
         groupName: null,
@@ -25,6 +27,9 @@ class App extends React.Component {
     this.HandleViewChange = this.HandleViewChange.bind(this);
     this.HandlePreferenceChange = this.HandlePreferenceChange.bind(this);
     this.HandleSignInWithGoogle = this.HandleSignInWithGoogle.bind(this);
+    this.HandleNewGroupName = this.HandleNewGroupName.bind(this);
+    this.HandleNewGroupPricePoint = this.HandleNewGroupPricePoint.bind(this);
+    this.HandleNewGroupSubmit = this.HandleNewGroupSubmit.bind(this);
   }
 
   HandleViewChange(view) {
@@ -33,9 +38,8 @@ class App extends React.Component {
     });
   }
 
-
-  //! Being checked with Auth Dec 29
   HandleSignInWithGoogle() {
+    //! Being checked with Auth Dec 29
     axios.get('/api/login')
       .then(console.log('success'))
       .then(this.setState({ user: 'DOT' }))
@@ -48,28 +52,69 @@ class App extends React.Component {
 
   HandlePreferenceChange(k, v) {
     axios.patch(`/api/users/:${this.state.user}/${k}`, {
-      k: v
+      k: v,
     })
       .then(
-        this.setState({ [k]: v }))
+        this.setState({ [k]: v }),
+      )
       .then(
-        console.log('Yay'))
-      .catch(err => {
-        console.error('error handleprefeerence change', err)
-      })
+        console.log('Yay'),
+      )
+      .catch((err) => {
+        console.error('error handleprefeerence change', err);
+      });
   }
-      
+
+  HandleNewGroupPricePoint(newPricePoint) {
+    this.setState({
+      group: {
+        groupName: this.state.group.groupName,
+        pricePoint: newPricePoint,
+      },
+    });
+    console.log(this.state);
+  }
+
+  HandleNewGroupSubmit() {
+    const { groupName, pricePoint } = this.state.group;
+    axios.post('/api/groups', {
+      groupName,
+      pricePoint,
+      userName: this.state.user,
+    })
+      .catch((err) => {
+        console.error('submiterr', err);
+      });
+  }
+
+  HandleNewGroupName(e) {
+    this.setState({
+      group: {
+        groupName: e.target.value,
+        pricePoint: this.state.group.pricePoint,
+      },
+    });
+  }
+
 
   render() {
     const { view, groups } = this.state;
-    const { HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle } = this;
+    const {
+      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit
+    } = this;
     let View;
     if (view === '/login') {
       View = <SignIn HandleSignInWithGoogle={HandleSignInWithGoogle}/>;
     } else if (view === '/profile') {
       View = <Preferences PreferenceChange={HandlePreferenceChange}/>;
     } else if (view === '/createGroup') {
-      View = <CreateGroup HandleViewChange={HandleViewChange}/>;
+      View = <CreateGroup
+      HandleViewChange={HandleViewChange}
+      HandleNewGroupName={HandleNewGroupName}
+      HandlePreferenceChange={HandlePreferenceChange}
+      HandleNewGroupPricePoint={HandleNewGroupPricePoint}
+      HandleNewGroupSubmit={HandleNewGroupSubmit}
+      />;
     } else {
       View = <Home groups={groups}/>;
     }
