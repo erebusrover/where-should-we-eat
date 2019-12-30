@@ -54,7 +54,7 @@ class App extends React.Component {
   }
 
   hideToDo() {
-    const hi = this;
+    const hide = this;
   // wrapping to do in function so I can hide them and they do not stress me out
   // TODO add user to group axios.post(/user_group)
   // TODO get all members from given group axios.get(/groups/:groupName/users)
