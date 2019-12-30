@@ -3,19 +3,20 @@ const { Router } = require('express');
 const {
   addNewUser,
   deleteUser,
+  updateUserName,
+  addUserStatus,
   updateUserStatus,
-  addUserDietaryRestrictions,
-  updateUserDietaryRestrictions,
   addUserImage,
   updateUserImage,
+  addUserDietaryRestrictions,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
-  changeGroupName,
-  changeGroupPricePoint,
+  deleteGroup,
   addUserToGroup,
   deleteUserFromGroup,
-  deleteGroup,
+  changeGroupName,
+  changeGroupPricePoint,
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,
@@ -30,20 +31,9 @@ const router = Router();
 // TODO: separate userstatus change from here
 router.post('/users', (req, res) => {
   // get username from req body
-  const {
-    userName,
-    userStatus,
-    restrictions,
-    image,
-  } = req.body;
+  const { userName } = req.body;
   // use db helper function to add new user to db, setting default values for status, diet, image
-  addNewUser(userName, userStatus)
-    .then(() => {
-      addUserDietaryRestrictions(userName, restrictions);
-    })
-    .then(() => {
-      addUserImage(userName, image);
-    })
+  addNewUser(userName)
     .then(() => {
       res.sendStatus(201);
     })
@@ -51,7 +41,6 @@ router.post('/users', (req, res) => {
       res.sendStatus(400);
     });
 });
-
 
 // DELETE /users/:username to delete a user account from db
 router.delete('/users/:userName', (req, res) => {
@@ -79,12 +68,36 @@ router.patch('/users/:userName/userName', (req, res) => {
     });
 });
 
+// POST to /users/:username/status to add user status
+router.post('/users/:userName/status', (req, res) => {
+  const { userName } = req.params;
+  const { status } = req.body;
+  addUserStatus(userName, status)
+    .then(() => {
+      res.sendStatus(201);
+    }).catch(() => {
+      res.sendStatus(400);
+    });
+});
+
 // PATCH to /users/:username/status to update user status
 router.patch('/users/:userName/status', (req, res) => {
-  // get username from params and new status from body
   const { userName } = req.params;
   const { newStatus } = req.body;
   updateUserStatus(userName, newStatus)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
+
+// POST to /users/:user/image
+router.post('/users/:userName/image', (req, res) => {
+  const { userName } = req.params;
+  const { image } = req.body;
+  addUserImage(userName, image)
     .then(() => {
       res.sendStatus(201);
     })
@@ -106,13 +119,12 @@ router.patch('/users/:userName/image', (req, res) => {
     });
 });
 
-
 // POST to add dietary restrictions for a given user
-router.patch('/users/:userName/dietaryRestrictions', (req, res) => {
+router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   // restrictions must be an array
   const { restrictions } = req.body;
   const { userName } = req.params;
-  updateUserDietaryRestrictions(userName, restrictions)
+  addUserDietaryRestrictions(userName, restrictions)
     .then(() => {
       res.sendStatus(201);
     })
@@ -163,6 +175,7 @@ router.post('/groups', (req, res) => {
     // use db helper function to add new group to db
   addNewGroup(newGroup)
     .then(() => {
+      // add user who created group to group
       addUserToGroup(userName, groupName);
     })
     .then(() => {
@@ -179,13 +192,12 @@ router.delete('/groups', (req, res) => {
   deleteGroup(groupName)
     .then(() => {
       res.send(200);
-    }).catch((error) => {
-      console.log(error);
+    }).catch(() => {
       res.send(400);
     });
 });
 
-// POST /user_group ad_ds a user to a particular group
+// POST /user_group adds a user to a particular group
 // by adding fields to user_group table
 // to indicate which users belong to which group
 router.post('/user_group', (req, res) => {
@@ -194,8 +206,7 @@ router.post('/user_group', (req, res) => {
     .then(() => {
       res.send(201);
     })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
       res.send(400);
     });
 });
