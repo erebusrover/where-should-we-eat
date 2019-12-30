@@ -14,6 +14,10 @@ class App extends React.Component {
       groups: [1, 2, 3, 4, 5],
       dietaryRestriction: null,
       image: null,
+      group: {
+        groupName: null,
+        pricePoint: '',
+      },
     };
 
     this.HandleViewChange = this.HandleViewChange.bind(this);
