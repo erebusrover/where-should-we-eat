@@ -4,7 +4,6 @@ const {
   addNewUser,
   deleteUser,
   updateUserName,
-  addUserStatus,
   updateUserStatus,
   addUserImage,
   updateUserImage,
@@ -42,17 +41,6 @@ router.post('/users', (req, res) => {
     });
 });
 
-// DELETE /users/:username to delete a user account from db
-router.delete('/users/:userName', (req, res) => {
-  const { userName } = req.params;
-  deleteUser(userName)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch(() => {
-      res.sendStatus(400);
-    });
-});
 
 // PATCH to /users/:userName/newUserName to update username
 router.patch('/users/:userName/userName', (req, res) => {
@@ -68,14 +56,14 @@ router.patch('/users/:userName/userName', (req, res) => {
     });
 });
 
-// POST to /users/:username/status to add user status
-router.post('/users/:userName/status', (req, res) => {
+// DELETE /users/:username to delete a user account from db
+router.delete('/users/:userName', (req, res) => {
   const { userName } = req.params;
-  const { status } = req.body;
-  addUserStatus(userName, status)
+  deleteUser(userName)
     .then(() => {
-      res.sendStatus(201);
-    }).catch(() => {
+      res.sendStatus(200);
+    })
+    .catch(() => {
       res.sendStatus(400);
     });
 });

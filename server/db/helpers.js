@@ -20,13 +20,7 @@ const updateUserName = (userName, newUserName) => {
   return query(sql, [newUserName, userName]);
 };
 
-// add user status
-const addUserStatus = (userName, status) => {
-  const sql = 'INSERT into user (status) VALUES (?) WHERE userName = ?';
-  return query(sql, [status, userName]);
-};
-
-// change user status
+// update user status
 const updateUserStatus = (userName, newStatus) => {
   const sql = 'UPDATE user SET userStatus = ? WHERE userName = ?';
   return query(sql, [newStatus, userName]);
@@ -154,7 +148,6 @@ const getGroupHistory = (groupName) => {
 
 module.exports = {
   addNewUser,
-  addUserStatus,
   updateUserName,
   updateUserStatus,
   addUserImage,
