@@ -112,6 +112,7 @@ router.patch('/users/:userName/image', (req, res) => {
 });
 
 // POST to add dietary restrictions for a given user
+// BUG: currently does not account for dupliaces
 router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   // restrictions must be an array
   const { restrictions } = req.body;
@@ -120,7 +121,7 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
     .then(() => {
       res.sendStatus(201);
     })
-    .catch(() => {
+    .catch((err) => {
       res.sendStatus(400);
     });
 });
