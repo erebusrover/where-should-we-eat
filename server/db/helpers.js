@@ -173,7 +173,6 @@ module.exports = {
   addUserImage,
   updateUserImage,
   addUserDietaryRestrictions,
-  updateUserDietaryRestrictions,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   deleteUserFromGroup,
