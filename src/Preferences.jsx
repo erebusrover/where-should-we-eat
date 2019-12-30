@@ -24,7 +24,8 @@ const Preferences = (props) => {
           <FormControlLabel value="Halal" control={<Radio />} label="Halal" onClick={() => PreferenceChange('dietaryRestriction', 'Halal')} />
           <FormControlLabel value="None" control={<Radio />} label="None" onClick={() => PreferenceChange('dietaryRestriction', 'None')}/>
         </RadioGroup>
-     
+      <h1>Status</h1>
+      <input type='text'/>
       </ul>
       <Button variant="contained" color="primary">Submit</Button>
     </div>
