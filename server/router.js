@@ -4,7 +4,6 @@ const {
   addNewUser,
   deleteUser,
   updateUserStatus,
-  updateUserName,
   addUserDietaryRestrictions,
   updateUserDietaryRestrictions,
   addUserImage,
