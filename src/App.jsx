@@ -11,9 +11,12 @@ class App extends React.Component {
     this.state = {
       view: '',
       groups: [1, 2, 3, 4, 5],
+      dietaryRestriction: null,
+      image: null,
     };
 
     this.HandleViewChange = this.HandleViewChange.bind(this);
+    this.HandlePreferenceChange = this.HandlePreferenceChange.bind(this);
   }
 
   HandleViewChange(view) {
@@ -24,14 +27,21 @@ class App extends React.Component {
     });
   }
 
+  HandlePreferenceChange(k, v) {
+   
+    this.setState({ [k]: v }, () => {
+      console.log(this.state);
+    });
+  }
 
   render() {
     const { view, groups } = this.state;
+    const { HandlePreferenceChange } = this;
     let View;
     if (view === '/login') {
       View = <SignIn />;
     } else if (view === '/profile') {
-      View = <Preferences />;
+      View = <Preferences PreferenceChange={HandlePreferenceChange}/>;
     } else {
       View = <Home groups={groups}/>;
     }
