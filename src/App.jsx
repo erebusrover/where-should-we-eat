@@ -41,7 +41,7 @@ class App extends React.Component {
   }
 
   HandleSignInWithGoogle() {
-    //! Being checked with Auth Dec 29
+    // TODO Being checked with Auth
     axios.get('/api/login')
       .then(console.log('success'))
       .then(this.setState({ user: 'DOT' }))
@@ -52,6 +52,22 @@ class App extends React.Component {
       });
   }
 
+
+
+  // TODO add user to group axios.post(/user_group)
+  // TODO get all members from given group axios.get(/groups/:groupName/users)
+  // TODO get all groups from given user axios.get(/groups/:userName/groups)
+  // TODO get all active groups .get('/groups/:userName/groups/active'
+  // TODO get all inactive groups '/groups/:userName/groups/inactive'
+  // TODO axios.patch/groups:id/active toggles group active
+  // TODO axios.get /choices  gives options of places to eat
+  // TODO update group name .patch('/groups/:groupName/groupName'
+  // TODO update group pricepoint '/groups/:groupName/pricePoint'
+  // TODO get and post group history
+  // TODO delete user from group .delete('/groups/:userName'
+  // TODO create button to reset dietary restrictions axios.delete(/users/:usesrName/dietaryRestriction)
+  // TODO delete group axios.delete('/groups)
+  // TODO create button and write funciton to delete useraccount from db axios.delete(/users/:userName)
   HandleUserSettings(k, v) {
     axios.post(`/api/users/:${this.state.user}/${k}`, {
       k: v,
@@ -64,6 +80,7 @@ class App extends React.Component {
       .catch((err) => {
         console.error('error handleprefeerence change', err);
       });
+    // TODO send error to client
   }
 
   HandlePreferenceChange(k, v) {
@@ -79,6 +96,7 @@ class App extends React.Component {
       .catch((err) => {
         console.error('error handleprefeerence change', err);
       });
+    // TODO send error to client
   }
 
   HandleNewGroupPricePoint(newPricePoint) {
@@ -101,6 +119,7 @@ class App extends React.Component {
       .catch((err) => {
         console.error('submiterr', err);
       });
+    // TODO send error to client
   }
 
   HandleNewGroupName(e) {
@@ -116,7 +135,7 @@ class App extends React.Component {
   render() {
     const { view, groups } = this.state;
     const {
-      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings
+      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
     } = this;
     let View;
     if (view === '/login') {

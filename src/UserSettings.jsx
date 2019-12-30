@@ -3,7 +3,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
-
+// TODO allow user to pick more than one dietary restriction
 const UserSettings = (props) => {
  const {PreferenceChange} = props;
   return (
