@@ -8,6 +8,7 @@ import SignIn from './SignIn.jsx';
 import Header from './Header.jsx';
 import Home from './Home.jsx';
 import CreateGroup from './CreateGroup.jsx';
+import UserSettings from './UserSettings.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class App extends React.Component {
     this.HandleNewGroupName = this.HandleNewGroupName.bind(this);
     this.HandleNewGroupPricePoint = this.HandleNewGroupPricePoint.bind(this);
     this.HandleNewGroupSubmit = this.HandleNewGroupSubmit.bind(this);
+    this.HandleUserSettings = this.HandleUserSettings.bind(this);
   }
 
   HandleViewChange(view) {
@@ -43,10 +45,24 @@ class App extends React.Component {
     axios.get('/api/login')
       .then(console.log('success'))
       .then(this.setState({ user: 'DOT' }))
-      .then(console.log(this.state))
+      .then(this.HandleViewChange('/userSettings'))
       .catch((err) => {
         console.log('error in handsigninwithgoogle', err);
       // send error back to client
+      });
+  }
+
+  HandleUserSettings(k, v) {
+    axios.post(`/api/users/:${this.state.user}/${k}`, {
+      k: v,
+    }).then(
+      this.setState({ [k]: v }),
+    )
+      .then(
+        console.log('Yay'),
+      )
+      .catch((err) => {
+        console.error('error handleprefeerence change', err);
       });
   }
 
@@ -100,7 +116,7 @@ class App extends React.Component {
   render() {
     const { view, groups } = this.state;
     const {
-      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit
+      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings
     } = this;
     let View;
     if (view === '/login') {
@@ -115,6 +131,8 @@ class App extends React.Component {
       HandleNewGroupPricePoint={HandleNewGroupPricePoint}
       HandleNewGroupSubmit={HandleNewGroupSubmit}
       />;
+    } else if (view === '/userSetting') {
+      View = <UserSettings HandleUserSettings={HandleUserSettings}/>;
     } else {
       View = <Home groups={groups}/>;
     }
