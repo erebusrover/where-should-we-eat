@@ -29,6 +29,7 @@ class App extends React.Component {
     this.HandleSignInWithGoogle = this.HandleSignInWithGoogle.bind(this);
     this.HandleNewGroupName = this.HandleNewGroupName.bind(this);
     this.HandleNewGroupPricePoint = this.HandleNewGroupPricePoint.bind(this);
+    this.HandleNewGroupSubmit = this.HandleNewGroupSubmit.bind(this);
   }
 
   HandleViewChange(view) {
@@ -74,6 +75,18 @@ class App extends React.Component {
     console.log(this.state);
   }
 
+  HandleNewGroupSubmit() {
+    const { groupName, pricePoint } = this.state.group;
+    axios.post('/api/groups', {
+      groupName,
+      pricePoint,
+      userName: this.state.user,
+    })
+      .catch((err) => {
+        console.error('submiterr', err);
+      });
+  }
+
   HandleNewGroupName(e) {
     this.setState({
       group: {
@@ -87,7 +100,7 @@ class App extends React.Component {
   render() {
     const { view, groups } = this.state;
     const {
-      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint,
+      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit
     } = this;
     let View;
     if (view === '/login') {
@@ -100,6 +113,7 @@ class App extends React.Component {
       HandleNewGroupName={HandleNewGroupName}
       HandlePreferenceChange={HandlePreferenceChange}
       HandleNewGroupPricePoint={HandleNewGroupPricePoint}
+      HandleNewGroupSubmit={HandleNewGroupSubmit}
       />;
     } else {
       View = <Home groups={groups}/>;
