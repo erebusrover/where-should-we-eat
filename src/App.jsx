@@ -1,5 +1,6 @@
 
 import React from 'react';
+import axios from 'axios';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx';
@@ -11,6 +12,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       view: '',
+      user: null,
       groups: [1, 2, 3, 4, 5],
       dietaryRestriction: null,
       image: null,
@@ -22,6 +24,7 @@ class App extends React.Component {
 
     this.HandleViewChange = this.HandleViewChange.bind(this);
     this.HandlePreferenceChange = this.HandlePreferenceChange.bind(this);
+    this.HandleSignInWithGoogle = this.HandleSignInWithGoogle.bind(this);
   }
 
   HandleViewChange(view) {
@@ -32,6 +35,16 @@ class App extends React.Component {
     });
   }
 
+  HandleSignInWithGoogle() {
+    axios.get('/api/login')
+      .then(console.log('success'))
+      .then(this.setState({ user: 'DOT' }))
+      .catch((err) => {
+        console.log('error in handsigninwithgoogle', err);
+      // send error back to client
+      });
+  }
+
   HandlePreferenceChange(k, v) {
     this.setState({ [k]: v }, () => {
       console.log(this.state);
@@ -40,10 +53,10 @@ class App extends React.Component {
 
   render() {
     const { view, groups } = this.state;
-    const { HandlePreferenceChange, HandleViewChange } = this;
+    const { HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle } = this;
     let View;
     if (view === '/login') {
-      View = <SignIn />;
+      View = <SignIn HandleSignInWithGoogle={HandleSignInWithGoogle}/>;
     } else if (view === '/profile') {
       View = <Preferences PreferenceChange={HandlePreferenceChange}/>;
     } else if (view === '/createGroup') {
