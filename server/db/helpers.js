@@ -94,7 +94,7 @@ const addNewGroup = (newGroup) => {
 };
 
 // add users and group to join table?
-const addToUserGroupJoinTable = (userName, groupName) => {
+const addUserToGroup = (userName, groupName) => {
   const sql = `INSERT into user_group (user_id, groupp_id) VALUES 
                 ((SELECT user_id FROM user WHERE userName = ?), (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
   return query(sql, [userName, groupName]);
@@ -166,19 +166,16 @@ const getGroupHistory = (groupName) => {
 module.exports = {
   addNewUser,
   deleteUserFromGroup,
-  // deleteUserFromAllGroups,
   deleteUser,
   updateUserStatus,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
-  addToUserGroupJoinTable,
+  addUserToGroup,
   changeGroupName,
   changeGroupPricePoint,
   deleteGroup,
-  // deleteGroupFromUserGroupJoinTable,
-  // deleteGroupFromGroupHistory,
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,

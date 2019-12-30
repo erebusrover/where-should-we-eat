@@ -3,12 +3,13 @@ const { Router } = require('express');
 const {
   addNewUser,
   deleteUserFromGroup,
+  deleteUser,
   updateUserStatus,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
-  addToUserGroupJoinTable,
+  addUserToGroup,
   changeGroupName,
   changeGroupPricePoint,
   deleteGroup,
@@ -40,21 +41,23 @@ router.post('/users', (req, res) => {
 });
 
 // DELETE /groups/:userName to delete a user from a particular group
-router.delete('/user_group/', (req, res) => {
+router.delete('/groups/:userName', (req, res) => {
   const { userName, groupName } = req.body;
   deleteUserFromGroup(userName, groupName).then(() => {
     res.send(200);
-  }).catch((error) => {
+  }).catch(() => {
     res.send(400);
   });
 });
 
 // DELETE /users/:username to delete a user account from db
-router.delete('users/:userName', (req, res) => {
+router.delete('/users/:userName', (req, res) => {
   const { userName } = req.params;
-  deleteUserFromGroup(userName).then(() => {
-    
-  })
+  deleteUser(userName).then(() => {
+    res.sendStatus(200);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
 });
 
 // PATCH to /users/:username/status to update user status
@@ -79,7 +82,7 @@ router.patch('/users/:userName/newUserName', (req, res) => {
   // get username from params and new username from body
   const { userName } = req.params;
   const { newUserName } = req.body;
-
+  
 });
 
 // POST to add dietary restrictions for a given user
@@ -135,7 +138,7 @@ router.post('/groups', (req, res) => {
   };
   // use db helper function to add new group to db
   addNewGroup(newGroup).then(() => {
-    addToUserGroupJoinTable(userName, groupName);
+    addUserToGroup(userName, groupName);
   }).then(() => {
     res.sendStatus(201);
   }).catch(() => {
@@ -155,11 +158,12 @@ router.delete('/groups', (req, res) => {
     });
 });
 
-// POST /user_group adds fields to user_group table
+// POST /user_group ad_ds a user to a particular group
+// by adding fields to user_group table
 // to indicate which users belong to which group
 router.post('/user_group', (req, res) => {
   const { userName, groupName } = req.body;
-  addToUserGroupJoinTable(userName, groupName).then(() => {
+  addUserToGroup(userName, groupName).then(() => {
     res.send(201);
   }).catch((error) => {
     console.log(error);
