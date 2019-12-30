@@ -1,9 +1,9 @@
 // database connection and helper functions
-const mysql = require('mysql');
+// const mysql = require('mysql');
 const util = require('util');
-const mysqlConfig = require('./config.js');
+const connection = require('./config.js');
 
-const connection = mysql.createConnection(mysqlConfig);
+// const connection = mysql.createConnection(mysqlConfig);
 // Just like `connection.query`, but returns a promise!
 const query = util.promisify(connection.query).bind(connection);
 
