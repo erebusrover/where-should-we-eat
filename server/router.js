@@ -2,12 +2,20 @@ const { Router } = require('express');
 // require DB helpers
 const {
   addNewUser,
-  addUserDietaryRestrictions,
-  deleteUserDietaryRestriction,
   updateUserStatus,
+  addUserDietaryRestrictions,
+  getUserDietaryRestrictions,
+  deleteUserDietaryRestriction,
   addNewGroup,
-  toggleGroupStatus,
+  addToUserGroupJoinTable,
+  changeGroupName,
+  changeGroupPricePoint,
+  deleteGroup,
+  deleteGroupFromUserGroupJoinTable,
+  deleteGroupFromGroupHistory,
   addToGroupHistory,
+  getGroupHistory,
+  toggleGroupStatus,
 } = require('./db/helpers');
 // require Google and Yelp API functions
 const { getRestaurants } = require('./config/yelp');
@@ -26,15 +34,14 @@ router.post('/users', (req, res) => {
   // use db helper function to add new user to db
   addNewUser(newUser).then(() => {
     res.sendStatus(201);
-  }).catch((error) => {
-    console.log(error);
+  }).catch(() => {
     res.sendStatus(400);
   });
 });
 
 
-// PATCH to /users/:username/newStatus to update user status
-router.patch('/users/:userName/newStatus', (req, res) => {
+// PATCH to /users/:username/status to update user status
+router.patch('/users/:userName/status', (req, res) => {
   // get username from params and new status from body
   const { userName } = req.params;
   const { newStatus } = req.body;
@@ -60,7 +67,7 @@ router.patch('/users/:userName/newUserName', (req, res) => {
 
 // POST to add dietary restrictions for a given user
 router.post('/users/:userName/dietaryRestrictions', (req, res) => {
-  // restrictions should be an array
+  // restrictions must be an array
   const { restrictions } = req.body;
   const { userName } = req.params;
   const user = {
@@ -74,6 +81,18 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   });
 });
 
+// GET dietary restrictions for a given user
+router.get('/users/:userName/dietaryRestrictions', (req, res) => {
+  const { userName } = req.params;
+  getUserDietaryRestrictions(userName).then((response) => {
+    res.status(200);
+    res.send(response);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+});
+
 // DELETE a dietary restriction for a given user
 router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
   const { restriction } = req.body;
@@ -83,23 +102,113 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
     restriction,
   };
   deleteUserDietaryRestriction(user).then(() => {
-    console.log('restriction deleted');
     res.sendStatus(200);
-  }).catch((error) => {
-    console.log(error);
+  }).catch(() => {
     res.sendStatus(400);
   });
 });
 
-// POST /history adds a new place to the grouphistory table
-// whenever a choice is made
-// how are we storing the locations in this table? by name? id?
-router.post('/locationHistory', (req, res) => {
-  const { group } = req.body;
-  addToGroupHistory(group).then(() => {
+// POST /groups to add new group to db
+// should also add whichever user created the group to the user_group join table
+router.post('/groups', (req, res) => {
+  const { groupName, pricePoint, userName } = req.body;
+  const newGroup = {
+    groupName,
+    pricePoint,
+  };
+  // use db helper function to add new group to db
+  addNewGroup(newGroup).then(() => {
+    addToUserGroupJoinTable(userName, groupName);
+  }).then(() => {
     res.sendStatus(201);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
+});
+
+// DELETE /groups deletes a group from groupp and from user_group
+router.delete('/groups', (req, res) => {
+  const { groupName } = req.body;
+  deleteGroupFromUserGroupJoinTable(groupName).then(() => {
+    deleteGroupFromGroupHistory(groupName);
+  }).then(() => {
+    deleteGroup(groupName);
+  }).then(() => {
+    res.send(200);
   }).catch((error) => {
     console.log(error);
+    res.send(400);
+  });
+});
+
+// POST /user_group adds fields to user_group table
+// to indicate which users belong to which group
+router.post('/user_group', (req, res) => {
+  const { userName, groupName } = req.body;
+  addToUserGroupJoinTable(userName, groupName).then(() => {
+    res.send(201);
+  }).catch((error) => {
+    console.log(error);
+    res.send(400);
+  });
+});
+
+// PATCH /groups/:groupName/groupName to change group name
+router.patch('/groups/:groupName/groupName', (req, res) => {
+  const { groupName } = req.params;
+  const { newName } = req.body;
+  const group = {
+    groupName,
+    newName,
+  };
+  changeGroupName(group).then(() => {
+    res.sendStatus(201);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
+});
+
+// PATCH /groups/:groupName/pricePoint to change group price point
+router.patch('/groups/:groupName/pricePoint', (req, res) => {
+  const { groupName } = req.params;
+  // for now, price point must be single integer
+  // what if we wanted to include multiple price points
+  // when is price point set, and by whom?
+  const { newPricePoint } = req.body;
+  const group = {
+    groupName,
+    newPricePoint,
+  };
+  changeGroupPricePoint(group).then(() => {
+    res.sendStatus(201);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
+});
+
+// POST /groupHistory adds a new place to the grouphistory table
+// whenever a choice is made
+// how are we storing the locations in this table? by name? id?
+router.post('/groupHistory', (req, res) => {
+  const { groupName, location } = req.body;
+  const group = {
+    groupName,
+    location,
+  };
+  addToGroupHistory(group).then(() => {
+    res.sendStatus(201);
+  }).catch(() => {
+    res.sendStatus(400);
+  });
+});
+
+// GET /groupHistory retrieves group history
+router.get('/groupHistory', (req, res) => {
+  const { groupName } = req.body;
+  getGroupHistory(groupName).then((response) => {
+    res.status(200);
+    res.send(response);
+  }).catch(() => {
     res.sendStatus(400);
   });
 });
@@ -114,20 +223,6 @@ router.post('/locationHistory', (req, res) => {
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
 // call addUserDietaryRestrictions here
 
-// POST /groups to add new group to db
-router.post('/groups', (req, res) => {
-  // use db helper function to add new group to db
-  addNewGroup().then(() => {
-
-  }).catch(() => {
-
-  });
-});
-
-// PATCH /groups/:group to update group info
-router.patch('/groups/:group', (req, res) => {
-
-});
 
 
 // GET /groups:id renders given group page
@@ -162,7 +257,6 @@ router.get('/choices', (req, res) => {
       res.send(restaurants);
     })
     .catch(() => {
-      console.log('there was an error');
       res.sendStatus(400);
     });
 });
