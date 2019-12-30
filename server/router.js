@@ -2,18 +2,20 @@ const { Router } = require('express');
 // require DB helpers
 const {
   addNewUser,
-  deleteUserFromGroup,
   deleteUser,
   updateUserStatus,
   updateUserName,
+  addUserDietaryRestrictions,
   updateUserDietaryRestrictions,
+  addUserImage,
   updateUserImage,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
-  addUserToGroup,
   changeGroupName,
   changeGroupPricePoint,
+  addUserToGroup,
+  deleteUserFromGroup,
   deleteGroup,
   addToGroupHistory,
   getGroupHistory,
@@ -36,15 +38,12 @@ router.post('/users', (req, res) => {
     image,
   } = req.body;
   // use db helper function to add new user to db, setting default values for status, diet, image
-  addNewUser(userName)
+  addNewUser(userName, userStatus)
     .then(() => {
-      updateUserStatus(userName, userStatus);
+      addUserDietaryRestrictions(userName, restrictions);
     })
     .then(() => {
-      updateUserDietaryRestrictions(userName, restrictions);
-    })
-    .then(() => {
-      updateUserImage(userName, image);
+      addUserImage(userName, image);
     })
     .then(() => {
       res.sendStatus(201);
@@ -54,78 +53,87 @@ router.post('/users', (req, res) => {
     });
 });
 
-// DELETE /groups/:userName to delete a user from a particular group
-router.delete('/groups/:userName', (req, res) => {
-  const { userName, groupName } = req.body;
-  deleteUserFromGroup(userName, groupName).then(() => {
-    res.send(200);
-  }).catch(() => {
-    res.send(400);
-  });
-});
 
 // DELETE /users/:username to delete a user account from db
 router.delete('/users/:userName', (req, res) => {
   const { userName } = req.params;
-  deleteUser(userName).then(() => {
-    res.sendStatus(200);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  deleteUser(userName)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
-// TODO: PATCH /users/:user/image
+// PATCH to /users/:userName/newUserName to update username
+router.patch('/users/:userName/userName', (req, res) => {
+  // get username from params and new username from body
+  const { userName } = req.params;
+  const { newUserName } = req.body;
+  updateUserName(userName, newUserName)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
 
 // PATCH to /users/:username/status to update user status
 router.patch('/users/:userName/status', (req, res) => {
   // get username from params and new status from body
   const { userName } = req.params;
   const { newStatus } = req.body;
-  updateUserStatus(userName, newStatus).then(() => {
-    res.sendStatus(201);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  updateUserStatus(userName, newStatus)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
-// PATCH to /users/:userName/newUserName to update username
-router.patch('/users/:userName/newUserName', (req, res) => {
-  // get username from params and new username from body
+// TODO: PATCH /users/:user/image
+router.patch('/users/:userName/image', (req, res) => {
   const { userName } = req.params;
-  const { newUserName } = req.body;
-  updateUserName(userName, newUserName).then(() => {
-    res.sendStatus(201);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  const { newImage } = req.body;
+  updateUserImage(userName, newImage)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
+
 
 // POST to add dietary restrictions for a given user
 router.patch('/users/:userName/dietaryRestrictions', (req, res) => {
   // restrictions must be an array
   const { restrictions } = req.body;
   const { userName } = req.params;
-  const user = {
-    userName,
-    restrictions,
-  };
-  updateUserDietaryRestrictions(user).then(() => {
-    res.sendStatus(201);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  updateUserDietaryRestrictions(userName, restrictions)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
 // GET dietary restrictions for a given user
 router.get('/users/:userName/dietaryRestrictions', (req, res) => {
   const { userName } = req.params;
-  getUserDietaryRestrictions(userName).then((response) => {
-    res.status(200);
-    res.send(response);
-  }).catch((error) => {
-    console.log(error);
-    res.sendStatus(400);
-  });
+  getUserDietaryRestrictions(userName)
+    .then((response) => {
+      res.status(200);
+      res.send(response);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(400);
+    });
 });
 
 // DELETE a dietary restriction for a given user
@@ -136,11 +144,13 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
     userName,
     restriction,
   };
-  deleteUserDietaryRestriction(user).then(() => {
-    res.sendStatus(200);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  deleteUserDietaryRestriction(user)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
 // POST /groups to add new group to db
@@ -151,14 +161,17 @@ router.post('/groups', (req, res) => {
     groupName,
     pricePoint,
   };
-  // use db helper function to add new group to db
-  addNewGroup(newGroup).then(() => {
-    addUserToGroup(userName, groupName);
-  }).then(() => {
-    res.sendStatus(201);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+    // use db helper function to add new group to db
+  addNewGroup(newGroup)
+    .then(() => {
+      addUserToGroup(userName, groupName);
+    })
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
 // DELETE /groups deletes a group
@@ -178,12 +191,26 @@ router.delete('/groups', (req, res) => {
 // to indicate which users belong to which group
 router.post('/user_group', (req, res) => {
   const { userName, groupName } = req.body;
-  addUserToGroup(userName, groupName).then(() => {
-    res.send(201);
-  }).catch((error) => {
-    console.log(error);
-    res.send(400);
-  });
+  addUserToGroup(userName, groupName)
+    .then(() => {
+      res.send(201);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.send(400);
+    });
+});
+
+// DELETE /groups/:userName to delete a user from a particular group
+router.delete('/groups/:userName', (req, res) => {
+  const { userName, groupName } = req.body;
+  deleteUserFromGroup(userName, groupName)
+    .then(() => {
+      res.send(200);
+    })
+    .catch(() => {
+      res.send(400);
+    });
 });
 
 // PATCH /groups/:groupName/groupName to change group name
@@ -194,11 +221,13 @@ router.patch('/groups/:groupName/groupName', (req, res) => {
     groupName,
     newName,
   };
-  changeGroupName(group).then(() => {
-    res.sendStatus(201);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  changeGroupName(group)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
 // PATCH /groups/:groupName/pricePoint to change group price point
@@ -212,11 +241,13 @@ router.patch('/groups/:groupName/pricePoint', (req, res) => {
     groupName,
     newPricePoint,
   };
-  changeGroupPricePoint(group).then(() => {
-    res.sendStatus(201);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  changeGroupPricePoint(group)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
 // POST /groupHistory adds a new place to the grouphistory table
@@ -228,22 +259,26 @@ router.post('/groupHistory', (req, res) => {
     groupName,
     location,
   };
-  addToGroupHistory(group).then(() => {
-    res.sendStatus(201);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  addToGroupHistory(group)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
 // GET /groupHistory retrieves group history
 router.get('/groupHistory', (req, res) => {
   const { groupName } = req.body;
-  getGroupHistory(groupName).then((response) => {
-    res.status(200);
-    res.send(response);
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  getGroupHistory(groupName)
+    .then((response) => {
+      res.status(200);
+      res.send(response);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
 // GET /login verify user login using Passport --> google auth?
@@ -255,7 +290,6 @@ router.get('/groupHistory', (req, res) => {
 
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
 // call addUserDietaryRestrictions here
-
 
 
 // GET /groups:id renders given group page
@@ -299,11 +333,13 @@ router.get('/choices', (req, res) => {
 // PATCH /groups/:id/active toggles group 'active' property between true and false
 router.patch('/groups:id/active', (req, res) => {
   const { id, status } = req.body;
-  toggleGroupStatus(id, status).then(() => {
-    res.send();
-  }).catch(() => {
-    res.sendStatus(400);
-  });
+  toggleGroupStatus(id, status)
+    .then(() => {
+      res.send();
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
 
 module.exports.router = router;

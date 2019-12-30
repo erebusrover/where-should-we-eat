@@ -13,21 +13,52 @@ const query = util.promisify(connection.query).bind(connection);
 //   userName,
 //   userStatus
 // }
-const addNewUser = (userName) => {
-  const sql = `INSERT into user (userName) VALUES (?)
+const addNewUser = (userName, userStatus) => {
+  const sql = `INSERT into user (userName, status) VALUES (?, ?)
                 ON DUPLICATE KEY UPDATE userName = ?`;
-  return query(sql, [userName, userName]);
-};
-
-// TODO: change user status
-const updateUserStatus = (userName, newStatus) => {
-  const sql = 'UPDATE user SET userStatus=? WHERE userName=?';
-  return query(sql, [newStatus, userName]);
+  return query(sql, [userName, userStatus, userName]);
 };
 
 const updateUserName = (userName, newUserName) => {
   const sql = 'UPDATE user SET userName=? WHERE userName=?';
   return query(sql, [newUserName, userName]);
+};
+
+// change user status
+const updateUserStatus = (userName, newStatus) => {
+  const sql = 'UPDATE user SET userStatus=? WHERE userName=?';
+  return query(sql, [newStatus, userName]);
+};
+
+
+// BUG/TODO: currently cannot have multiple users with the same restriction
+// add dietary restrictions to dietaryRestrictions table
+const addUserDietaryRestrictions = (userName, restrictions) => {
+  // restrictions should be an array
+  // for each dietary restriction, add it to table with id of user
+  return Promise.all(restrictions.map((restriction) => {
+    const sql = `INSERT into dietaryRestrictions (user_id, restriction) 
+                  VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)
+                  ON DUPLICATE KEY UPDATE restriction=?`;
+    return query(sql, [userName, restriction, restriction]);
+  }));
+};
+
+// TODO: allow user to update dietary restrictions
+const updateUserDietaryRestrictions = () => {
+
+};
+
+const addUserImage = (userName, image) => {
+  const sql = `INSERT into userImages (user_id, image)
+                VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)`;
+  return query(sql, [userName, image]);
+};
+
+const updateUserImage = (userName, newImage) => {
+  const sql = `UPDATE userImages SET image = ? 
+                WHERE user_id = (SELECT user_id FROM user WHERE userName = ?)`;
+  return query(sql, [newImage, userName]);
 };
 
 // delete user from a group
@@ -44,18 +75,6 @@ const deleteUser = (userName) => {
   return query(sql, [userName]);
 };
 
-// BUG/TODO: currently cannot have multiple users with the same restriction
-// add dietary restrictions to dietaryRestrictions table
-const updateUserDietaryRestrictions = (userName, restrictions) => {
-  // restrictions should be an array
-  // for each dietary restriction, add it to table with id of user
-  return Promise.all(restrictions.map((restriction) => {
-    const sql = `INSERT into dietaryRestrictions (user_id, restriction) 
-                  VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)
-                  ON DUPLICATE KEY UPDATE restriction=?`;
-    return query(sql, [userName, restriction, restriction]);
-  }));
-};
 
 // get user dietary restrictions
 const getUserDietaryRestrictions = (userName) => {
@@ -160,13 +179,16 @@ const getGroupHistory = (groupName) => {
 
 module.exports = {
   addNewUser,
-  deleteUserFromGroup,
-  deleteUser,
-  updateUserStatus,
   updateUserName,
+  updateUserStatus,
+  addUserDietaryRestrictions,
   updateUserDietaryRestrictions,
+  addUserImage,
+  updateUserImage,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
+  deleteUserFromGroup,
+  deleteUser,
   addNewGroup,
   addUserToGroup,
   changeGroupName,
