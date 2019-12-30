@@ -38,15 +38,14 @@ const updateUserImage = (userName, newImage) => {
   return query(sql, [newImage, userName]);
 };
 
-// BUG/TODO: currently cannot have multiple users with the same restriction
+// BUG: multiple users with same restricion?
 // add dietary restrictions to dietaryRestrictions table
 const addUserDietaryRestrictions = (userName, restrictions) => {
   // restrictions should be an array
   // for each dietary restriction, add it to table with id of user
   return Promise.all(restrictions.map((restriction) => {
     const sql = `INSERT into dietaryRestrictions (user_id, restriction) 
-                  VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)
-                  ON DUPLICATE KEY UPDATE restriction=?`;
+                  VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)`;
     return query(sql, [userName, restriction, restriction]);
   }));
 };
@@ -98,25 +97,34 @@ const addUserToGroup = (userName, groupName) => {
 
 // get all members from a given group
 const getAllGroupMembers = (groupName) => {
-  const sql = `SELECT * FROM user WHERE user_id = 
-                (SELECT user_id FROM user_group WHERE groupp_id = 
+  const sql = `SELECT * FROM user WHERE user_id IN 
+                (SELECT user_id FROM user_group WHERE groupp_id IN 
                   (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
   return query(sql, [groupName]);
 };
 
 // get all groups for a given user
 const getAllUserGroups = (userName) => {
-
+  const sql = `SELECT * FROM groupp WHERE groupp_id IN  
+                (SELECT groupp_id FROM user_group WHERE user_id IN 
+                  (SELECT user_id FROM user WHERE userName = ?))`;
+  return query(sql, [userName]);
 };
 
 // get all active groups for a given user
 const getAllActiveUserGroups = (userName) => {
-
+  const sql = `SELECT * FROM groupp WHERE active = true AND groupp_id IN  
+                (SELECT groupp_id FROM user_group WHERE user_id IN 
+                  (SELECT user_id FROM user WHERE userName = ?))`;
+  return query(sql, [userName]);
 };
 
 // get all inactive groups for a given user
 const getAllInactiveUserGroups = (userName) => {
-
+  const sql = `SELECT * FROM groupp WHERE active = false AND groupp_id IN  
+                (SELECT groupp_id FROM user_group WHERE user_id IN 
+                  (SELECT user_id FROM user WHERE userName = ?))`;
+  return query(sql, [userName]);
 };
 
 // allow users to change group name
