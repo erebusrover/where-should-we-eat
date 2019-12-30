@@ -14,6 +14,10 @@ const {
   deleteGroup,
   addUserToGroup,
   deleteUserFromGroup,
+  getAllGroupMembers,
+  getAllUserGroups,
+  getAllActiveUserGroups,
+  getAllInactiveUserGroups,
   changeGroupName,
   changeGroupPricePoint,
   addToGroupHistory,
@@ -129,8 +133,7 @@ router.get('/users/:userName/dietaryRestrictions', (req, res) => {
       res.status(200);
       res.send(response);
     })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
       res.sendStatus(400);
     });
 });
@@ -197,6 +200,34 @@ router.post('/user_group', (req, res) => {
     .catch(() => {
       res.send(400);
     });
+});
+
+// get all members from a given group
+router.get('/groups/:groupName/users', (req, res) => {
+  const { groupName } = req.params;
+  getAllGroupMembers(groupName)
+    .then((response) => {
+      res.status(200);
+      res.send(response);
+    })
+    .catch(() => {
+      res.send(400);
+    });
+});
+
+// get all groups for a given user
+router.get('/groups/:userName/groups', (req, res) => {
+  const { userName } = req.params;
+});
+
+// get all active groups for a given user
+router.get('/groups/:userName/groups/active', (req, res) => {
+  const { userName } = req.params;
+});
+
+// get all inactive groups for a given user
+router.get('/groups/:userName/groups/inactive', (req, res) => {
+  const { userName } = req.params;
 });
 
 // DELETE /groups/:userName to delete a user from a particular group

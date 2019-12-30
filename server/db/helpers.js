@@ -89,11 +89,34 @@ const addNewGroup = (newGroup) => {
   return query(sql, [groupName, pricePoint, pricePoint]);
 };
 
-// add users and group to join table?
+// add users and group to join table
 const addUserToGroup = (userName, groupName) => {
   const sql = `INSERT into user_group (user_id, groupp_id) VALUES 
                 ((SELECT user_id FROM user WHERE userName = ?), (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
   return query(sql, [userName, groupName]);
+};
+
+// get all members from a given group
+const getAllGroupMembers = (groupName) => {
+  const sql = `SELECT * FROM user WHERE user_id = 
+                (SELECT user_id FROM user_group WHERE groupp_id = 
+                  (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
+  return query(sql, [groupName]);
+};
+
+// get all groups for a given user
+const getAllUserGroups = (userName) => {
+
+};
+
+// get all active groups for a given user
+const getAllActiveUserGroups = (userName) => {
+
+};
+
+// get all inactive groups for a given user
+const getAllInactiveUserGroups = (userName) => {
+
 };
 
 // allow users to change group name
@@ -140,12 +163,6 @@ const getGroupHistory = (groupName) => {
   return query(sql, [groupName]);
 };
 
-// TODO: add user image/avatar to userImages table
-
-// TODO: obtain user info from db
-
-// TODO: obtain group info from db
-
 module.exports = {
   addNewUser,
   updateUserName,
@@ -159,6 +176,10 @@ module.exports = {
   deleteUser,
   addNewGroup,
   addUserToGroup,
+  getAllGroupMembers,
+  getAllUserGroups,
+  getAllActiveUserGroups,
+  getAllInactiveUserGroups,
   changeGroupName,
   changeGroupPricePoint,
   deleteGroup,
