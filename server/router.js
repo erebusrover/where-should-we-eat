@@ -143,19 +143,16 @@ router.post('/groups', (req, res) => {
   });
 });
 
-// DELETE /groups deletes a group from groupp and from user_group
+// DELETE /groups deletes a group
 router.delete('/groups', (req, res) => {
   const { groupName } = req.body;
-  deleteGroupFromUserGroupJoinTable(groupName).then(() => {
-    deleteGroupFromGroupHistory(groupName);
-  }).then(() => {
-    deleteGroup(groupName);
-  }).then(() => {
-    res.send(200);
-  }).catch((error) => {
-    console.log(error);
-    res.send(400);
-  });
+  deleteGroup(groupName)
+    .then(() => {
+      res.send(200);
+    }).catch((error) => {
+      console.log(error);
+      res.send(400);
+    });
 });
 
 // POST /user_group adds fields to user_group table
