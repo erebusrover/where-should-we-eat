@@ -98,15 +98,18 @@ const addUserToGroup = (userName, groupName) => {
 
 // get all members from a given group
 const getAllGroupMembers = (groupName) => {
-  const sql = `SELECT * FROM user WHERE user_id = 
-                (SELECT user_id FROM user_group WHERE groupp_id = 
+  const sql = `SELECT * FROM user WHERE user_id IN 
+                (SELECT user_id FROM user_group WHERE groupp_id IN 
                   (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
   return query(sql, [groupName]);
 };
 
 // get all groups for a given user
 const getAllUserGroups = (userName) => {
-
+  const sql = `SELECT * FROM groupp WHERE groupp_id IN  
+                (SELECT groupp_id FROM user_group WHERE user_id IN 
+                  (SELECT user_id FROM user WHERE userName = ?))`;
+  return query(sql, [userName]);
 };
 
 // get all active groups for a given user

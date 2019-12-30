@@ -210,14 +210,24 @@ router.get('/groups/:groupName/users', (req, res) => {
       res.status(200);
       res.send(response);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       res.send(400);
     });
 });
 
 // get all groups for a given user
-router.get('/groups/:userName/groups', (req, res) => {
+router.get('/users/:userName/groups', (req, res) => {
   const { userName } = req.params;
+  getAllUserGroups(userName)
+    .then((response) => {
+      res.status(200);
+      res.send(response);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.send(400);
+    });
 });
 
 // get all active groups for a given user
