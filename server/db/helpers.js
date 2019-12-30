@@ -27,7 +27,14 @@ const updateUserStatus = (user) => {
   return query(sql, [newStatus, userName]);
 };
 
-// TODO: delete user
+// delete user from a group
+const deleteUserFromGroup = (userName) => {
+  const sql = `DELETE FROM user_group 
+                WHERE user_id = (SELECT user_id from user WHERE userName = ?)`;
+  return query(sql, [userName]);
+};
+
+// delete user from db
 
 // BUG/TODO: currently cannot have multiple users with the same restriction
 // add dietary restrictions to dietaryRestrictions table
@@ -46,7 +53,7 @@ const addUserDietaryRestrictions = (user) => {
 // get user dietary restrictions
 const getUserDietaryRestrictions = (userName) => {
   const sql = `SELECT restriction FROM dietaryRestrictions 
-                  WHERE (SELECT user_id from user WHERE userName = ?)`;
+                  WHERE (SELECT user_id FROM user WHERE userName = ?)`;
   return query(sql, [userName]);
 };
 
@@ -77,7 +84,7 @@ const addNewGroup = (newGroup) => {
 // add users and group to join table?
 const addToUserGroupJoinTable = (userName, groupName) => {
   const sql = `INSERT into user_group (user_id, groupp_id) VALUES 
-                ((SELECT user_id from user WHERE userName = ?), (SELECT groupp_id from groupp WHERE groupName = ?))`;
+                ((SELECT user_id FROM user WHERE userName = ?), (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
   return query(sql, [userName, groupName]);
 };
 
@@ -105,20 +112,20 @@ const toggleGroupStatus = (group) => {
 
 // delete a group from join table
 const deleteGroupFromUserGroupJoinTable = (groupName) => {
-  const sql = `DELETE from user_group 
-                WHERE groupp_id = (SELECT groupp_id from groupp WHERE groupName = ?)`;
+  const sql = `DELETE FROM user_group 
+                WHERE groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
   return query(sql, [groupName]);
 };
 
 const deleteGroupFromGroupHistory = (groupName) => {
-  const sql = `DELETE from groupHistory
-                WHERE groupp_id = (SELECT groupp_id from groupp WHERE groupName = ?)`;
+  const sql = `DELETE FROM groupHistory
+                WHERE groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
   return query(sql, [groupName]);
 };
 
 // delete a group from groupp table
 const deleteGroup = (groupName) => {
-  const sql = 'DELETE from groupp WHERE groupName = ?';
+  const sql = 'DELETE FROM groupp WHERE groupName = ?';
   return query(sql, [groupName]);
 };
 
@@ -127,14 +134,14 @@ const deleteGroup = (groupName) => {
 const addToGroupHistory = (group) => {
   const { groupName, location } = group;
   const sql = `INSERT into groupHistory (groupp_id, location_id) VALUES 
-    ((SELECT groupp_id from groupp WHERE groupName = ?), ?)`;
+    ((SELECT groupp_id FROM groupp WHERE groupName = ?), ?)`;
   return query(sql, [groupName, location]);
 };
 
 // get group location history
 const getGroupHistory = (groupName) => {
-  const sql = `SELECT location_id from groupHistory WHERE 
-                (SELECT groupp_id from groupp WHERE groupName = ?) = groupp_id`;
+  const sql = `SELECT location_id FROM groupHistory WHERE 
+                (SELECT groupp_id FROM groupp WHERE groupName = ?) = groupp_id`;
   return query(sql, [groupName]);
 };
 
@@ -146,6 +153,7 @@ const getGroupHistory = (groupName) => {
 
 module.exports = {
   addNewUser,
+  deleteUserFromGroup,
   updateUserStatus,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,

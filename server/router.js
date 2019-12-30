@@ -2,6 +2,7 @@ const { Router } = require('express');
 // require DB helpers
 const {
   addNewUser,
+  deleteUserFromGroup,
   updateUserStatus,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
@@ -39,6 +40,21 @@ router.post('/users', (req, res) => {
   });
 });
 
+// TODO: FIX!!!
+// DELETE /groups/:userName to delete a user from a particular group
+router.delete('/groups/:userName', (req, res) => {
+  const { userName } = req.params;
+  deleteUserFromGroup(userName).then(() => {
+    res.send(200);
+  }).catch(() => {
+    res.send(400);
+  });
+});
+
+// DELETE /users/:username to delete a user account from db
+router.delete('users/:userName', (req, res) => {
+
+});
 
 // PATCH to /users/:username/status to update user status
 router.patch('/users/:userName/status', (req, res) => {
