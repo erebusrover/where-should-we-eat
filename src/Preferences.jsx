@@ -24,13 +24,7 @@ const Preferences = (props) => {
           <FormControlLabel value="Halal" control={<Radio />} label="Halal" onClick={() => PreferenceChange('dietaryRestriction', 'Halal')} />
           <FormControlLabel value="None" control={<Radio />} label="None" onClick={() => PreferenceChange('dietaryRestriction', 'None')}/>
         </RadioGroup>
-        {/* <h3> Select a Price </h3>
-        <RadioGroup aria-label="dietary restriction" name="dietary restriction">
-          <FormControlLabel value="$" control={<Radio />} label="$" />
-          <FormControlLabel value="$$" control={<Radio />} label="$$" />
-          <FormControlLabel value="$$$" control={<Radio />} label="$$$" />
-          <FormControlLabel value="$$$$" control={<Radio />} label="$$$$" />
-        </RadioGroup> */}
+     
       </ul>
       <Button variant="contained" color="primary">Submit</Button>
     </div>
