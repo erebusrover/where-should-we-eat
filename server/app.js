@@ -16,10 +16,10 @@ app.use('/api', router);
 
 // serve static assets
 const CLIENT_PATH = path.resolve(__dirname, '../build');
-app.use(express.static(CLIENT_PATH));
+app.use(express.static('build'));
 // send users to main index page on all endpoints
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 
 // app.get('/', (req, res) => {
