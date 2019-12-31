@@ -1,6 +1,4 @@
-//! dot you are working on the on change function for the group name input there seem
-//! to be a problem with event.target.value, event is undefined
-//! need to figure out what react magic you want
+
 import React from 'react';
 import axios from 'axios';
 import Preferences from './Preferences.jsx';
@@ -22,7 +20,7 @@ class App extends React.Component {
       dietaryRestriction: 'none',
       image: null,
       group: {
-        groupName: 'Kangaroo',
+        groupName: 'supercoolpeople',
         pricePoint: '',
         members: [],
         newMember: '',
@@ -171,13 +169,14 @@ class App extends React.Component {
     });
   }
 
-  HandleAddUserToGroup(userName) {
-    axios.post('/user_group', {
-      userName,
+  HandleAddUserToGroup() {
+    axios.post('/api/user_group', {
+      userName: this.state.group.newMember,
       groupName: this.state.group.groupName,
-    }).catch((err) => {
-      console.error('addusertogrouperr', err);
-    });
+    }).then(console.log('dot it did things'))
+      .catch((err) => {
+        console.error('addusertogrouperr', err);
+      });
   }
 
   render() {
