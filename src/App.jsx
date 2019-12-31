@@ -22,7 +22,7 @@ class App extends React.Component {
       dietaryRestriction: 'none',
       image: null,
       group: {
-        groupName: 'dot',
+        groupName: 'Kangaroo',
         pricePoint: '',
         members: [],
         newMember: '',
@@ -81,7 +81,7 @@ class App extends React.Component {
   }
 
   HandleUserSettings(k, v) {
-    axios.post(`/api/users/:${this.state.user}/${k}`, {
+    axios.post(`/api/users/${this.state.user}/${k}`, {
       k: v,
     }).then(
       this.setState({ [k]: v }),
@@ -97,7 +97,7 @@ class App extends React.Component {
 
   GetGroupMembers(group) {
     const groupMembers = [];
-    axios.get(`/api/groups/:${group}/users`)
+    axios.get(`/api/groups/${group}/users`)
       .then((members) => {
         members.map((member) => groupMembers.push(member));
       })

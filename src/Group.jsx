@@ -1,6 +1,6 @@
 import React from 'react';
-import GroupMember from './GroupMember.jsx';
 import Button from '@material-ui/core/Button';
+import GroupMember from './GroupMember.jsx';
 
 const Group = (props) => {
   const { group, groupMembers, HandleViewChange } = props;
@@ -13,9 +13,9 @@ const Group = (props) => {
 
           <h3>IMAGE GOES HERE</h3>
           <div>
-    {groupMembers.map((group)up = t => (<GroupMember  group={group}/>))}
+    {/* {groupMembers.map((group) => (<GroupMember group={group} />))} */}
 </div>
-    <Button onClick={() => {HandleViewChange('addUserToGroup')}}>Add Group Member</Button>
+    <Button onClick={() => { HandleViewChange('addUserToGroup'); }}>Add Group Member</Button>
       </div>
 
   );
