@@ -10,6 +10,7 @@ import Home from './Home.jsx';
 import CreateGroup from './CreateGroup.jsx';
 import UserSettings from './UserSettings.jsx';
 import Group from './Group.jsx';
+import AddUserForm from './AddUserForm.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,9 +22,10 @@ class App extends React.Component {
       dietaryRestriction: 'none',
       image: null,
       group: {
-        groupName: null,
+        groupName: 'Kangaroo',
         pricePoint: '',
         members: [],
+        newMember: '',
       },
     };
 
@@ -34,6 +36,12 @@ class App extends React.Component {
     this.HandleNewGroupPricePoint = this.HandleNewGroupPricePoint.bind(this);
     this.HandleNewGroupSubmit = this.HandleNewGroupSubmit.bind(this);
     this.HandleUserSettings = this.HandleUserSettings.bind(this);
+    this.HandleAddUserToGroup = this.HandleAddUserToGroup.bind(this);
+    this.HandleNewGroupMember = this.HandleNewGroupMember.bind(this);
+  }
+
+  componentDidMount() {
+    this.GetGroupMembers(this.state.group.groupName);
   }
 
   HandleViewChange(view) {
@@ -73,7 +81,7 @@ class App extends React.Component {
   }
 
   HandleUserSettings(k, v) {
-    axios.post(`/api/users/:${this.state.user}/${k}`, {
+    axios.post(`/api/users/${this.state.user}/${k}`, {
       k: v,
     }).then(
       this.setState({ [k]: v }),
@@ -89,11 +97,9 @@ class App extends React.Component {
 
   GetGroupMembers(group) {
     const groupMembers = [];
-    axios.get(`/api/groups/:${group}/users`)
+    axios.get(`/api/groups/${group}/users`)
       .then((members) => {
-        members.map((member) => {
-          groupMembers.push(member);
-        });
+        members.map((member) => groupMembers.push(member));
       })
       .then(this.setState({
         group: {
@@ -154,13 +160,32 @@ class App extends React.Component {
     });
   }
 
+  HandleNewGroupMember(e) {
+    this.setState({
+      group: {
+        groupName: this.state.group.groupName,
+        pricePoint: this.state.group.pricePoint,
+        members: this.state.group.members,
+        newMember: e.target.value,
+      },
+    });
+  }
+
+  HandleAddUserToGroup(userName) {
+    axios.post('/user_group', {
+      userName,
+      groupName: this.state.group.groupName,
+    }).catch((err) => {
+      console.error('addusertogrouperr', err);
+    });
+  }
 
   render() {
     const {
       view, groups, group, members,
     } = this.state;
     const {
-      HandlePreferenceChange, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
+      HandlePreferenceChange, HandleNewGroupMember, HandleAddUserToGroup, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
     } = this;
     let View;
     if (view === '/login') {
@@ -174,11 +199,14 @@ class App extends React.Component {
       HandlePreferenceChange={HandlePreferenceChange}
       HandleNewGroupPricePoint={HandleNewGroupPricePoint}
       HandleNewGroupSubmit={HandleNewGroupSubmit}
+      HandleAddUserToGroup={HandleAddUserToGroup}
       />;
     } else if (view === '/userSetting') {
       View = <UserSettings HandleUserSettings={HandleUserSettings}/>;
     } else if (view === '/group') {
-      View = <Group group={group} groupMembers={members}/>;
+      View = <Group group={group} groupMembers={members} HandleViewChange={HandleViewChange}/>;
+    } else if (view === '/addUserToGroup') {
+      View = <AddUserForm HandleNewGroupMember={HandleNewGroupMember} HandleAddUserToGroup={HandleAddUserToGroup} />;
     } else {
       View = <Home groups={groups} HandleViewChange={HandleViewChange}/>;
     }
