@@ -16,7 +16,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       view: '',
-      user: 'default',
+      user: 'dot',
       groups: [1, 2, 3, 4, 5],
       dietaryRestriction: 'vegan',
       image: null,
@@ -39,10 +39,12 @@ class App extends React.Component {
     this.HandleNewGroupMember = this.HandleNewGroupMember.bind(this);
     this.HandleGetOptions = this.HandleGetOptions.bind(this);
     this.GetGroupMembers = this.GetGroupMembers.bind(this);
+    this.GetUsersGroups = this.GetUsersGroups.bind(this);
   }
 
   componentDidMount() {
     this.GetGroupMembers(this.state.groupName);
+    this.GetUsersGroups();
   }
 
   HandleViewChange(view) {
@@ -106,7 +108,7 @@ class App extends React.Component {
   GetGroupMembers(group) {
     axios.get(`/api/groups/${group}/users`)
       .then((members) => {
-        console.log(members)
+        console.log(members);
         this.setState({
           members: members.data,
         });
@@ -156,6 +158,24 @@ class App extends React.Component {
     this.setState({
       groupName: e.target.value,
     });
+  }
+
+  GetUsersGroups() {
+    const { user } = this.state;
+    axios.get(`/api/users/${user}/groups`)
+    .then(response => {
+      console.log(response.data);
+    })
+
+      // .then((groups) => {
+      //   this.setState({
+      //     groups: groups.data,
+      //   });
+      // })
+      .then(console.log(this.state))
+      .catch((err) => {
+        console.error('getusersgrouperr', err);
+      });
   }
 
   HandleNewGroupMember(e) {
