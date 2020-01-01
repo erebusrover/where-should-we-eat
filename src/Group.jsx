@@ -1,9 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import GroupMember from './GroupMember.jsx';
+import PropTypes from 'prop-types';
 
 const Group = (props) => {
-  const { group, groupMembers, HandleViewChange } = props;
+  const { group, groupMembers, GetGroupMembers, HandleViewChange, HandleGetOptions } = props;
   return (
       <div>
           <h1>{group.groupName}</h1>
@@ -12,20 +13,18 @@ const Group = (props) => {
           <br />
 
           <h3>IMAGE GOES HERE</h3>
-          <div>
+          <ul>
     {groupMembers.map((groupMember) => {
-      // eslint-disable-next-line react/jsx-key
       return (<GroupMember groupMember={groupMember} />);
     })}
-</div>
+</ul>
     <Button onClick={() => { HandleViewChange('addUserToGroup'); }}>Add Group Member</Button>
-    <Button onClick={() => { HandleViewChange('options'); }}>Start Game</Button>
+    <Button onClick={() => { HandleGetOptions(); HandleViewChange('options'); }}>Start Game</Button>
       </div>
 
   );
 };
 
-// memberslist / toggle?
 // start button(appears only to creater)
 // history button
 // TODO toggle members list

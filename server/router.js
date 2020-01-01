@@ -194,11 +194,12 @@ router.delete('/groups', (req, res) => {
 // to indicate which users belong to which group
 router.post('/user_group', (req, res) => {
   const { userName, groupName } = req.body;
-  addUserToGroup(userName, groupName)
+ addUserToGroup(userName, groupName)
     .then(() => {
       res.send(201);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err)
       res.send(400);
     });
 });

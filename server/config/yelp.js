@@ -4,6 +4,8 @@ const { API_KEY } = require('./keys').yelp;
 // write function for yelp api calls here
 const getRestaurants = (query) => {
   // destructure vars from query arg obj
+  // radius is an integer about 40000 = 25 miles
+  // categories is a string 'vegan,halal'
   const {
     latitude,
     longitude,
