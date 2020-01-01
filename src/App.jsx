@@ -50,6 +50,14 @@ class App extends React.Component {
   }
 
   HandleSignInWithGoogle() {
+    return window.open('/api/login', '_self');
+    // axios.get('/api/login')
+      // .then(console.log('success'))
+      // .then(this.setState({ user: 'DOT' }))
+      // .catch((err) => {
+      //   console.log('error handling signin with google', err);
+      // // send error back to client
+      // });
     // TODO Being checked with Auth
     axios.get('/api/login')
       .then(console.log('success'))
