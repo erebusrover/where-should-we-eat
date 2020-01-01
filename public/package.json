@@ -23,12 +23,6 @@
     "react-scripts": "3.3.0",
   },
   "homepage": "https://where-should-we-eat.azurewebsites.net",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
   "eslintConfig": {
     "extends": "react-app"
   },
