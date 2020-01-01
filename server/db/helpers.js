@@ -1,53 +1,53 @@
 // database connection and helper functions
-const mysql = require('mysql');
+// const mysql = require('mysql');
 const util = require('util');
-const mysqlConfig = require('./config.js');
+const { connection } = require('./config.js');
 
-const connection = mysql.createConnection(mysqlConfig);
+// const connection = mysql.createConnection(mysqlConfig);
 // Just like `connection.query`, but returns a promise!
 const query = util.promisify(connection.query).bind(connection);
 
 // add new user to db
-// newUser arg should look something like:
-// {
-//   userName,
-//   userStatus
-// }
-const addNewUser = (newUser) => {
-  const { userName, userStatus } = newUser;
-  const sql = `INSERT into user (userName, userStatus) VALUES (?, ?)
-                ON DUPLICATE KEY UPDATE userStatus = ?`;
-  return query(sql, [userName, userStatus, userStatus]);
+const addNewUser = (userName) => {
+  const sql = `INSERT into user (userName) VALUES (?)
+                ON DUPLICATE KEY UPDATE userName = ?`;
+  return query(sql, [userName, userName]);
 };
 
-// TODO: change user status
-const updateUserStatus = (user) => {
-  const { userName, newStatus } = user;
-  const sql = 'UPDATE user SET userStatus=? WHERE userName=?';
+// allow user to change their username
+const updateUserName = (userName, newUserName) => {
+  const sql = 'UPDATE user SET userName = ? WHERE userName = ?';
+  return query(sql, [newUserName, userName]);
+};
+
+// update user status
+const updateUserStatus = (userName, newStatus) => {
+  const sql = 'UPDATE user SET userStatus = ? WHERE userName = ?';
   return query(sql, [newStatus, userName]);
 };
 
-// TODO: delete user
+const addUserImage = (userName, image) => {
+  const sql = `INSERT into userImages (user_id, image)
+                VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)`;
+  return query(sql, [userName, image]);
+};
 
-// BUG/TODO: currently cannot have multiple users with the same restriction
+const updateUserImage = (userName, newImage) => {
+  const sql = `UPDATE userImages SET image = ? 
+                WHERE user_id = (SELECT user_id FROM user WHERE userName = ?)`;
+  return query(sql, [newImage, userName]);
+};
+
+// BUG: multiple users with same restricion?
 // add dietary restrictions to dietaryRestrictions table
-const addUserDietaryRestrictions = (user) => {
-  // dietaryRestrictions should be an array
-  const { userName, restrictions } = user;
+const addUserDietaryRestrictions = (userName, restrictions) => {
+  // restrictions should be an array
   // for each dietary restriction, add it to table with id of user
   return Promise.all(restrictions.map((restriction) => {
     const sql = `INSERT into dietaryRestrictions (user_id, restriction) 
-                  VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)
-                  ON DUPLICATE KEY UPDATE restriction=?`;
+                  VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)`;
     return query(sql, [userName, restriction, restriction]);
   }));
-};
-
-// get user dietary restrictions
-const getUserDietaryRestrictions = (userName) => {
-  const sql = `SELECT restriction FROM dietaryRestrictions 
-                  WHERE (SELECT user_id from user WHERE userName = ?)`;
-  return query(sql, [userName]);
 };
 
 // delete dietary restriction for a user
@@ -55,18 +55,32 @@ const getUserDietaryRestrictions = (userName) => {
 const deleteUserDietaryRestriction = (user) => {
   const { userName, restriction } = user;
   const sql = `DELETE FROM dietaryRestrictions WHERE restriction = ? 
-                AND user_id = (SELECT user_id FROM user WHERE userName = ?)`;
+  AND user_id = (SELECT user_id FROM user WHERE userName = ?)`;
   return query(sql, [restriction, userName]);
 };
 
+// get user dietary restrictions
+const getUserDietaryRestrictions = (userName) => {
+  const sql = `SELECT restriction FROM dietaryRestrictions 
+                  WHERE (SELECT user_id FROM user WHERE userName = ?)`;
+  return query(sql, [userName]);
+};
+
+// delete user from a group
+const deleteUserFromGroup = (userName, groupName) => {
+  const sql = `DELETE FROM user_group 
+                WHERE user_id = (SELECT user_id FROM user WHERE userName = ?)
+                AND groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
+  return query(sql, [userName, groupName]);
+};
+
+// delete user from user table
+const deleteUser = (userName) => {
+  const sql = 'DELETE FROM user WHERE userName = ?';
+  return query(sql, [userName]);
+};
 
 // add new group to db
-// newGroup arg should look something like:
-// {
-//   groupName,
-//   choice,?
-//   pricePoint,
-// }
 const addNewGroup = (newGroup) => {
   const { groupName, pricePoint } = newGroup;
   const sql = `INSERT into groupp (groupName, active, pricePoint) VALUES(?, true, ?)
@@ -74,11 +88,43 @@ const addNewGroup = (newGroup) => {
   return query(sql, [groupName, pricePoint, pricePoint]);
 };
 
-// add users and group to join table?
-const addToUserGroupJoinTable = (userName, groupName) => {
+// add users and group to join table
+const addUserToGroup = (userName, groupName) => {
   const sql = `INSERT into user_group (user_id, groupp_id) VALUES 
-                ((SELECT user_id from user WHERE userName = ?), (SELECT groupp_id from groupp WHERE groupName = ?))`;
+                ((SELECT user_id FROM user WHERE userName = ?), (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
   return query(sql, [userName, groupName]);
+};
+
+// get all members from a given group
+const getAllGroupMembers = (groupName) => {
+  const sql = `SELECT * FROM user WHERE user_id IN 
+                (SELECT user_id FROM user_group WHERE groupp_id IN 
+                  (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
+  return query(sql, [groupName]);
+};
+
+// get all groups for a given user
+const getAllUserGroups = (userName) => {
+  const sql = `SELECT * FROM groupp WHERE groupp_id IN  
+                (SELECT groupp_id FROM user_group WHERE user_id IN 
+                  (SELECT user_id FROM user WHERE userName = ?))`;
+  return query(sql, [userName]);
+};
+
+// get all active groups for a given user
+const getAllActiveUserGroups = (userName) => {
+  const sql = `SELECT * FROM groupp WHERE active = true AND groupp_id IN  
+                (SELECT groupp_id FROM user_group WHERE user_id IN 
+                  (SELECT user_id FROM user WHERE userName = ?))`;
+  return query(sql, [userName]);
+};
+
+// get all inactive groups for a given user
+const getAllInactiveUserGroups = (userName) => {
+  const sql = `SELECT * FROM groupp WHERE active = false AND groupp_id IN  
+                (SELECT groupp_id FROM user_group WHERE user_id IN 
+                  (SELECT user_id FROM user WHERE userName = ?))`;
+  return query(sql, [userName]);
 };
 
 // allow users to change group name
@@ -103,22 +149,9 @@ const toggleGroupStatus = (group) => {
   return query(sql, [status, id]);
 };
 
-// delete a group from join table
-const deleteGroupFromUserGroupJoinTable = (groupName) => {
-  const sql = `DELETE from user_group 
-                WHERE groupp_id = (SELECT groupp_id from groupp WHERE groupName = ?)`;
-  return query(sql, [groupName]);
-};
-
-const deleteGroupFromGroupHistory = (groupName) => {
-  const sql = `DELETE from groupHistory
-                WHERE groupp_id = (SELECT groupp_id from groupp WHERE groupName = ?)`;
-  return query(sql, [groupName]);
-};
-
 // delete a group from groupp table
 const deleteGroup = (groupName) => {
-  const sql = 'DELETE from groupp WHERE groupName = ?';
+  const sql = 'DELETE FROM groupp WHERE groupName = ?';
   return query(sql, [groupName]);
 };
 
@@ -127,36 +160,37 @@ const deleteGroup = (groupName) => {
 const addToGroupHistory = (group) => {
   const { groupName, location } = group;
   const sql = `INSERT into groupHistory (groupp_id, location_id) VALUES 
-    ((SELECT groupp_id from groupp WHERE groupName = ?), ?)`;
+    ((SELECT groupp_id FROM groupp WHERE groupName = ?), ?)`;
   return query(sql, [groupName, location]);
 };
 
 // get group location history
 const getGroupHistory = (groupName) => {
-  const sql = `SELECT location_id from groupHistory WHERE 
-                (SELECT groupp_id from groupp WHERE groupName = ?) = groupp_id`;
+  const sql = `SELECT location_id FROM groupHistory WHERE 
+                (SELECT groupp_id FROM groupp WHERE groupName = ?) = groupp_id`;
   return query(sql, [groupName]);
 };
 
-// TODO: add user image/avatar to userImages table
-
-// TODO: obtain user info from db
-
-// TODO: obtain group info from db
-
 module.exports = {
   addNewUser,
+  updateUserName,
   updateUserStatus,
+  addUserImage,
+  updateUserImage,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
   deleteUserDietaryRestriction,
+  deleteUserFromGroup,
+  deleteUser,
   addNewGroup,
-  addToUserGroupJoinTable,
+  addUserToGroup,
+  getAllGroupMembers,
+  getAllUserGroups,
+  getAllActiveUserGroups,
+  getAllInactiveUserGroups,
   changeGroupName,
   changeGroupPricePoint,
   deleteGroup,
-  deleteGroupFromUserGroupJoinTable,
-  deleteGroupFromGroupHistory,
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,
