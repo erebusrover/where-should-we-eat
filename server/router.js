@@ -220,12 +220,15 @@ router.get('/login', passport.authenticate('google', {
   scope: ['profile', 'email', 'openid'],
 }));
 
+// GET /redirect to reroute back to the app from the google consent screen
+router.get('/redirect', passport.authenticate('google'), (req, res) => {
+  res.render('http://localhost');
+});
 
 // GET / renders home page, with info about active groups and sleeping groups
 
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
 // call addUserDietaryRestrictions here
-
 
 
 // GET /groups:id renders given group page

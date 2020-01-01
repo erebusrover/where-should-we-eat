@@ -16,5 +16,3 @@ passport.use(
     // exists in our database or not. Lookup / Create user
   }),
 );
-
-// TODO Export this middleware for use in the app
