@@ -5,7 +5,7 @@ const GroupMember = (props) => {
   const { groupMember } = props;
   return (
       <div>
-          <h2>Hi Jeff</h2>
+          <h2>{groupMember.userName}</h2>
           <h2>MemberStatus</h2>
       </div>
 
