@@ -20,14 +20,12 @@ class App extends React.Component {
       groups: [1, 2, 3, 4, 5],
       dietaryRestriction: 'vegan',
       image: null,
-      group: {
-        groupName: 'supercoolpeople',
-        pricePoint: '',
-        members: [],
-        newMember: '',
-        options: [],
-        catagories: 'vegan',
-      },
+      groupName: 'supercoolpeople',
+      pricePoint: '',
+      members: [],
+      newMember: '',
+      options: [],
+      catagories: 'vegan',
     };
 
     this.HandleViewChange = this.HandleViewChange.bind(this);
@@ -44,7 +42,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.GetGroupMembers(this.state.group.groupName);
+    this.GetGroupMembers(this.state.groupName);
   }
 
   HandleViewChange(view) {
@@ -55,11 +53,10 @@ class App extends React.Component {
   HandleSignInWithGoogle() {
     // TODO Being checked with Auth
     axios.get('/api/login')
-      // .then(this.setState({ user: 'DOT' })).then(console.log('success'))
       .then(this.HandleViewChange('/userSettings'))
       .catch((err) => {
-        console.log('error in handsigninwithgoogle', err);
-      // send error back to client
+        console.error('error in handsigninwithgoogle', err);
+      // TODO send error back to client
       });
   }
 
@@ -82,23 +79,14 @@ class App extends React.Component {
   }
 
   HandleGetOptions() {
-    const {
-      groupName, pricePoint, members, newMember, catagories,
-    } = this.state.group;
+    const { catagories, pricePoint } = this.state;
     axios.get('/api/choices', {
       radius: 40000,
       categories: catagories,
       price: pricePoint,
     })
       .then((options) => this.setState({
-        group: {
-          groupName,
-          pricePoint,
-          members,
-          options,
-          newMember,
-          catagories,
-        },
+        options,
       }))
       .then(console.log(this.state));
   }
@@ -116,20 +104,14 @@ class App extends React.Component {
   }
 
   GetGroupMembers(group) {
-    const { groupName, pricePoint } = this.state.group;
-     axios.get(`/api/groups/${group}/users`)
-.then(response => {
-  console.log(response)
-})
+    axios.get(`/api/groups/${group}/users`)
       .then((members) => {
+        console.log(members)
         this.setState({
-          group: {
-            groupName,
-            pricePoint,
-            members,
-          },
+          members: members.data,
         });
       })
+      .then(console.log(this.state))
       .catch((err) => {
         console.error('getgroupmembers err', err);
       });
@@ -143,9 +125,6 @@ class App extends React.Component {
       .then(
         this.setState({ [k]: v }),
       )
-      .then(
-        console.log('Yay'),
-      )
       .catch((err) => {
         console.error('error handleprefeerence change', err);
       });
@@ -153,29 +132,19 @@ class App extends React.Component {
   }
 
   HandleNewGroupPricePoint(newPricePoint) {
-    const {
-      groupName, members, newMember, options, catagories,
-    } = this.state.group;
     this.setState({
-      group: {
-        groupName,
-        pricePoint: newPricePoint,
-        members,
-        newMember,
-        options,
-        catagories,
-      },
+      pricePoint: newPricePoint,
     });
   }
 
   HandleNewGroupSubmit() {
     const {
-      groupName, pricePoint, members, newMember, options, catagories,
-    } = this.state.group;
+      groupName, pricePoint, user,
+    } = this.state;
     axios.post('/api/groups', {
       groupName,
       pricePoint,
-      userName: this.state.user,
+      userName: user,
     })
       .catch((err) => {
         console.error('submiterr', err);
@@ -184,38 +153,19 @@ class App extends React.Component {
   }
 
   HandleNewGroupName(e) {
-    const {
-      pricePoint, members, newMember, options, catagories,
-    } = this.state.group;
     this.setState({
-      group: {
-        groupName: e.target.value,
-        pricePoint,
-        members,
-        newMember,
-        options,
-        catagories,
-      },
+      groupName: e.target.value,
     });
   }
 
   HandleNewGroupMember(e) {
-    const { groupName, pricePoint, members } = this.state.group;
-    this.setState({
-      group: {
-        groupName,
-        pricePoint,
-        members,
-        newMember: e.target.value,
-      },
-    });
+    this.setState({ newMember: e.target.value });
   }
 
   HandleAddUserToGroup() {
-    const { groupName, newMember } = this.state.group;
+    const { newMember } = this.state;
     axios.post('/api/user_group', {
       userName: newMember,
-      groupName,
     })
       .catch((err) => {
         console.error('addusertogrouperr', err);
@@ -224,7 +174,7 @@ class App extends React.Component {
 
   render() {
     const {
-      view, groups, group,
+      view, groups, group, members, options, groupName, pricePoint,
     } = this.state;
     const {
       GetGroupMembers, HandleGetOptions, HandlePreferenceChange, HandleNewGroupMember, HandleAddUserToGroup, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
@@ -246,13 +196,13 @@ class App extends React.Component {
     } else if (view === '/userSetting') {
       View = <UserSettings HandleUserSettings={HandleUserSettings}/>;
     } else if (view === '/group') {
-      View = <Group group={group} HandleGetOptions={HandleGetOptions} GetGroupMembers={GetGroupMembers} HandleViewChange={HandleViewChange} HandleGetOptions={HandleGetOptions}/>;
+      View = <Group group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} HandleGetOptions={HandleGetOptions} GetGroupMembers={GetGroupMembers} HandleViewChange={HandleViewChange}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm HandleNewGroupMember={HandleNewGroupMember} HandleAddUserToGroup={HandleAddUserToGroup} />;
     } else if (view === '/options') {
-      View = <Options options={this.state.group.options}/>;
+      View = <Options options={options}/>;
     } else {
-      View = <Home groups={groups} HandleViewChange={HandleViewChange} GetGroupMembers={GetGroupMembers}/>;
+      View = <Home groups={groups} HandleViewChange={HandleViewChange} members={members}/>;
     }
 
     return (

@@ -9,7 +9,7 @@ const Home = (props) => {
   return <GroupItem group={group} HandleViewChange={HandleViewChange} GetGroupMembers={GetGroupMembers} />;
 })} */}
 
- <GroupItem group={groups[0]} HandleViewChange={HandleViewChange} GetGroupMembers={GetGroupMembers} />;
+ <GroupItem group={groups[0]} HandleViewChange={HandleViewChange} />;
 
 </div>
   );
