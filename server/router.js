@@ -217,11 +217,8 @@ router.get('/groupHistory', (req, res) => {
 
 // GET /login verify user login using Passport --> google auth?
 router.get('/login', passport.authenticate('google', {
-scope: ['profile', 'email', 'openid'],
-}), (req, res) => {
-  res.send('logging into google');
-});
-
+  scope: ['profile', 'email', 'openid'],
+}));
 
 
 // GET / renders home page, with info about active groups and sleeping groups
