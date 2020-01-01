@@ -13,9 +13,13 @@ const Group = (props) => {
 
           <h3>IMAGE GOES HERE</h3>
           <div>
-    {/* {groupMembers.map((group) => (<GroupMember group={group} />))} */}
+    {groupMembers.map((groupMember) => {
+      // eslint-disable-next-line react/jsx-key
+      return (<GroupMember groupMember={groupMember} />);
+    })}
 </div>
     <Button onClick={() => { HandleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+    <Button onClick={() => { HandleViewChange('options'); }}>Start Game</Button>
       </div>
 
   );

@@ -9,13 +9,14 @@ import CreateGroup from './CreateGroup.jsx';
 import UserSettings from './UserSettings.jsx';
 import Group from './Group.jsx';
 import AddUserForm from './AddUserForm.jsx';
+import Options from './Options.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: '',
-      user: 'newUser',
+      user: 'dot',
       groups: [1, 2, 3, 4, 5],
       dietaryRestriction: 'none',
       image: null,
@@ -24,6 +25,7 @@ class App extends React.Component {
         pricePoint: '',
         members: [],
         newMember: '',
+        options: [],
       },
     };
 
@@ -62,7 +64,6 @@ class App extends React.Component {
   hideToDo() {
     const hide = this;
   // wrapping to do in function so I can hide them and they do not stress me out
-  // TODO add user to group axios.post(/user_group)
   // TODO get all members from given group axios.get(/groups/:groupName/users)
   // TODO get all groups from given user axios.get(/groups/:userName/groups)
   // TODO get all active groups .get('/groups/:userName/groups/active'
@@ -84,9 +85,6 @@ class App extends React.Component {
     }).then(
       this.setState({ [k]: v }),
     )
-      .then(
-        console.log('Yay'),
-      )
       .catch((err) => {
         console.error('error handleprefeerence change', err);
       });
@@ -97,15 +95,21 @@ class App extends React.Component {
     const groupMembers = [];
     axios.get(`/api/groups/${group}/users`)
       .then((members) => {
-        members.map((member) => groupMembers.push(member));
-      })
-      .then(this.setState({
-        group: {
-          groupName: this.state.group.groupName,
-          pricePoint: this.state.group.pricePoint,
-          members: groupMembers,
-        },
-      }));
+        members.data.map((member) => groupMembers.concat(member))
+          .then(console.log(this.state.group.members))
+          .then(this.setState({
+            group: {
+              groupName: this.state.group.groupName,
+              pricePoint: this.state.group.pricePoint,
+              members: groupMembers,
+            },
+          }))
+          .then(console.log('words', this.state))
+          .catch((err) => {
+            console.error('getgroupmembers err', err);
+          });
+        // TODO send error to client
+      });
   }
 
   HandlePreferenceChange(k, v) {
@@ -181,7 +185,7 @@ class App extends React.Component {
 
   render() {
     const {
-      view, groups, group, members,
+      view, groups, group,
     } = this.state;
     const {
       HandlePreferenceChange, HandleNewGroupMember, HandleAddUserToGroup, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
@@ -203,10 +207,13 @@ class App extends React.Component {
     } else if (view === '/userSetting') {
       View = <UserSettings HandleUserSettings={HandleUserSettings}/>;
     } else if (view === '/group') {
-      View = <Group group={group} groupMembers={members} HandleViewChange={HandleViewChange}/>;
+      View = <Group group={group} groupMembers={this.state.group.members} HandleViewChange={HandleViewChange}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm HandleNewGroupMember={HandleNewGroupMember} HandleAddUserToGroup={HandleAddUserToGroup} />;
-    } else {
+    } else if (view === '/options') {
+      View = <Options options={this.state.group.options}/>
+    }
+    else {
       View = <Home groups={groups} HandleViewChange={HandleViewChange}/>;
     }
 
