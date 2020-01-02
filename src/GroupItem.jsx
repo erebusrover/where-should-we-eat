@@ -3,12 +3,12 @@ import React from 'react';
 
 const GroupItem = (props) => {
   const {
-    group, HandleViewChange, groupName, HandleGroupSetState, GetGroupMembers
+    handleViewChange, groupName, handleGroupSetState, getGroupMembers
   } = props;
   const clickFunction = () => {
-    HandleGroupSetState(groupName);
-    GetGroupMembers(groupName);
-    HandleViewChange('group');
+    handleGroupSetState(groupName);
+    getGroupMembers(groupName);
+    handleViewChange('group');
   };
   return (
       <div onClick={() => { clickFunction(); }}>

@@ -43,36 +43,36 @@ class App extends React.Component {
       showWinner: false,
     };
 
-    this.HandleViewChange = this.HandleViewChange.bind(this);
-    this.HandlePreferenceChange = this.HandlePreferenceChange.bind(this);
-    this.HandleSignInWithGoogle = this.HandleSignInWithGoogle.bind(this);
-    this.HandleNewGroupName = this.HandleNewGroupName.bind(this);
-    this.HandleNewGroupPricePoint = this.HandleNewGroupPricePoint.bind(this);
-    this.HandleNewGroupSubmit = this.HandleNewGroupSubmit.bind(this);
-    this.HandleUserSettings = this.HandleUserSettings.bind(this);
-    this.HandleAddUserToGroup = this.HandleAddUserToGroup.bind(this);
-    this.HandleNewGroupMember = this.HandleNewGroupMember.bind(this);
-    this.HandleGetOptions = this.HandleGetOptions.bind(this);
-    this.GetGroupMembers = this.GetGroupMembers.bind(this);
-    this.GetUsersGroups = this.GetUsersGroups.bind(this);
-    this.HandleGroupSetState = this.HandleGroupSetState.bind(this);
-    this.Randomizer = this.Randomizer.bind(this);
+    this.handleViewChange = this.handleViewChange.bind(this);
+    this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
+    this.handleSignInWithGoogle = this.handleSignInWithGoogle.bind(this);
+    this.handleNewGroupName = this.handleNewGroupName.bind(this);
+    this.handleNewGroupPricePoint = this.handleNewGroupPricePoint.bind(this);
+    this.handleNewGroupSubmit = this.handleNewGroupSubmit.bind(this);
+    this.handleUserSettings = this.handleUserSettings.bind(this);
+    this.handleAddUserToGroup = this.handleAddUserToGroup.bind(this);
+    this.handleNewGroupMember = this.handleNewGroupMember.bind(this);
+    this.handleGetOptions = this.handleGetOptions.bind(this);
+    this.getGroupMembers = this.getGroupMembers.bind(this);
+    this.getUsersGroups = this.getUsersGroups.bind(this);
+    this.handleGroupSetState = this.handleGroupSetState.bind(this);
+    this.randomizer = this.randomizer.bind(this);
   }
 
   componentDidMount() {
-    this.GetUsersGroups(this.state.user);
-    this.GetGroupMembers(this.state.groupName);
+    this.getUsersGroups(this.state.user);
+    this.getGroupMembers(this.state.groupName);
   }
 
-  HandleViewChange(view) {
+  handleViewChange(view) {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
   }
 
-  HandleSignInWithGoogle() {
+  handleSignInWithGoogle() {
     // TODO Being checked with Auth
     axios.get('/api/login')
-      .then(this.HandleViewChange('/userSettings'))
+      .then(this.handleViewChange('/userSettings'))
       .catch((err) => {
         console.error('error in handsigninwithgoogle', err);
       // TODO send error back to client
@@ -96,7 +96,7 @@ class App extends React.Component {
   // TODO create button and write funciton to delete useraccount from db axios.delete(/users/:userName)
   }
 
-  HandleGetOptions() {
+  handleGetOptions() {
     const { catagories, pricePoint } = this.state;
     axios.get('/api/choices', {
       radius: 40000,
@@ -108,7 +108,7 @@ class App extends React.Component {
       }));
   }
 
-  HandleUserSettings(k, v) {
+  handleUserSettings(k, v) {
     axios.post(`/api/users/${this.state.user}/${k}`, {
       k: v,
     }).then(
@@ -120,7 +120,7 @@ class App extends React.Component {
     // TODO send error to client
   }
 
-  GetGroupMembers(group) {
+  getGroupMembers(group) {
     axios.get(`/api/groups/${group}/users`)
       .then((members) => {
         this.setState({
@@ -133,13 +133,13 @@ class App extends React.Component {
     // TODO send error to client
   }
 
-  Randomizer() {
+  randomizer() {
     const { members } = this.state;
     const memberIndex = Math.floor(Math.random() * (members.length));
     this.setState({ choser: members[memberIndex].userName, showWinner: true });
   }
 
-  HandlePreferenceChange(k, v) {
+  handlePreferenceChange(k, v) {
     axios.patch(`/api/users/:${this.state.user}/${k}`, {
       k: v,
     })
@@ -152,13 +152,13 @@ class App extends React.Component {
     // TODO send error to client
   }
 
-  HandleNewGroupPricePoint(newPricePoint) {
+  handleNewGroupPricePoint(newPricePoint) {
     this.setState({
       pricePoint: newPricePoint,
     });
   }
 
-  HandleNewGroupSubmit() {
+  handleNewGroupSubmit() {
     const {
       groupName, pricePoint, user,
     } = this.state;
@@ -173,17 +173,17 @@ class App extends React.Component {
     // TODO send error to client
   }
 
-  HandleNewGroupName(e) {
+  handleNewGroupName(e) {
     this.setState({
       groupName: e.target.value,
     });
   }
 
-  HandleGroupSetState(groupName) {
+  handleGroupSetState(groupName) {
     this.setState({ groupName });
   }
 
-  GetUsersGroups(user) {
+  getUsersGroups(user) {
     axios.get(`/api/users/${user}/groups`)
       .then((groupsList) => {
         this.setState((state) => {
@@ -201,11 +201,11 @@ class App extends React.Component {
   }
 
 
-  HandleNewGroupMember(e) {
+  handleNewGroupMember(e) {
     this.setState({ newMember: e.target.value });
   }
 
-  HandleAddUserToGroup() {
+  handleAddUserToGroup() {
     const { newMember } = this.state;
     axios.post('/api/user_group', {
       userName: newMember,
@@ -220,37 +220,37 @@ class App extends React.Component {
       view, groups, group, members, options, groupName, pricePoint, choser, showWinner, user,
     } = this.state;
     const {
-      Randomizer, GetGroupMembers, HandleGroupSetState, HandleGetOptions, HandlePreferenceChange, HandleNewGroupMember, HandleAddUserToGroup, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
+      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange, handleNewGroupMember, handleAddUserToGroup, handleViewChange, handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit, handleUserSettings,
     } = this;
     let View;
     if (view === '/login') {
-      View = <SignIn HandleSignInWithGoogle={HandleSignInWithGoogle}/>;
+      View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
-      View = <Preferences PreferenceChange={HandlePreferenceChange}/>;
+      View = <Preferences PreferenceChange={handlePreferenceChange}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup
-      HandleViewChange={HandleViewChange}
-      HandleNewGroupName={HandleNewGroupName}
-      HandlePreferenceChange={HandlePreferenceChange}
-      HandleNewGroupPricePoint={HandleNewGroupPricePoint}
-      HandleNewGroupSubmit={HandleNewGroupSubmit}
-      HandleAddUserToGroup={HandleAddUserToGroup}
+      handleViewChange={handleViewChange}
+      handleNewGroupName={handleNewGroupName}
+      handlePreferenceChange={handlePreferenceChange}
+      handleNewGroupPricePoint={handleNewGroupPricePoint}
+      handleNewGroupSubmit={handleNewGroupSubmit}
+      handleAddUserToGroup={handleAddUserToGroup}
       />;
     } else if (view === '/userSetting') {
-      View = <UserSettings HandleUserSettings={HandleUserSettings}/>;
+      View = <UserSettings handleUserSettings={handleUserSettings}/>;
     } else if (view === '/group') {
-      View = <Group user={user} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} HandleGetOptions={HandleGetOptions} GetGroupMembers={GetGroupMembers} HandleViewChange={HandleViewChange} Randomizer={Randomizer} choser={choser} showWinner={showWinner}/>;
+      View = <Group user={user} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
-      View = <AddUserForm HandleNewGroupMember={HandleNewGroupMember} HandleAddUserToGroup={HandleAddUserToGroup} />;
+      View = <AddUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/options') {
       View = <Options options={options}/>;
     } else {
-      View = <Home groups={groups} GetGroupMembers={GetGroupMembers} HandleViewChange={HandleViewChange} HandleGroupSetState={HandleGroupSetState}/>;
+      View = <Home groups={groups} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
     }
 
     return (
             <div>
-                <Header HandleViewChange={HandleViewChange} />
+                <Header handleViewChange={handleViewChange} />
                 {View}
         </div>
 

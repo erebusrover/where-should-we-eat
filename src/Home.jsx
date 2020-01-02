@@ -2,10 +2,10 @@ import React from 'react';
 import GroupItem from './GroupItem.jsx';
 
 const Home = (props) => {
-  const { groups, HandleViewChange, HandleGroupSetState, GetGroupMembers } = props;
+  const { groups, handleViewChange, handleGroupSetState, getGroupMembers } = props;
   return (
 <div>
-{groups.map((group) => <GroupItem groupName={group.groupName} HandleViewChange={HandleViewChange} HandleGroupSetState={HandleGroupSetState} GetGroupMembers={GetGroupMembers} />)}
+{groups.map((group) => <GroupItem groupName={group.groupName} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState} getGroupMembers={getGroupMembers} />)}
 <h1>hi dot</h1>
 </div>
   );

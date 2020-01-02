@@ -5,7 +5,7 @@ import GroupMember from './GroupMember.jsx';
 
 const Group = (props) => {
   const {
-    user, groupName, pricePoint, groupMembers, HandleViewChange, HandleGetOptions, Randomizer, choser, showWinner,
+    user, groupName, pricePoint, groupMembers, handleViewChange, handleGetOptions, randomizer, choser, showWinner,
   } = props;
   return (
       <div>
@@ -18,21 +18,20 @@ const Group = (props) => {
             : <h2>Start Game To See Winner</h2>}
         </div>
         <div> {user === choser
-          ? <Button onClick={() => { HandleGetOptions(); HandleViewChange('options'); }}>Show Options</Button>
+          ? <Button onClick={() => { handleGetOptions(); handleViewChange('options'); }}>Show Options</Button>
           : <h2></h2>}
         </div>
 
           <ul>
     {groupMembers.map((groupMember) => <GroupMember groupMember={groupMember} />)}
 </ul>
-    <Button onClick={() => { HandleViewChange('addUserToGroup'); }}>Add Group Member</Button>
-    <Button onClick={() => { Randomizer(); }}>Start Game</Button>
+    <Button onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+    <Button onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
 
   );
 };
 
-// start button(appears only to creater)
 // history button
 // TODO toggle members list
 
