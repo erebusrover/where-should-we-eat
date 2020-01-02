@@ -17,7 +17,7 @@ class App extends React.Component {
     this.state = {
       view: '',
       user: 'dot',
-      groups: [1, 2, 3, 4, 5],
+      groups: [],
       dietaryRestriction: 'vegan',
       image: null,
       groupName: 'supercoolpeople',
@@ -89,8 +89,7 @@ class App extends React.Component {
     })
       .then((options) => this.setState({
         options,
-      }))
-      .then(console.log(this.state));
+      }));
   }
 
   HandleUserSettings(k, v) {
@@ -108,12 +107,10 @@ class App extends React.Component {
   GetGroupMembers(group) {
     axios.get(`/api/groups/${group}/users`)
       .then((members) => {
-        console.log(members);
         this.setState({
           members: members.data,
         });
       })
-      .then(console.log(this.state))
       .catch((err) => {
         console.error('getgroupmembers err', err);
       });
@@ -163,16 +160,26 @@ class App extends React.Component {
   GetUsersGroups() {
     const { user } = this.state;
     axios.get(`/api/users/${user}/groups`)
-    .then(response => {
-      console.log(response.data);
-    })
-
-      // .then((groups) => {
-      //   this.setState({
-      //     groups: groups.data,
-      //   });
+      // .then((response) => {
+      //   console.log('data', response.data);
       // })
-      .then(console.log(this.state))
+      // this.setState(state => {
+      //   const list = state.list.push(state.value);
+      //   return {
+      //     list,
+      //     value: '',
+      //   };
+      .then((groupsList) => {
+        this.setState((state) => {
+          const groups = groupsList.data.map((group) => {
+            state.groups.push(group);
+          });
+          return {
+            groups,
+          };
+        });
+      })
+      .then(console.log('state', this.state))
       .catch((err) => {
         console.error('getusersgrouperr', err);
       });
