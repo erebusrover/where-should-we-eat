@@ -50,7 +50,6 @@ class App extends React.Component {
   }
 
   HandleViewChange(view) {
-    console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
   }
 
