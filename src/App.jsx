@@ -28,6 +28,8 @@ class App extends React.Component {
       newMember: '',
       options: [],
       catagories: 'vegan',
+      choser: '',
+      showWinner: false,
     };
 
     this.HandleViewChange = this.HandleViewChange.bind(this);
@@ -43,6 +45,7 @@ class App extends React.Component {
     this.GetGroupMembers = this.GetGroupMembers.bind(this);
     this.GetUsersGroups = this.GetUsersGroups.bind(this);
     this.HandleGroupSetState = this.HandleGroupSetState.bind(this);
+    this.Randomizer = this.Randomizer.bind(this);
   }
 
   componentDidMount() {
@@ -67,19 +70,18 @@ class App extends React.Component {
 
   hideToDo() {
     const hide = this;
-  // wrapping to do in function so I can hide them and they do not stress me out
-  // TODO get all members from given group axios.get(/groups/:groupName/users)
-  // TODO get all groups from given user axios.get(/groups/:userName/groups)
-  // TODO get all active groups .get('/groups/:userName/groups/active'
-  // TODO get all inactive groups '/groups/:userName/groups/inactive'
-  // TODO axios.patch/groups:id/active toggles group active
-  // TODO axios.get /choices  gives options of places to eat
-  // TODO update group name .patch('/groups/:groupName/groupName'
-  // TODO update group pricepoint '/groups/:groupName/pricePoint'
+    // wrapping to do in function so I can hide them and they do not stress me out
+    // TODO axios.patch/groups:id/active toggles group active
+    // TODO axios.get /choices  gives options of places to eat
+    // TODO update group name .patch('/groups/:groupName/groupName'
+    // TODO update group pricepoint '/groups/:groupName/pricePoint'
+
   // TODO get and post group history
   // TODO delete user from group .delete('/groups/:userName'
   // TODO create button to reset dietary restrictions axios.delete(/users/:usesrName/dietaryRestriction)
   // TODO delete group axios.delete('/groups)
+  // TODO get all active groups .get('/groups/:userName/groups/active'
+  // TODO get all inactive groups '/groups/:userName/groups/inactive'
   // TODO create button and write funciton to delete useraccount from db axios.delete(/users/:userName)
   }
 
@@ -118,6 +120,12 @@ class App extends React.Component {
         console.error('getgroupmembers err', err);
       });
     // TODO send error to client
+  }
+
+  Randomizer() {
+    const { members } = this.state;
+    const memberIndex = Math.floor(Math.random() * (members.length));
+    this.setState({ choser: members[memberIndex].userName, showWinner: true });
   }
 
   HandlePreferenceChange(k, v) {
@@ -198,10 +206,10 @@ class App extends React.Component {
 
   render() {
     const {
-      view, groups, group, members, options, groupName, pricePoint,
+      view, groups, group, members, options, groupName, pricePoint, choser, showWinner
     } = this.state;
     const {
-      GetGroupMembers, HandleGroupSetState, HandleGetOptions, HandlePreferenceChange, HandleNewGroupMember, HandleAddUserToGroup, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
+      Randomizer, GetGroupMembers, HandleGroupSetState, HandleGetOptions, HandlePreferenceChange, HandleNewGroupMember, HandleAddUserToGroup, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
     } = this;
     let View;
     if (view === '/login') {
@@ -220,7 +228,7 @@ class App extends React.Component {
     } else if (view === '/userSetting') {
       View = <UserSettings HandleUserSettings={HandleUserSettings}/>;
     } else if (view === '/group') {
-      View = <Group group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} HandleGetOptions={HandleGetOptions} GetGroupMembers={GetGroupMembers} HandleViewChange={HandleViewChange}/>;
+      View = <Group group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} HandleGetOptions={HandleGetOptions} GetGroupMembers={GetGroupMembers} HandleViewChange={HandleViewChange} Randomizer={Randomizer} choser={choser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm HandleNewGroupMember={HandleNewGroupMember} HandleAddUserToGroup={HandleAddUserToGroup} />;
     } else if (view === '/options') {
