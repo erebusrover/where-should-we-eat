@@ -17,9 +17,7 @@ class App extends React.Component {
     this.state = {
       view: '',
       user: 'dot',
-      groups: [{
-        groupp_id: 1, groupName: 'supercoolpeople', active: 1, choice: null, pricePoint: '$',
-      }],
+      groups: [],
       dietaryRestriction: 'vegan',
       image: null,
       groupName: 'supercoolpeople',
@@ -206,7 +204,7 @@ class App extends React.Component {
 
   render() {
     const {
-      view, groups, group, members, options, groupName, pricePoint, choser, showWinner
+      view, groups, group, members, options, groupName, pricePoint, choser, showWinner, user,
     } = this.state;
     const {
       Randomizer, GetGroupMembers, HandleGroupSetState, HandleGetOptions, HandlePreferenceChange, HandleNewGroupMember, HandleAddUserToGroup, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
@@ -228,7 +226,7 @@ class App extends React.Component {
     } else if (view === '/userSetting') {
       View = <UserSettings HandleUserSettings={HandleUserSettings}/>;
     } else if (view === '/group') {
-      View = <Group group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} HandleGetOptions={HandleGetOptions} GetGroupMembers={GetGroupMembers} HandleViewChange={HandleViewChange} Randomizer={Randomizer} choser={choser} showWinner={showWinner}/>;
+      View = <Group user={user} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} HandleGetOptions={HandleGetOptions} GetGroupMembers={GetGroupMembers} HandleViewChange={HandleViewChange} Randomizer={Randomizer} choser={choser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm HandleNewGroupMember={HandleNewGroupMember} HandleAddUserToGroup={HandleAddUserToGroup} />;
     } else if (view === '/options') {
