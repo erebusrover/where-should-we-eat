@@ -225,6 +225,12 @@ router.get('/redirect', passport.authenticate('google'), (req, res) => {
   res.render('http://localhost');
 });
 
+// GET /logout logs user out
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
 // GET / renders home page, with info about active groups and sleeping groups
 
 // GET /preferences renders preferences/settings page for given user? /preferences:id?
