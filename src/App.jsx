@@ -42,6 +42,7 @@ class App extends React.Component {
     this.HandleGetOptions = this.HandleGetOptions.bind(this);
     this.GetGroupMembers = this.GetGroupMembers.bind(this);
     this.GetUsersGroups = this.GetUsersGroups.bind(this);
+    this.HandleGroupSetState = this.HandleGroupSetState.bind(this);
   }
 
   componentDidMount() {
@@ -159,6 +160,10 @@ class App extends React.Component {
     });
   }
 
+  HandleGroupSetState(groupName) {
+    this.setState({ groupName });
+  }
+
   GetUsersGroups(user) {
     axios.get(`/api/users/${user}/groups`)
       .then((groupsList) => {
@@ -168,7 +173,7 @@ class App extends React.Component {
             return {
               groups,
             };
-          })
+          });
         })
           .catch((err) => {
             console.error('getusersgrouperr', err);
@@ -196,7 +201,7 @@ class App extends React.Component {
       view, groups, group, members, options, groupName, pricePoint,
     } = this.state;
     const {
-      GetGroupMembers, HandleGetOptions, HandlePreferenceChange, HandleNewGroupMember, HandleAddUserToGroup, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
+      GetGroupMembers, HandleGroupSetState, HandleGetOptions, HandlePreferenceChange, HandleNewGroupMember, HandleAddUserToGroup, HandleViewChange, HandleSignInWithGoogle, HandleNewGroupName, HandleNewGroupPricePoint, HandleNewGroupSubmit, HandleUserSettings,
     } = this;
     let View;
     if (view === '/login') {
@@ -221,7 +226,7 @@ class App extends React.Component {
     } else if (view === '/options') {
       View = <Options options={options}/>;
     } else {
-      View = <Home groups={groups} HandleViewChange={HandleViewChange}/>;
+      View = <Home groups={groups} GetGroupMembers={GetGroupMembers} HandleViewChange={HandleViewChange} HandleGroupSetState={HandleGroupSetState}/>;
     }
 
     return (
