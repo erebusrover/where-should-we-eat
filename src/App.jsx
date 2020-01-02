@@ -17,7 +17,9 @@ class App extends React.Component {
     this.state = {
       view: '',
       user: 'dot',
-      groups: [1, 2, 3, 4, 5],
+      groups: [{
+        groupp_id: 1, groupName: 'supercoolpeople', active: 1, choice: null, pricePoint: '$',
+      }],
       dietaryRestriction: 'vegan',
       image: null,
       groupName: 'supercoolpeople',
@@ -43,8 +45,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.GetUsersGroups(this.state.user);
     this.GetGroupMembers(this.state.groupName);
-    this.GetUsersGroups();
   }
 
   HandleViewChange(view) {
@@ -97,8 +99,7 @@ class App extends React.Component {
     })
       .then((options) => this.setState({
         options,
-      }))
-      .then(console.log(this.state));
+      }));
   }
 
   HandleUserSettings(k, v) {
@@ -116,12 +117,10 @@ class App extends React.Component {
   GetGroupMembers(group) {
     axios.get(`/api/groups/${group}/users`)
       .then((members) => {
-        console.log(members);
         this.setState({
           members: members.data,
         });
       })
-      .then(console.log(this.state))
       .catch((err) => {
         console.error('getgroupmembers err', err);
       });
@@ -168,23 +167,23 @@ class App extends React.Component {
     });
   }
 
-  GetUsersGroups() {
-    const { user } = this.state;
+  GetUsersGroups(user) {
     axios.get(`/api/users/${user}/groups`)
-    .then(response => {
-      console.log(response.data);
-    })
-
-      // .then((groups) => {
-      //   this.setState({
-      //     groups: groups.data,
-      //   });
-      // })
-      .then(console.log(this.state))
-      .catch((err) => {
-        console.error('getusersgrouperr', err);
+      .then((groupsList) => {
+        this.setState((state) => {
+          const groups = groupsList.data.map((group) => {
+            state.groups.push(group);
+            return {
+              groups,
+            };
+          })
+        })
+          .catch((err) => {
+            console.error('getusersgrouperr', err);
+          });
       });
   }
+
 
   HandleNewGroupMember(e) {
     this.setState({ newMember: e.target.value });
@@ -230,7 +229,7 @@ class App extends React.Component {
     } else if (view === '/options') {
       View = <Options options={options}/>;
     } else {
-      View = <Home groups={groups} HandleViewChange={HandleViewChange} members={members}/>;
+      View = <Home groups={groups} HandleViewChange={HandleViewChange}/>;
     }
 
     return (
