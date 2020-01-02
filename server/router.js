@@ -222,7 +222,7 @@ router.get('/login', passport.authenticate('google', {
 
 // GET /redirect to reroute back to the app from the google consent screen
 router.get('/redirect', passport.authenticate('google'), (req, res) => {
-  res.render('http://localhost');
+  res.redirect('/');
 });
 
 // GET /logout logs user out
