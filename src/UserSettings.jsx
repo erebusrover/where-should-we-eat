@@ -3,9 +3,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
-// TODO add in username imput box, add to UserSettings tooo
 // TODO allow user to pick more than one dietary restriction
-const Preferences = (props) => {
+const UserSettings = (props) => {
  const {PreferenceChange} = props;
   return (
     <div>
@@ -33,4 +32,4 @@ const Preferences = (props) => {
 );
 };
 
-export default Preferences;
+export default UserSettings;

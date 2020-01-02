@@ -2,11 +2,10 @@ import React from 'react';
 
 
 const GroupItem = (props) => {
-  const { group } = props;
+  const { group, HandleViewChange, groupName } = props;
   return (
-      <div>
-          <h2>group name</h2>
-          <h2>{group}</h2>
+      <div onClick={() => { HandleViewChange('group'); }}>
+          <h2>{groupName}</h2>
       </div>
 
   );
