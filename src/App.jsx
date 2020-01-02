@@ -32,7 +32,7 @@ class App extends React.Component {
 
     this.HandleViewChange = this.HandleViewChange.bind(this);
     this.HandlePreferenceChange = this.HandlePreferenceChange.bind(this);
-    this.HandleSignInWithGoogle = this.HandleSignInWithGoogle.bind(this);
+    // this.HandleSignInWithGoogle = this.HandleSignInWithGoogle.bind(this);
     this.HandleNewGroupName = this.HandleNewGroupName.bind(this);
     this.HandleNewGroupPricePoint = this.HandleNewGroupPricePoint.bind(this);
     this.HandleNewGroupSubmit = this.HandleNewGroupSubmit.bind(this);
