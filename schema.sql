@@ -1,8 +1,13 @@
 /**
  *
     In order to use the Google Cloud SQL Proxy client on your machine,
-    your public IP address must be added to the list of authorized networks!
-    DM Joanna if you have any issues with this.
+
+    your public IP address must be added to the list of authorized networks on the Google Cloud Console!
+    DM Joanna to make this happen or if you have any issues.
+
+    Docs:
+    https://cloud.google.com/sql/docs/mysql/connect-admin-ip
+
   To execute this file, run:
     (enter DB_PASS from .env when prompted)
     mysql --host=35.225.190.208 --user=root --password < schema.sql
