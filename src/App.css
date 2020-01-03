@@ -47,3 +47,12 @@
 .option {
   border-color: blueviolet;
 }
+/* .purple {
+  .checkbox-material {
+    .check {
+      color: $checked-colour;
+    }
+    &:before{
+      background-color: $checked-colour;
+    }
+  } */
