@@ -3,13 +3,14 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
-// TODO add in username imput box, add to UserSettings tooo
 // TODO allow user to pick more than one dietary restriction
 const Preferences = (props) => {
  const {preferenceChange} = props;
   return (
     <div>
       <ul>
+        <h1>Pick A User Name</h1>
+        <input id='userName'type='text'/>
         <h1>Select a User Image </h1>
         <RadioGroup aria-label="image" name="image">
           <FormControlLabel value="one" control={<Radio />} label="one" onClick={() => preferenceChange('image', 'one')} />
@@ -26,7 +27,7 @@ const Preferences = (props) => {
           <FormControlLabel value="None" control={<Radio />} label="None" onClick={() => preferenceChange('dietaryRestriction', 'None')}/>
         </RadioGroup>
       <h1>Status</h1>
-      <input type='text'/>
+      <input id='status'type='text'/>
       </ul>
       <Button variant="contained" color="primary">Submit</Button>
     </div>

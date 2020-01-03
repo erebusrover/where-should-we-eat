@@ -57,6 +57,7 @@ class App extends React.Component {
     this.getUsersGroups = this.getUsersGroups.bind(this);
     this.handleGroupSetState = this.handleGroupSetState.bind(this);
     this.randomizer = this.randomizer.bind(this);
+    this.handleSetState = this.handleSetState.bind(this);
   }
 
   componentDidMount() {
@@ -108,12 +109,14 @@ class App extends React.Component {
       }));
   }
 
+  handleSetState(k, v) {
+    this.setState([k, v]);
+  }
+
   handleUserSettings(k, v) {
     axios.post(`/api/users/${this.state.user}/${k}`, {
       k: v,
-    }).then(
-      this.setState({ [k]: v }),
-    )
+    }).then(this.handleSetState(k, v))
       .catch((err) => {
         console.error('error handleprefeerence change', err);
       });
@@ -143,9 +146,7 @@ class App extends React.Component {
     axios.patch(`/api/users/:${this.state.user}/${k}`, {
       k: v,
     })
-      .then(
-        this.setState({ [k]: v }),
-      )
+      .then(this.handleSetState(k, v))
       .catch((err) => {
         console.error('error handleprefeerence change', err);
       });
@@ -220,18 +221,22 @@ class App extends React.Component {
       view, groups, group, members, options, groupName, pricePoint, choser, showWinner, user,
     } = this.state;
     const {
-      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange, handleNewGroupMember, handleAddUserToGroup, handleViewChange, handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit, handleUserSettings,
+      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange,
+      handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
+      handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
+      handleUserSettings,
     } = this;
     let View;
     if (view === '/login') {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
-      View = <Preferences PreferenceChange={handlePreferenceChange}/>;
+      View = <Preferences PreferenceChange={handlePreferenceChange} handleSetState={handleSetState}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup
       handleViewChange={handleViewChange}
       handleNewGroupName={handleNewGroupName}
       handlePreferenceChange={handlePreferenceChange}
+      handleSetState={handleSetState}
       handleNewGroupPricePoint={handleNewGroupPricePoint}
       handleNewGroupSubmit={handleNewGroupSubmit}
       handleAddUserToGroup={handleAddUserToGroup}
