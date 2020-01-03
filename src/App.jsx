@@ -114,7 +114,7 @@ class App extends React.Component {
   handleSignOutWithGoogle() {
     axios.get('/api/logout')
       .then(this.handleViewChange('/login'))
-      .catch((err) => {
+      .catch(() => {
         this.toggleDialog();
       });
   }
@@ -126,14 +126,13 @@ class App extends React.Component {
     // TODO axios.get /choices  gives options of places to eat
     // TODO update group name .patch('/groups/:groupName/groupName'
     // TODO update group pricepoint '/groups/:groupName/pricePoint'
-
-  // TODO get and post group history
-  // TODO delete user from group .delete('/groups/:userName'
-  // TODO create button to reset dietary restrictions axios.delete(/users/:usesrName/dietaryRestriction)
-  // TODO delete group axios.delete('/groups)
-  // TODO get all active groups .get('/groups/:userName/groups/active'
-  // TODO get all inactive groups '/groups/:userName/groups/inactive'
-  // TODO create button and write funciton to delete useraccount from db axios.delete(/users/:userName)
+    // TODO get and post group history
+    // TODO delete user from group .delete('/groups/:userName'
+    // TODO create button to reset dietary restrictions axios.delete(/users/:usesrName/dietaryRestriction)
+    // TODO delete group axios.delete('/groups)
+    // TODO get all active groups .get('/groups/:userName/groups/active'
+    // TODO get all inactive groups '/groups/:userName/groups/inactive'
+    // TODO create button and write funciton to delete useraccount from db axios.delete(/users/:userName)
   }
 
   handleGetOptions() {
