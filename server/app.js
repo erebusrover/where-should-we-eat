@@ -14,6 +14,7 @@ const app = express();
 
 // call middleware functions
 app.use(passport.initialize());
+app.use(passport.session());
 app.use(helmet());
 app.use(compression());
 app.use(bodyParser.json());
