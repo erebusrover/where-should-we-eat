@@ -17,6 +17,7 @@ class App extends React.Component {
     this.state = {
       view: '',
       user: 'dot',
+      userStatus: '',
       groups: [],
       dietaryRestriction: 'vegan',
       image: null,
@@ -58,6 +59,8 @@ class App extends React.Component {
     this.handleGroupSetState = this.handleGroupSetState.bind(this);
     this.randomizer = this.randomizer.bind(this);
     this.handleSetState = this.handleSetState.bind(this);
+    this.handleUserNameInput = this.handleUserNameInput.bind(this);
+    this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
   }
 
   componentDidMount() {
@@ -111,6 +114,7 @@ class App extends React.Component {
 
   handleSetState(k, v) {
     this.setState([k, v]);
+    console.log("here", this.state);
   }
 
   handleUserSettings(k, v) {
@@ -147,6 +151,7 @@ class App extends React.Component {
       k: v,
     })
       .then(this.handleSetState(k, v))
+      .then(console.log(this.state))
       .catch((err) => {
         console.error('error handleprefeerence change', err);
       });
@@ -206,6 +211,14 @@ class App extends React.Component {
     this.setState({ newMember: e.target.value });
   }
 
+  handleUserNameInput(e) {
+    this.setState({ user: e.target.value });
+  }
+
+  handleUserStatusInput(e) {
+    this.setState({ userStatus: e.target.value });
+  }
+
   handleAddUserToGroup() {
     const { newMember } = this.state;
     axios.post('/api/user_group', {
@@ -224,13 +237,13 @@ class App extends React.Component {
       randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
-      handleUserSettings,
+      handleUserSettings, handleUserNameInput, handleUserStatusInput
     } = this;
     let View;
     if (view === '/login') {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
-      View = <Preferences PreferenceChange={handlePreferenceChange} handleSetState={handleSetState}/>;
+      View = <Preferences handleSetState={handleSetState} handleUserStatusInput={handleUserStatusInput}handleSetState={handleSetState} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup
       handleViewChange={handleViewChange}
@@ -242,7 +255,7 @@ class App extends React.Component {
       handleAddUserToGroup={handleAddUserToGroup}
       />;
     } else if (view === '/userSetting') {
-      View = <UserSettings handleUserSettings={handleUserSettings}/>;
+      View = <UserSettings handleUserSettings={handleUserSettings} handleUserStatusInput={handleUserStatusInput} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
       View = <Group user={user} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
