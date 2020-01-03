@@ -68,37 +68,36 @@ class App extends React.Component {
     this.getGroupMembers(this.state.groupName);
   }
 
-  HandleViewChange(view) {
   handleViewChange(view) {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
   }
 
 
-  HandleSignInWithGoogle() {
-    axios.get('/api/login')
-      .then(this.HandleViewChange('/userSettings'))
-      .catch((err) => {
-        console.error('error in handsigninwithgoogle', err);
-      // TODO send error back to client
-      });
-    return window.open('/api/login', '_self');
-    // axios.get('/api/login')
-    // .then(console.log('success'))
-    // .then(this.setState({ user: 'DOT' }))
-    // .catch((err) => {
-    //   console.log('error handling signin with google', err);
-    // // send error back to client
-    // });
-
-    // TODO Being checked with Auth
+//   HandleSignInWithGoogle() {
 //     axios.get('/api/login')
-//       .then(this.handleViewChange('/userSettings'))
+//       .then(this.HandleViewChange('/userSettings'))
 //       .catch((err) => {
 //         console.error('error in handsigninwithgoogle', err);
 //       // TODO send error back to client
 //       });
-  }
+//     return window.open('/api/login', '_self');
+//     // axios.get('/api/login')
+//     // .then(console.log('success'))
+//     // .then(this.setState({ user: 'DOT' }))
+//     // .catch((err) => {
+//     //   console.log('error handling signin with google', err);
+//     // // send error back to client
+//     // });
+
+//     // TODO Being checked with Auth
+// //     axios.get('/api/login')
+// //       .then(this.handleViewChange('/userSettings'))
+// //       .catch((err) => {
+// //         console.error('error in handsigninwithgoogle', err);
+// //       // TODO send error back to client
+// //       });
+//   }
 
   hideToDo() {
     const hide = this;
