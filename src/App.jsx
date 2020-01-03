@@ -105,6 +105,7 @@ class App extends React.Component {
   }
 
   toggleDialog() {
+    // toggles error dialog box
     if (this.state.open === false) {
       this.setState({ open: true });
     } else {
@@ -118,7 +119,7 @@ class App extends React.Component {
   }
 
 
-  HandleSignInWithGoogle() {
+  handleSignInWithGoogle() {
     return window.open('/api/login', '_self');
     // axios.get('/api/login')
     // .then(console.log('success'))
@@ -377,6 +378,5 @@ class App extends React.Component {
     );
   }
 }
-
 
 export default App;
