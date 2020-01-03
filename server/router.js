@@ -33,16 +33,17 @@ const { getUserLocation } = require('./config/google');
 const router = Router();
 
 // POST to /users to add user to db --> how will google auth be involved in this?
-// TODO: separate userstatus change from here
 router.post('/users', (req, res) => {
   // get username from req body
   const { userName } = req.body;
   // use db helper function to add new user to db, setting default values for status, diet, image
   addNewUser(userName)
-    .then(() => {
+    .then((response) => {
+      console.log(response);
       res.sendStatus(201);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.sendStatus(400);
     });
 });
@@ -120,7 +121,7 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   const { restrictions } = req.body;
   const { userName } = req.params;
   addUserDietaryRestrictions(userName, restrictions)
-    .then(() => {
+    .then(() => { 
       res.sendStatus(201);
     })
     .catch((err) => {

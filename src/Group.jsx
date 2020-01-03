@@ -5,7 +5,7 @@ import GroupMember from './GroupMember.jsx';
 
 const Group = (props) => {
   const {
-    groupName, pricePoint, groupMembers, HandleViewChange, HandleGetOptions,
+    user, groupName, pricePoint, groupMembers, handleViewChange, userImages, handleGetOptions, randomizer, choser, showWinner,
   } = props;
   return (
       <div>
@@ -13,19 +13,26 @@ const Group = (props) => {
           <h2> PRICEPOINT $</h2>
           <h2>{pricePoint}</h2>
           <br />
+          <div> {showWinner === true
+            ? <h1>{choser}</h1>
+            : <h2>Start Game To See Winner</h2>}
+        </div>
+        <div> {user === choser
+          ? <Button onClick={() => { handleGetOptions(); handleViewChange('options'); }}>Show Options</Button>
+          : <h2></h2>}
+        </div>
 
-          <h3>IMAGE GOES HERE</h3>
           <ul>
-    {groupMembers.map((groupMember) => <GroupMember groupMember={groupMember} />)}
+    {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
 </ul>
-    <Button onClick={() => { HandleViewChange('addUserToGroup'); }}>Add Group Member</Button>
-    <Button onClick={() => { HandleGetOptions(); HandleViewChange('options'); }}>Start Game</Button>
+    <Button onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+    <Button onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
+    <Button onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
 
   );
 };
 
-// start button(appears only to creater)
 // history button
 // TODO toggle members list
 
