@@ -1,4 +1,6 @@
 const { Router } = require('express');
+const passport = require('passport');
+
 // require DB helpers
 const {
   addNewUser,
@@ -32,16 +34,17 @@ const { getUserLocation } = require('./config/google');
 const router = Router();
 
 // POST to /users to add user to db --> how will google auth be involved in this?
-// TODO: separate userstatus change from here
 router.post('/users', (req, res) => {
   // get username from req body
   const { userName } = req.body;
   // use db helper function to add new user to db, setting default values for status, diet, image
   addNewUser(userName)
-    .then(() => {
+    .then((response) => {
+      console.log(response);
       res.sendStatus(201);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.sendStatus(400);
     });
 });
@@ -348,9 +351,21 @@ router.get('/groupHistory', (req, res) => {
 });
 
 // GET /login verify user login using Passport --> google auth?
-// router.get('/login', passport.authenticate('google', {
-// scope: ['profile', 'email', 'openid'],
-// }));
+router.get('/login', passport.authenticate('google', {
+  scope: ['profile'],
+}));
+
+// GET /redirect to reroute back to the app from the google consent screen
+router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
+  res.redirect('/');
+});
+
+
+// GET /logout logs user out
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
 
 // GET / renders home page, with info about active groups and sleeping groups
 

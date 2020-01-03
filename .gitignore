@@ -1,5 +1,9 @@
 build/*
-!build/index.html
+build/
+
+app.yaml
+
+cloud_sql_proxy
 
 #api keys
 server/config/keys.js
