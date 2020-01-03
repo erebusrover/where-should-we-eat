@@ -42,15 +42,15 @@ const Preferences = (props) => {
         <input id='userName'type='text' onChange={handleUserNameInput}/>
         <h1>Select a User Image </h1>
         <RadioGroup row="true" aria-label="image" name="image">
-          <img className='userImages' src={userImages.oppossum} width="130" height="121"/>
+          <img className='userImages' src={userImages.oppossum} width="130" height="121" border="5"/>
           <FormControlLabel className='radio'value={userImages.oppossum} control={<PurpleRadio color="#730099" />}onClick={() => handleSetState('image', userImages.oppossum)} />
-          <img className='userImages' src={userImages.koala} width="130" height="121"/>
+          <img className='userImages' src={userImages.koala} width="130" height="121" border="5"/>
           <FormControlLabel className='radio'value={userImages.koala} control={<PurpleRadio color='#9900cc' />} onClick={() => handleSetState('image', userImages.koala)}/>
-          <img className='userImages' src={userImages.bilby} width="130" height="121"/>
+          <img className='userImages' src={userImages.bilby} width="130" height="121" border="5"/>
           <FormControlLabel className='radio'value={userImages.bilby} control={<PurpleRadio />} onClick={() => handleSetState('image', userImages.bilby)} />
-          <img className='userImages' src={userImages.kangaroo} width="130" height="121"/>
+          <img className='userImages' src={userImages.kangaroo} width="130" height="121" border="5"/>
           <FormControlLabel className='radio'value={userImages.kangaroo} control={<PurpleRadio />} onClick={() => handleSetState('image', userImages.kangaroo)} />
-          <img className='userImages' src={userImages.sugarGlider} width="130" height="121"/>
+          <img className='userImages' src={userImages.sugarGlider} width="130" height="121" border="5"/>
           <FormControlLabel className='radio'value={userImages.sugarGlider} control={<PurpleRadio />} onClick={() => handleSetState('image', userImages.sugarGlider)} />
         </RadioGroup>
         <h2> Select Dietary Restricitons</h2>

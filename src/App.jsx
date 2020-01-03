@@ -104,6 +104,7 @@ class App extends React.Component {
   }
 
   toggleDialog() {
+    // toggles error dialog box
     if (this.state.open === false) {
       this.setState({ open: true });
     } else {
@@ -365,6 +366,5 @@ class App extends React.Component {
     );
   }
 }
-
 
 export default App;
