@@ -26,7 +26,6 @@
     "react-scripts": "3.3.0",
     "sequelize": "^5.21.3"
   },
-  "homepage": "https://where-should-we-eat.azurewebsites.net",
   "scripts": {
     "start": "serve -s build",
     "prestart": "npm install -g serve",
