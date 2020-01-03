@@ -26,6 +26,7 @@ const Group = (props) => {
     {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
 </ul>
     <Button onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+    <Button onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
     <Button onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
 

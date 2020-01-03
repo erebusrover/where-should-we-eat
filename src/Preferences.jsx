@@ -3,10 +3,12 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
+import { Checkbox } from '@material-ui/core';
+
 
 // TODO allow user to pick more than one dietary restriction
 const Preferences = (props) => {
-  const { preferenceChange, handleUserNameInput, handleUserStatusInput, handleSetState, userImages, } = props;
+  const { preferenceChange, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, handleSetState, userImages, } = props;
  
   return (
     <div>
@@ -28,12 +30,12 @@ const Preferences = (props) => {
         </RadioGroup>
         <h2> Select Dietary Restricitons</h2>
         <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
-          <FormControlLabel className='radio'value="Vegan" control={<Radio />} label="Vegan" onClick={() => handleSetState('dietaryRestriction', 'Vegan')}/>
-          <FormControlLabel className='radio'value="Vegitarian" control={<Radio />} label="Vegitarian"onClick={() => handleSetState('dietaryRestriction', 'Vegitarian')} />
-          <FormControlLabel className='radio'value="Kosher" control={<Radio />} label="Kosher" onClick={() => handleSetState('dietaryRestriction', 'Kosher')}/>
-          <FormControlLabel className='radio'value="Gluten Free" control={<Radio />} label="Gluten Free"onClick={() => handleSetState('dietaryRestriction', 'Gluten Free')} />
-          <FormControlLabel className='radio'value="Halal" control={<Radio />} label="Halal" onClick={() => handleSetState('dietaryRestriction', 'Halal')} />
-          <FormControlLabel className='radio'value="None" control={<Radio />} label="None" onClick={() => handleSetState('dietaryRestriction', 'None')}/>
+          <FormControlLabel className='radio'value="Vegan" control={<Checkbox />} label="Vegan" onClick={() => handleDietaryRestrictionsSetState()}/>
+          <FormControlLabel className='radio'value="Vegitarian" control={<Checkbox />} label="Vegitarian"onClick={() => handleDietaryRestrictionsSetState()} />
+          <FormControlLabel className='radio'value="Kosher" control={<Checkbox />} label="Kosher" onClick={() => handleDietaryRestrictionsSetState()}/>
+          <FormControlLabel className='radio'value="Gluten Free" control={<Checkbox />} label="Gluten Free"onClick={() => handleDietaryRestrictionsSetState()} />
+          <FormControlLabel className='radio'value="Halal" control={<Checkbox />} label="Halal" onClick={() => handleDietaryRestrictionsSetState()} />
+          <FormControlLabel className='radio'value="None" control={<Checkbox />} label="None" onClick={() => handleDietaryRestrictionsSetState()}/>
         </RadioGroup>
       <h1>Status</h1>
       <input id='status'type='text' onChange={handleUserStatusInput}/>

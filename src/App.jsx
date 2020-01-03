@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import RemoveUserForm from './RemoveUserForm.jsx';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx';
@@ -189,7 +190,6 @@ class App extends React.Component {
       .catch((err) => {
         this.toggleDialog();
       });
-    // TODO send error to client
   }
 
   handleNewGroupPricePoint(newPricePoint) {
@@ -207,10 +207,9 @@ class App extends React.Component {
       pricePoint,
       userName: user,
     })
-      .catch((err) => {
+      .catch(() => {
         this.toggleDialog();
       });
-    // TODO send error to client
   }
 
   handleNewGroupName(e) {
@@ -234,7 +233,7 @@ class App extends React.Component {
             };
           });
         })
-          .catch((err) => {
+          .catch(() => {
             this.toggleDialog();
           });
       });
@@ -251,32 +250,6 @@ class App extends React.Component {
     // this.setState()
     this.handleViewChange('group');
     // TODO need data to figure this out
-    // getUsersGroups(user) {
-    //   axios.get(`/api/users/${user}/groups`)
-    //     .then((groupsList) => {
-    //       this.setState((state) => {
-    //         const groups = groupsList.data.map((group) => {
-    //           state.groups.push(group);
-    //           return {
-    //             groups,
-    //           };
-    //         });
-    //       })
-    //         .catch((err) => {
-    //           console.error('getusersgrouperr', err);
-    //         });
-    //     });
-    // }
-    // axios.get(`/api/groups/${group}/users`)
-    //     .then((members) => {
-    //       this.setState({
-    //         members: members.data,
-    //       });
-    //     })
-    //     .catch((err) => {
-    //       console.error('getgroupmembers err', err);
-    //     });
-    //   // TODO send error to client
   }
 
   handleNewGroupMember(e) {
@@ -293,7 +266,7 @@ class App extends React.Component {
     axios.post('/api/user_group', {
       userName: newMember,
     })
-      .catch((err) => {
+      .catch(() => {
         this.toggleDialog();
       });
   }
@@ -302,6 +275,17 @@ class App extends React.Component {
     this.setState({ userStatus: e.target.value });
   }
 
+  handleDietaryRestrictionsSetState(e) {
+    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`)
+      .then(() => {
+        this.setState({
+          dietartRetriction: this.state.dietaryRestriction.push(e),
+        });
+      })
+      .catch(() => {
+        this.toggleDialog();
+      });
+  }
 
   render() {
     const {
@@ -311,13 +295,13 @@ class App extends React.Component {
       randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
-      handleUserSettings, handleUserNameInput, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
+      handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
     } = this;
     let View;
     if (view === '/login') {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
-      View = <Preferences userImages={userImages} handleUserStatusInput={handleUserStatusInput} handleSetState={handleSetState} handleUserNameInput={handleUserNameInput}/>;
+      View = <Preferences userImages={userImages} handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState} handleUserStatusInput={handleUserStatusInput} handleSetState={handleSetState} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup
       handleViewChange={handleViewChange}
@@ -334,6 +318,8 @@ class App extends React.Component {
       View = <Group user={user} userImages={userImages}group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
+    } else if (view === 'removeUserFromGroup') {
+      View = <RemoveUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/options') {
       View = <Options options={options} handlePass={handlePass}/>;
     } else {
@@ -344,7 +330,7 @@ class App extends React.Component {
             <div>
                 <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleSignInWithGoogle}handleSignOutWithGoogle={handleSignOutWithGoogle} />
                 <Avatar src={userImages.kangaroo}/>
-                <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open} onEnter={console.log('Hey.')}>
+                <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
                     <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
                 </Dialog>
                 {View}
