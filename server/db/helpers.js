@@ -8,11 +8,15 @@ const { pool } = require('./config.js');
 // const query = util.promisify(pool.query).bind(pool);
 
 // add new user to db
-const addNewUser = async (userName) => {
-  const sql = `INSERT into user (userName) VALUES (?)
-                ON DUPLICATE KEY UPDATE userName = ?`;
-  return pool.query(sql, [userName, userName]);
+const addNewUser = async (userName, googleId) => {
+  const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
+  return pool.query(sql, [userName, googleId]);
+};
 
+// check db for user by Google ID
+const checkDb = async (googleId) => {
+  const sql = 'SELECT * FROM user WHERE google_id = ?';
+  return pool.query(sql, [googleId]);
 };
 
 // allow user to change their username
