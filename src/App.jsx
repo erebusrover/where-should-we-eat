@@ -26,6 +26,20 @@ const userImages = {
   sugarGlider: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg',
 
 };
+const options = [{
+  name: 'Four Barrel Rum',
+  rating: 8,
+  price: '$$',
+  phone: '+14152520800',
+  address: '375 Valencia St',
+},
+{
+  name: 'Four Barrel Coffee',
+  rating: 4,
+  price: '$',
+  phone: '+14152520800',
+  address: '375 Amadee St',
+}];
 
 class App extends React.Component {
   constructor(props) {
@@ -41,20 +55,7 @@ class App extends React.Component {
       pricePoint: '',
       members: [],
       newMember: '',
-      options: [{
-        name: 'Four Barrel Rum',
-        rating: 8,
-        price: '$$',
-        phone: '+14152520800',
-        address: '375 Valencia St',
-      },
-      {
-        name: 'Four Barrel Coffee',
-        rating: 4,
-        price: '$',
-        phone: '+14152520800',
-        address: '375 Amadee St',
-      }],
+      options,
       catagories: 'vegan',
       choser: '',
       showWinner: false,
@@ -80,6 +81,7 @@ class App extends React.Component {
     this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
     this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
+    this.handleDietaryRestrictionsSetState = this.handleDietaryRestrictionsSetState.bind(this);
   }
 
   componentDidMount() {
@@ -276,7 +278,9 @@ class App extends React.Component {
   }
 
   handleDietaryRestrictionsSetState(e) {
-    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`)
+    const { user, dietaryRestriction } = this.state;
+    const restrictions = dietaryRestriction.split();
+    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions})
       .then(() => {
         this.setState({
           dietartRetriction: this.state.dietaryRestriction.push(e),
