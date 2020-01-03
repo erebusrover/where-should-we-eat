@@ -4,6 +4,9 @@
     your public IP address must be added to the list of authorized networks on the Google Cloud Console!
     DM Joanna to make this happen or if you have any issues.
 
+    Docs:
+    https://cloud.google.com/sql/docs/mysql/connect-admin-ip
+
 
   To execute this file, run:
     (enter DB_PASS from .env when prompted)
