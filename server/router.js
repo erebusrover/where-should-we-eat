@@ -121,7 +121,7 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   const { restrictions } = req.body;
   const { userName } = req.params;
   addUserDietaryRestrictions(userName, restrictions)
-    .then(() => {
+    .then(() => { 
       res.sendStatus(201);
     })
     .catch((err) => {
@@ -346,8 +346,7 @@ router.get('/login', passport.authenticate('google', {
 
 // GET /redirect to reroute back to the app from the google consent screen
 router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
-  console.log('you hit the redirect route');
-  // res.redirect('/');
+  res.redirect('/');
 });
 
 
