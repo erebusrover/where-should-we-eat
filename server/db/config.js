@@ -39,7 +39,7 @@ const config = {
 
 
 let pool;
-const createPool = () => {
+const createPool = async () => {
   pool = mysql.createPool({
     user: process.env.DB_USER, // e.g. 'my-db-user'
     password: process.env.DB_PASS, // e.g. 'my-db-password'
@@ -49,11 +49,11 @@ const createPool = () => {
     // If connecting via TCP, enter the IP and port instead
     // host: 'localhost',
     // port: 3306,
-
-    //...
   });
 };
-createPool();
+createPool().then(() => {
+  console.log('hey');
+});
 
 
 // module.exports.connection = connection;
