@@ -8,10 +8,16 @@ const { connection } = require('./config.js');
 const query = util.promisify(connection.query).bind(connection);
 
 // add new user to db
-const addNewUser = (userName) => {
-  const sql = `INSERT into user (userName) VALUES (?)
-                ON DUPLICATE KEY UPDATE userName = ?`;
-  return query(sql, [userName, userName]);
+const addNewUser = (userName, googleId) => {
+  const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
+  return query(sql, [userName, googleId]);
+};
+
+// check db for user by Google ID
+const checkDb = (googleId) => {
+  const sql = 'SELECT * FROM user WHERE google_id = ?';
+  const result = query(sql, [googleId]);
+  return result;
 };
 
 // allow user to change their username
@@ -173,6 +179,7 @@ const getGroupHistory = (groupName) => {
 
 module.exports = {
   addNewUser,
+  checkDb,
   updateUserName,
   updateUserStatus,
   addUserImage,
