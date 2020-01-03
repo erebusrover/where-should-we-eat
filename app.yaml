@@ -17,3 +17,11 @@ handlers:
 #[cloud sql connection]
 beta_settings:
   cloud_sql_instances: where-should-we--1577491661730:us-central1:marsupials
+
+# cloud sql connection variables
+env_variables:
+  DB_USER: marsupials
+  DB_PASS: OxItt8JK6mNvrzj6
+  DB_NAME: wswe
+  # e.g. my-awesome-project:us-central1:my-cloud-sql-instance
+  CLOUD_SQL_CONNECTION_NAME: where-should-we--1577491661730:us-central1:marsupials
