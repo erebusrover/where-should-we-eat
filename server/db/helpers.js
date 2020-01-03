@@ -174,7 +174,6 @@ const getGroupHistory = async (groupName) => {
 
 module.exports = {
   addNewUser,
-  checkDb,
   updateUserName,
   updateUserStatus,
   addUserImage,
