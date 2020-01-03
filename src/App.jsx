@@ -6,6 +6,9 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+// import { createMuiTheme } from '@material-ui/core/styles';
+// import getMuiTheme from '@material-ui/styles/getMuiTheme';
+// import * as Colors from '@material-ui/core/colors';
 import RemoveUserForm from './RemoveUserForm.jsx';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
@@ -17,6 +20,7 @@ import Group from './Group.jsx';
 import AddUserForm from './AddUserForm.jsx';
 import Options from './Options.jsx';
 import './App.css';
+
 
 const userImages = {
   oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
@@ -41,6 +45,16 @@ const options = [{
   address: '375 Amadee St',
 }];
 
+// const muiTheme = getMuiTheme({
+//   palette: {
+//     primary: Colors.purple,
+//     secondary: Colors.green,
+//     alternateTextColor: Colors.red.A200,
+//   },
+//   status: {
+//     danger: 'orange',
+//   },
+// });
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -106,7 +120,7 @@ class App extends React.Component {
     // TODO Being checked with Auth
     axios.get('/api/login')
       .then(this.handleViewChange('/userSettings'))
-      .catch((err) => {
+      .catch(() => {
         this.toggleDialog();
       });
   }
@@ -114,6 +128,14 @@ class App extends React.Component {
   handleSignOutWithGoogle() {
     axios.get('/api/logout')
       .then(this.handleViewChange('/login'))
+      .catch(() => {
+        this.toggleDialog();
+      });
+  }
+
+  getAllUsers() {
+    //TODO finish this function
+    axios.get('/api/users')
       .catch(() => {
         this.toggleDialog();
       });
@@ -279,7 +301,7 @@ class App extends React.Component {
   handleDietaryRestrictionsSetState(e) {
     const { user, dietaryRestriction } = this.state;
     const restrictions = dietaryRestriction.split();
-    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions})
+    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
       .then(() => {
         this.setState({
           dietartRetriction: this.state.dietaryRestriction.push(e),
@@ -331,6 +353,7 @@ class App extends React.Component {
 
     return (
             <div>
+               {/* <MuiThemeProvider muiTheme={muiTheme}></MuiThemeProvider> */}
                 <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleSignInWithGoogle}handleSignOutWithGoogle={handleSignOutWithGoogle} />
                 <Avatar src={userImages.kangaroo}/>
                 <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>

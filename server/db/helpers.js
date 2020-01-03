@@ -73,6 +73,11 @@ const deleteUserFromGroup = (userName, groupName) => {
                 AND groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
   return query(sql, [userName, groupName]);
 };
+// gets all users from database
+const getAllUsers = () => {
+  const sql = `SELECT * FROM user`
+  return query(sql)
+};
 
 // delete user from user table
 const deleteUser = (userName) => {
@@ -194,4 +199,5 @@ module.exports = {
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,
+  getAllUsers
 };
