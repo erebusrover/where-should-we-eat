@@ -120,7 +120,7 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   const { restrictions } = req.body;
   const { userName } = req.params;
   addUserDietaryRestrictions(userName, restrictions)
-    .then(() => {
+    .then(() => { 
       res.sendStatus(201);
     })
     .catch((err) => {

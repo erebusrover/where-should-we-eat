@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.userImages {
+  border-radius: 20%;
+  border-color: aquamarine;
+}
+.radio {
+  padding: 1%;
+}
+.option {
+  border-color: blueviolet;
+}
