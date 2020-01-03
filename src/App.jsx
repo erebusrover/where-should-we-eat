@@ -104,7 +104,7 @@ class App extends React.Component {
   }
 
 
-  HandleSignInWithGoogle() {
+  handleSignInWithGoogle() {
     return window.open('/api/login', '_self');
     // axios.get('/api/login')
     // .then(console.log('success'))
