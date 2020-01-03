@@ -2,6 +2,10 @@
 import React from 'react';
 import axios from 'axios';
 import { Avatar } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx';
@@ -54,6 +58,7 @@ class App extends React.Component {
       choser: '',
       showWinner: false,
       userImages,
+      open: false,
     };
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
@@ -73,11 +78,20 @@ class App extends React.Component {
     this.handleUserNameInput = this.handleUserNameInput.bind(this);
     this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
     this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
+    this.toggleDialog = this.toggleDialog.bind(this);
   }
 
   componentDidMount() {
     this.getUsersGroups(this.state.user);
     this.getGroupMembers(this.state.groupName);
+  }
+
+  toggleDialog() {
+    if (this.state.open === false) {
+      this.setState({ open: true });
+    } else {
+      this.setState({ open: false });
+    }
   }
 
   handleViewChange(view) {
@@ -90,8 +104,7 @@ class App extends React.Component {
     axios.get('/api/login')
       .then(this.handleViewChange('/userSettings'))
       .catch((err) => {
-        console.error('error in handsigninwithgoogle', err);
-      // TODO send error back to client
+        this.toggleDialog();
       });
   }
 
@@ -99,7 +112,7 @@ class App extends React.Component {
     axios.get('/api/logout')
       .then(this.handleViewChange('/login'))
       .catch((err) => {
-        console.error('signouterr', err);
+        this.toggleDialog();
       });
   }
 
@@ -129,7 +142,10 @@ class App extends React.Component {
     })
       .then((options) => this.setState({
         options,
-      }));
+      }))
+      .catch(() => {
+        this.toggleDialog();
+      });
   }
 
   handleSetState(k, v) {
@@ -141,10 +157,9 @@ class App extends React.Component {
     axios.post(`/api/users/${this.state.user}/${k}`, {
       k: v,
     }).then(this.handleSetState(k, v))
-      .catch((err) => {
-        console.error('error handleprefeerence change', err);
+      .catch(() => {
+        this.toggleDialog();
       });
-    // TODO send error to client
   }
 
   getGroupMembers(group) {
@@ -154,10 +169,9 @@ class App extends React.Component {
           members: members.data,
         });
       })
-      .catch((err) => {
-        console.error('getgroupmembers err', err);
+      .catch(() => {
+        this.toggleDialog();
       });
-    // TODO send error to client
   }
 
   randomizer() {
@@ -173,7 +187,7 @@ class App extends React.Component {
       .then(this.handleSetState(k, v))
       .then(console.log(this.state))
       .catch((err) => {
-        console.error('error handleprefeerence change', err);
+        this.toggleDialog();
       });
     // TODO send error to client
   }
@@ -194,7 +208,7 @@ class App extends React.Component {
       userName: user,
     })
       .catch((err) => {
-        console.error('submiterr', err);
+        this.toggleDialog();
       });
     // TODO send error to client
   }
@@ -221,7 +235,7 @@ class App extends React.Component {
           });
         })
           .catch((err) => {
-            console.error('getusersgrouperr', err);
+            this.toggleDialog();
           });
       });
   }
@@ -280,7 +294,7 @@ class App extends React.Component {
       userName: newMember,
     })
       .catch((err) => {
-        console.error('addusertogrouperr', err);
+        this.toggleDialog();
       });
   }
 
@@ -297,7 +311,7 @@ class App extends React.Component {
       randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
-      handleUserSettings, handleUserNameInput, handleUserStatusInput, handlePass, handleSignOutWithGoogle,
+      handleUserSettings, handleUserNameInput, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
     } = this;
     let View;
     if (view === '/login') {
@@ -330,6 +344,9 @@ class App extends React.Component {
             <div>
                 <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleSignInWithGoogle}handleSignOutWithGoogle={handleSignOutWithGoogle} />
                 <Avatar src={userImages.kangaroo}/>
+                <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open} onEnter={console.log('Hey.')}>
+                    <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
+                </Dialog>
                 {View}
         </div>
 

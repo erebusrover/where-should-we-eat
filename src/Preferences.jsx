@@ -16,15 +16,15 @@ const Preferences = (props) => {
         <h1>Select a User Image </h1>
         <RadioGroup row="true" aria-label="image" name="image">
           <img className='userImages' src={userImages.oppossum} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.oppossum} control={<Radio />}onClick={() => handleSetState('image', 'one')} />
+          <FormControlLabel className='radio'value={userImages.oppossum} control={<Radio />}onClick={() => handleSetState('image', userImages.oppossum)} />
           <img className='userImages' src={userImages.koala} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.koala} control={<Radio />} onClick={() => handleSetState('image', 'two')}/>
+          <FormControlLabel className='radio'value={userImages.koala} control={<Radio />} onClick={() => handleSetState('image', userImages.koala)}/>
           <img className='userImages' src={userImages.bilby} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.bilby} control={<Radio />} onClick={() => handleSetState('image', 'three')} />
+          <FormControlLabel className='radio'value={userImages.bilby} control={<Radio />} onClick={() => handleSetState('image', userImages.bilby)} />
           <img className='userImages' src={userImages.kangaroo} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.kangaroo} control={<Radio />} onClick={() => handleSetState('image', 'three')} />
+          <FormControlLabel className='radio'value={userImages.kangaroo} control={<Radio />} onClick={() => handleSetState('image', userImages.kangaroo)} />
           <img className='userImages' src={userImages.sugarGlider} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.sugarGlider} control={<Radio />} onClick={() => handleSetState('image', 'three')} />
+          <FormControlLabel className='radio'value={userImages.sugarGlider} control={<Radio />} onClick={() => handleSetState('image', userImages.sugarGlider)} />
         </RadioGroup>
         <h2> Select Dietary Restricitons</h2>
         <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
