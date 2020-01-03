@@ -344,9 +344,9 @@ router.get('/login', passport.authenticate('google', {
 }));
 
 // GET /redirect to reroute back to the app from the google consent screen
-router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
+router.get('/', passport.authenticate('google'), (req, res) => {
   console.log('you hit the redirect route');
-  res.redirect('http://localhost:8080');
+  res.redirect('/');
 });
 
 

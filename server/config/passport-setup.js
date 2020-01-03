@@ -1,19 +1,32 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const keys = require('./keys');
+const { addNewUser, checkDb } = require('../db/helpers');
 
 passport.use(
   new GoogleStrategy({
     // options for google strategy
-    // Rethink this callback URI to make with work with Single Page App
     clientID: keys.googleAuth.clientID,
-    clientSecret: keys.googleAuth.clientSecret, 
+    clientSecret: keys.googleAuth.clientSecret,
     callbackURL: '/',
   }, (accessToken, refreshToken, profile, done) => {
-    // passport callback function
-    console.log(profile);
-    done();
-    // Using the profile, check to see if a user with that googleid
-    // exists in our database or not. Lookup / Create user
+    // eslint-disable-next-line no-console
+    console.log(profile.id, profile.displayName);
+    // done();
+    // checkDb(profile.id)
+    //   .then((currentUser) => {
+    //     if (currentUser) {
+    //       done(null, currentUser);
+    //     } else {
+    //       addNewUser(profile.displayName, profile.id)
+    //         .then((newUser) => {
+    //           done(null, newUser);
+    //         });
+    //     }
+    //   });
   }),
 );
+
+passport.serializeUser((user, next) => {
+  next(null, user.google);
+});
