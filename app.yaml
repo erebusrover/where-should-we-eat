@@ -16,7 +16,7 @@ handlers:
 
 #[cloud sql connection]
 beta_settings:
-  cloud_sql_instances: where-should-we--1577491661730:us-central1:marsupials=TCP:3307
+  cloud_sql_instances: where-should-we--1577491661730:us-central1:marsupials
 
 # cloud sql connection variables
 env_variables:
