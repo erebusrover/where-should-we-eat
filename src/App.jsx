@@ -1,6 +1,7 @@
 
 import React from 'react';
 import axios from 'axios';
+import { Avatar } from '@material-ui/core';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
 import Header from './Header.jsx';
@@ -10,6 +11,16 @@ import UserSettings from './UserSettings.jsx';
 import Group from './Group.jsx';
 import AddUserForm from './AddUserForm.jsx';
 import Options from './Options.jsx';
+import './App.css';
+
+const userImages = {
+  oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
+  koala: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg',
+  kangaroo: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg',
+  bilby: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg',
+  sugarGlider: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg',
+
+};
 
 class App extends React.Component {
   constructor(props) {
@@ -42,8 +53,8 @@ class App extends React.Component {
       catagories: 'vegan',
       choser: '',
       showWinner: false,
+      userImages,
     };
-
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
     this.handleSignInWithGoogle = this.handleSignInWithGoogle.bind(this);
@@ -61,6 +72,7 @@ class App extends React.Component {
     this.handleSetState = this.handleSetState.bind(this);
     this.handleUserNameInput = this.handleUserNameInput.bind(this);
     this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
+    this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
   }
 
   componentDidMount() {
@@ -80,6 +92,14 @@ class App extends React.Component {
       .catch((err) => {
         console.error('error in handsigninwithgoogle', err);
       // TODO send error back to client
+      });
+  }
+
+  handleSignOutWithGoogle() {
+    axios.get('/api/logout')
+      .then(this.handleViewChange('/login'))
+      .catch((err) => {
+        console.error('signouterr', err);
       });
   }
 
@@ -114,7 +134,7 @@ class App extends React.Component {
 
   handleSetState(k, v) {
     this.setState([k, v]);
-    console.log("here", this.state);
+    console.log('here', this.state);
   }
 
   handleUserSettings(k, v) {
@@ -206,6 +226,44 @@ class App extends React.Component {
       });
   }
 
+  resetGameState() {
+    this.setState({
+      choser: '',
+      showWinner: false,
+    });
+  }
+
+  handlePass() {
+    // this.setState()
+    this.handleViewChange('group');
+    // TODO need data to figure this out
+    // getUsersGroups(user) {
+    //   axios.get(`/api/users/${user}/groups`)
+    //     .then((groupsList) => {
+    //       this.setState((state) => {
+    //         const groups = groupsList.data.map((group) => {
+    //           state.groups.push(group);
+    //           return {
+    //             groups,
+    //           };
+    //         });
+    //       })
+    //         .catch((err) => {
+    //           console.error('getusersgrouperr', err);
+    //         });
+    //     });
+    // }
+    // axios.get(`/api/groups/${group}/users`)
+    //     .then((members) => {
+    //       this.setState({
+    //         members: members.data,
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       console.error('getgroupmembers err', err);
+    //     });
+    //   // TODO send error to client
+  }
 
   handleNewGroupMember(e) {
     this.setState({ newMember: e.target.value });
@@ -215,11 +273,8 @@ class App extends React.Component {
     this.setState({ user: e.target.value });
   }
 
-  handleUserStatusInput(e) {
-    this.setState({ userStatus: e.target.value });
-  }
-
   handleAddUserToGroup() {
+    // TODO combine this  function with handleNewGroupMember
     const { newMember } = this.state;
     axios.post('/api/user_group', {
       userName: newMember,
@@ -229,21 +284,26 @@ class App extends React.Component {
       });
   }
 
+  handleUserStatusInput(e) {
+    this.setState({ userStatus: e.target.value });
+  }
+
+
   render() {
     const {
-      view, groups, group, members, options, groupName, pricePoint, choser, showWinner, user,
+      view, groups, group, members, options, groupName, pricePoint, choser, showWinner, user, userImages,
     } = this.state;
     const {
       randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
-      handleUserSettings, handleUserNameInput, handleUserStatusInput
+      handleUserSettings, handleUserNameInput, handleUserStatusInput, handlePass, handleSignOutWithGoogle,
     } = this;
     let View;
     if (view === '/login') {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
-      View = <Preferences handleSetState={handleSetState} handleUserStatusInput={handleUserStatusInput}handleSetState={handleSetState} handleUserNameInput={handleUserNameInput}/>;
+      View = <Preferences userImages={userImages} handleUserStatusInput={handleUserStatusInput} handleSetState={handleSetState} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup
       handleViewChange={handleViewChange}
@@ -257,18 +317,19 @@ class App extends React.Component {
     } else if (view === '/userSetting') {
       View = <UserSettings handleUserSettings={handleUserSettings} handleUserStatusInput={handleUserStatusInput} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
-      View = <Group user={user} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
+      View = <Group user={user} userImages={userImages}group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/options') {
-      View = <Options options={options}/>;
+      View = <Options options={options} handlePass={handlePass}/>;
     } else {
       View = <Home groups={groups} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
     }
 
     return (
             <div>
-                <Header handleViewChange={handleViewChange} />
+                <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleSignInWithGoogle}handleSignOutWithGoogle={handleSignOutWithGoogle} />
+                <Avatar src={userImages.kangaroo}/>
                 {View}
         </div>
 

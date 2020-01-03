@@ -3,28 +3,37 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
+
 // TODO allow user to pick more than one dietary restriction
 const Preferences = (props) => {
-  const { preferenceChange, handleUserNameInput, handleUserStatusInput, handleSetState } = props;
+  const { preferenceChange, handleUserNameInput, handleUserStatusInput, handleSetState, userImages, } = props;
+ 
   return (
     <div>
       <ul>
         <h1>Pick A User Name</h1>
         <input id='userName'type='text' onChange={handleUserNameInput}/>
         <h1>Select a User Image </h1>
-        <RadioGroup aria-label="image" name="image">
-          <FormControlLabel value="one" control={<Radio />} label="one" onClick={() => handleSetState('image', 'one')} />
-          <FormControlLabel value="two" control={<Radio />} label="two" onClick={() => handleSetState('image', 'two')}/>
-          <FormControlLabel value="three" control={<Radio />} label="three" onClick={() => handleSetState('image', 'three')} />
+        <RadioGroup row="true" aria-label="image" name="image">
+          <img className='userImages' src={userImages.oppossum} width="130" height="121"/>
+          <FormControlLabel className='radio'value={userImages.oppossum} control={<Radio />}onClick={() => handleSetState('image', 'one')} />
+          <img className='userImages' src={userImages.koala} width="130" height="121"/>
+          <FormControlLabel className='radio'value={userImages.koala} control={<Radio />} onClick={() => handleSetState('image', 'two')}/>
+          <img className='userImages' src={userImages.bilby} width="130" height="121"/>
+          <FormControlLabel className='radio'value={userImages.bilby} control={<Radio />} onClick={() => handleSetState('image', 'three')} />
+          <img className='userImages' src={userImages.kangaroo} width="130" height="121"/>
+          <FormControlLabel className='radio'value={userImages.kangaroo} control={<Radio />} onClick={() => handleSetState('image', 'three')} />
+          <img className='userImages' src={userImages.sugarGlider} width="130" height="121"/>
+          <FormControlLabel className='radio'value={userImages.sugarGlider} control={<Radio />} onClick={() => handleSetState('image', 'three')} />
         </RadioGroup>
         <h2> Select Dietary Restricitons</h2>
-        <RadioGroup aria-label="dietary restriction" name="dietary restriction">
-          <FormControlLabel value="Vegan" control={<Radio />} label="Vegan" onClick={() => handleSetState('dietaryRestriction', 'Vegan')}/>
-          <FormControlLabel value="Vegitarian" control={<Radio />} label="Vegitarian"onClick={() => handleSetState('dietaryRestriction', 'Vegitarian')} />
-          <FormControlLabel value="Kosher" control={<Radio />} label="Kosher" onClick={() => handleSetState('dietaryRestriction', 'Kosher')}/>
-          <FormControlLabel value="Gluten Free" control={<Radio />} label="Gluten Free"onClick={() => handleSetState('dietaryRestriction', 'Gluten Free')} />
-          <FormControlLabel value="Halal" control={<Radio />} label="Halal" onClick={() => handleSetState('dietaryRestriction', 'Halal')} />
-          <FormControlLabel value="None" control={<Radio />} label="None" onClick={() => handleSetState('dietaryRestriction', 'None')}/>
+        <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
+          <FormControlLabel className='radio'value="Vegan" control={<Radio />} label="Vegan" onClick={() => handleSetState('dietaryRestriction', 'Vegan')}/>
+          <FormControlLabel className='radio'value="Vegitarian" control={<Radio />} label="Vegitarian"onClick={() => handleSetState('dietaryRestriction', 'Vegitarian')} />
+          <FormControlLabel className='radio'value="Kosher" control={<Radio />} label="Kosher" onClick={() => handleSetState('dietaryRestriction', 'Kosher')}/>
+          <FormControlLabel className='radio'value="Gluten Free" control={<Radio />} label="Gluten Free"onClick={() => handleSetState('dietaryRestriction', 'Gluten Free')} />
+          <FormControlLabel className='radio'value="Halal" control={<Radio />} label="Halal" onClick={() => handleSetState('dietaryRestriction', 'Halal')} />
+          <FormControlLabel className='radio'value="None" control={<Radio />} label="None" onClick={() => handleSetState('dietaryRestriction', 'None')}/>
         </RadioGroup>
       <h1>Status</h1>
       <input id='status'type='text' onChange={handleUserStatusInput}/>
