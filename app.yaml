@@ -13,3 +13,7 @@ handlers:
    static_files: build/\1
    upload: build/(.*)
 # [END handlers]
+
+#[cloud sql connection]
+beta_settings:
+  cloud_sql_instances: where-should-we--1577491661730:us-central1:marsupials
