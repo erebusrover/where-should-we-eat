@@ -8,22 +8,23 @@ passport.use(
     // options for google strategy
     clientID: keys.googleAuth.clientID,
     clientSecret: keys.googleAuth.clientSecret,
-    callbackURL: '/',
+    callbackURL: '/api/login/redirect',
   }, (accessToken, refreshToken, profile, done) => {
-    // eslint-disable-next-line no-console
-    console.log(profile.id, profile.displayName);
-    // done();
-    // checkDb(profile.id)
-    //   .then((currentUser) => {
-    //     if (currentUser) {
-    //       done(null, currentUser);
-    //     } else {
-    //       addNewUser(profile.displayName, profile.id)
-    //         .then((newUser) => {
-    //           done(null, newUser);
-    //         });
-    //     }
-    //   });
+    // console.log(profile.id, profile.displayName);
+    checkDb(profile.id)
+      .then((currentUser) => {
+        console.log(currentUser);
+        if (currentUser) {
+          return done(null, currentUser);
+        }
+        if (!currentUser) {
+          addNewUser(profile.displayName, profile.id)
+            .then((newUser) => {
+              console.log(`new user added: ${newUser}`);
+              return done(null, newUser);
+            });
+        }
+      });
   }),
 );
 
