@@ -7,14 +7,13 @@ passport.use(
     // options for google strategy
     // Rethink this callback URI to make with work with Single Page App
     clientID: keys.googleAuth.clientID,
-    clientSecret: keys.googleAuth.clientSecret,
-    callbackURL: '/api/redirect',
+    clientSecret: keys.googleAuth.clientSecret, 
+    callbackURL: '/',
   }, (accessToken, refreshToken, profile, done) => {
     // passport callback function
     console.log(profile);
+    done();
     // Using the profile, check to see if a user with that googleid
     // exists in our database or not. Lookup / Create user
   }),
 );
-
-// TODO Export this middleware for use in the app
