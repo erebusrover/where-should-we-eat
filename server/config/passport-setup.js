@@ -18,21 +18,18 @@ passport.use(
     clientSecret: keys.googleAuth.clientSecret,
     callbackURL: '/api/login/redirect',
   }, (accessToken, refreshToken, profile, done) => {
-    // console.log(profile.id, profile.displayName);
     checkDb(profile.id)
       .then((currentUser) => {
-        console.log(currentUser);
-        if (currentUser) {
+        if (currentUser.length === 1) {
           done(null, currentUser);
         }
-        if (!currentUser) {
+        if (currentUser.length === 0) {
+          console.log(profile.id);
           addNewUser(profile.displayName, profile.id)
             .then((newUser) => {
-              console.log(`new user added: ${newUser}`);
               done(null, newUser);
             });
         }
       });
   }),
 );
-
