@@ -9,15 +9,15 @@ const query = util.promisify(connection.query).bind(connection);
 
 // add new user to db
 const addNewUser = (userName, googleId) => {
-  const sql = `INSERT into user (userName, googleId) VALUES (?,?)
-                ON DUPLICATE KEY UPDATE userName = ?`;
+  const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
   return query(sql, [userName, googleId]);
 };
 
 // check db for user by Google ID
 const checkDb = (googleId) => {
-  const sql = 'SELECT FROM user WHERE google_id = ?';
-  return query(sql, [googleId]);
+  const sql = 'SELECT * FROM user WHERE google_id = ?';
+  const result = query(sql, [googleId]);
+  return result;
 };
 
 // allow user to change their username
