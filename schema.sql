@@ -1,7 +1,15 @@
 /**
- * Execute this file from the command line by typing:
- *   mysql -u root < schema.sql
-    sudo mysql -u root < schema.sql
+ *
+    In order to use the Google Cloud SQL Proxy client on your machine,
+    your public IP address must be added to the list of authorized networks!
+    DM Joanna if you have any issues with this.
+
+
+  To execute this file, run:
+    (enter DB_PASS from .env when prompted)
+    mysql --host=35.225.190.208 --user=root --password < schema.sql
+    then:
+    mysql --host=35.225.190.208 --user=root --password
  */
 --  groupp has 2 p's for now because otherwise excaping reserved words was frustrating
 

@@ -1,11 +1,13 @@
 // database connection and helper functions
 // const mysql = require('mysql');
 const util = require('util');
-const { connection } = require('./config.js');
+// const { connection } = require('./config.js');
+const { pool } = require('./config.js');
 
 // const connection = mysql.createConnection(mysqlConfig);
 // Just like `connection.query`, but returns a promise!
-const query = util.promisify(connection.query).bind(connection);
+// const query = util.promisify(connection.query).bind(connection);
+const query = util.promisify(pool.query).bind(pool);
 
 // add new user to db
 const addNewUser = (userName) => {
