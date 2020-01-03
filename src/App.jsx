@@ -43,7 +43,6 @@ class App extends React.Component {
       choser: '',
       showWinner: false,
     };
-
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
     this.handleSignInWithGoogle = this.handleSignInWithGoogle.bind(this);
@@ -61,6 +60,7 @@ class App extends React.Component {
     this.handleSetState = this.handleSetState.bind(this);
     this.handleUserNameInput = this.handleUserNameInput.bind(this);
     this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
+
   }
 
   componentDidMount() {
@@ -73,14 +73,24 @@ class App extends React.Component {
     this.setState({ view: `/${view}` });
   }
 
-  handleSignInWithGoogle() {
+
+  HandleSignInWithGoogle() {
+    return window.open('/api/login', '_self');
+    // axios.get('/api/login')
+    // .then(console.log('success'))
+    // .then(this.setState({ user: 'DOT' }))
+    // .catch((err) => {
+    //   console.log('error handling signin with google', err);
+    // // send error back to client
+    // });
+
     // TODO Being checked with Auth
-    axios.get('/api/login')
-      .then(this.handleViewChange('/userSettings'))
-      .catch((err) => {
-        console.error('error in handsigninwithgoogle', err);
-      // TODO send error back to client
-      });
+//     axios.get('/api/login')
+//       .then(this.handleViewChange('/userSettings'))
+//       .catch((err) => {
+//         console.error('error in handsigninwithgoogle', err);
+//       // TODO send error back to client
+//       });
   }
 
   hideToDo() {

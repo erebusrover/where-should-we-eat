@@ -1,4 +1,6 @@
 const { Router } = require('express');
+const passport = require('passport');
+
 // require DB helpers
 const {
   addNewUser,
@@ -337,9 +339,22 @@ router.get('/groupHistory', (req, res) => {
 });
 
 // GET /login verify user login using Passport --> google auth?
-// router.get('/login', passport.authenticate('google', {
-// scope: ['profile', 'email', 'openid'],
-// }));
+router.get('/login', passport.authenticate('google', {
+  scope: ['profile'],
+}));
+
+// GET /redirect to reroute back to the app from the google consent screen
+router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
+  console.log('you hit the redirect route');
+  res.redirect('http://localhost:8080');
+});
+
+
+// GET /logout logs user out
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
 
 // GET / renders home page, with info about active groups and sleeping groups
 
