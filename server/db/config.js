@@ -22,12 +22,20 @@ const {
 //   database: DATABASE,
 // };
 
+// const connection = mysql.createConnection({
+//   host: DB_HOST,
+//   user: USER_NAME,
+//   password: USER_PASS,
+//   database: DATABASE,
+//   port: DB_PORT,
+//   // ssl: { ca: fs.readFileSync({ ca- cert filename }) }
+// });
+
 const connection = mysql.createConnection({
-  host: DB_HOST,
-  user: USER_NAME,
-  password: USER_PASS,
-  database: DATABASE,
-  port: DB_PORT,
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'wswe',
   // ssl: { ca: fs.readFileSync({ ca- cert filename }) }
 });
 

@@ -1,6 +1,8 @@
 build/*
 build/
 
+app.yaml
+
 #api keys
 server/config/keys.js
 

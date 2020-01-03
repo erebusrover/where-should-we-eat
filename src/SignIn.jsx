@@ -3,10 +3,10 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 
 const SignIn = (props) => {
-  const { HandleSignInWithGoogle } = props;
+  const { handleSignInWithGoogle } = props;
 
   return (
-        <Button color="inherit" onClick={HandleSignInWithGoogle} >Sign In With Google</Button>
+        <Button color="inherit" onClick={handleSignInWithGoogle} >Sign In With Google</Button>
 
   );
 };
