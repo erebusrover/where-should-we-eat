@@ -18,6 +18,7 @@ import AddUserForm from './AddUserForm.jsx';
 import Options from './Options.jsx';
 import './App.css';
 
+
 const userImages = {
   oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
   koala: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg',
@@ -40,7 +41,6 @@ const options = [{
   phone: '+14152520800',
   address: '375 Amadee St',
 }];
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -91,6 +91,7 @@ class App extends React.Component {
   }
 
   toggleDialog() {
+    // toggles error dialog box
     if (this.state.open === false) {
       this.setState({ open: true });
     } else {
@@ -106,26 +107,19 @@ class App extends React.Component {
 
   handleSignInWithGoogle() {
     return window.open('/api/login', '_self');
-    // axios.get('/api/login')
-    // .then(console.log('success'))
-    // .then(this.setState({ user: 'DOT' }))
-    // .catch((err) => {
-    //   console.log('error handling signin with google', err);
-    // // send error back to client
-    // });
-
-    // TODO Being checked with Auth
-
-    axios.get('/api/login')
-      .then(this.handleViewChange('/userSettings'))
-      .catch((err) => {
-        this.toggleDialog();
-      });
   }
 
   handleSignOutWithGoogle() {
     axios.get('/api/logout')
       .then(this.handleViewChange('/login'))
+      .catch(() => {
+        this.toggleDialog();
+      });
+  }
+
+  getAllUsers() {
+    //TODO finish this function
+    axios.get('/api/users')
       .catch(() => {
         this.toggleDialog();
       });
@@ -292,7 +286,7 @@ class App extends React.Component {
   handleDietaryRestrictionsSetState(e) {
     const { user, dietaryRestriction } = this.state;
     const restrictions = dietaryRestriction.split();
-    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions})
+    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
       .then(() => {
         this.setState({
           dietartRetriction: this.state.dietaryRestriction.push(e),
@@ -344,6 +338,7 @@ class App extends React.Component {
 
     return (
             <div>
+               {/* <MuiThemeProvider muiTheme={muiTheme}></MuiThemeProvider> */}
                 <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleSignInWithGoogle}handleSignOutWithGoogle={handleSignOutWithGoogle} />
                 <Avatar src={userImages.kangaroo}/>
                 <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
@@ -355,6 +350,5 @@ class App extends React.Component {
     );
   }
 }
-
 
 export default App;

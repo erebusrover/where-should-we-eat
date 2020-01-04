@@ -21,7 +21,7 @@ const CreateGroup = (props) => {
           <FormControlLabel value="$$$" control={<Radio />} label="$$$" onClick={() => handleNewGroupPricePoint( '$$$')} />
           <FormControlLabel value="$$$$" control={<Radio />} label="$$$$" onClick={() => handleNewGroupPricePoint( '$$$$')} />
         </RadioGroup>
-        <Button color="inherit" value='profile' onClick={() => handleNewGroupSubmit()}>Submit</Button>
+        <Button variant="outlined" color="inherit" value='profile' onClick={() => handleNewGroupSubmit()}>Submit</Button>
         {/* //TODO user needs feedback on submit */}
       </div>
 

@@ -25,6 +25,7 @@ const {
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,
+  getAllUsers,
 } = require('./db/helpers');
 // require Google and Yelp API functions
 const { getRestaurants } = require('./config/yelp');
@@ -42,6 +43,7 @@ router.post('/users', (req, res) => {
       res.sendStatus(201);
     })
     .catch(() => {
+
       res.sendStatus(400);
     });
 });
@@ -119,14 +121,24 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   const { restrictions } = req.body;
   const { userName } = req.params;
   addUserDietaryRestrictions(userName, restrictions)
-    .then(() => { 
+    .then(() => {
       res.sendStatus(201);
     })
     .catch((err) => {
       res.sendStatus(400);
     });
 });
-
+// GET all users from database
+router.get('/users', (req, res) => {
+  getAllUsers()
+    .then((response) => {
+      res.status(200);
+      res.send(response);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
 // GET dietary restrictions for a given user
 router.get('/users/:userName/dietaryRestrictions', (req, res) => {
   const { userName } = req.params;
@@ -195,12 +207,12 @@ router.delete('/groups', (req, res) => {
 // to indicate which users belong to which group
 router.post('/user_group', (req, res) => {
   const { userName, groupName } = req.body;
- addUserToGroup(userName, groupName)
+  addUserToGroup(userName, groupName)
     .then(() => {
       res.send(201);
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err);
       res.send(400);
     });
 });
@@ -378,7 +390,7 @@ router.get('/choices', (req, res) => {
   // get user's location
   getUserLocation().then((response) => {
     // get the lat and lng info from that api call
-    const { lat, lng } = response.location;
+    const { lat, lng } = response.data.location;
     // use it and destructured props from req body to create query to pass to getRestaurants
     const query = {
       latitude: lat,
@@ -387,12 +399,14 @@ router.get('/choices', (req, res) => {
       categories,
       price,
     };
+    // bug lives in this function, i think
     getRestaurants(query);
   })
     .then((restaurants) => {
       res.send(restaurants);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       res.sendStatus(400);
     });
 });

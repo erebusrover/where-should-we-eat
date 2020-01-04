@@ -4,6 +4,31 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
 import { Checkbox } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { deepPurple } from '@material-ui/core/colors';
+
+
+
+const PurpleRadio = withStyles({
+  root: {
+    color: deepPurple[400],
+    '&$checked': {
+      color: deepPurple[600],
+    },
+  },
+  checked: {},
+})(props => <Radio color="default" {...props} />);
+
+const PurpleCheckbox = withStyles({
+  root: {
+    color: deepPurple[400],
+    '&$checked': {
+      color: deepPurple[600],
+    },
+  },
+  checked: {},
+})(props => <Radio color="default" {...props} />);
+
 
 
 // TODO allow user to pick more than one dietary restriction
@@ -17,25 +42,25 @@ const Preferences = (props) => {
         <input id='userName'type='text' onChange={handleUserNameInput}/>
         <h1>Select a User Image </h1>
         <RadioGroup row="true" aria-label="image" name="image">
-          <img className='userImages' src={userImages.oppossum} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.oppossum} control={<Radio />}onClick={() => handleSetState('image', userImages.oppossum)} />
-          <img className='userImages' src={userImages.koala} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.koala} control={<Radio />} onClick={() => handleSetState('image', userImages.koala)}/>
-          <img className='userImages' src={userImages.bilby} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.bilby} control={<Radio />} onClick={() => handleSetState('image', userImages.bilby)} />
-          <img className='userImages' src={userImages.kangaroo} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.kangaroo} control={<Radio />} onClick={() => handleSetState('image', userImages.kangaroo)} />
-          <img className='userImages' src={userImages.sugarGlider} width="130" height="121"/>
-          <FormControlLabel className='radio'value={userImages.sugarGlider} control={<Radio />} onClick={() => handleSetState('image', userImages.sugarGlider)} />
+          <img className='userImages' src={userImages.oppossum} width="130" height="121" border="5"/>
+          <FormControlLabel className='radio'value={userImages.oppossum} control={<PurpleRadio color="#730099" />}onClick={() => handleSetState('image', userImages.oppossum)} />
+          <img className='userImages' src={userImages.koala} width="130" height="121" border="5"/>
+          <FormControlLabel className='radio'value={userImages.koala} control={<PurpleRadio color='#9900cc' />} onClick={() => handleSetState('image', userImages.koala)}/>
+          <img className='userImages' src={userImages.bilby} width="130" height="121" border="5"/>
+          <FormControlLabel className='radio'value={userImages.bilby} control={<PurpleRadio />} onClick={() => handleSetState('image', userImages.bilby)} />
+          <img className='userImages' src={userImages.kangaroo} width="130" height="121" border="5"/>
+          <FormControlLabel className='radio'value={userImages.kangaroo} control={<PurpleRadio />} onClick={() => handleSetState('image', userImages.kangaroo)} />
+          <img className='userImages' src={userImages.sugarGlider} width="130" height="121" border="5"/>
+          <FormControlLabel className='radio'value={userImages.sugarGlider} control={<PurpleRadio />} onClick={() => handleSetState('image', userImages.sugarGlider)} />
         </RadioGroup>
         <h2> Select Dietary Restricitons</h2>
         <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
-          <FormControlLabel className='radio'value="Vegan" control={<Checkbox />} label="Vegan" onClick={() => handleDietaryRestrictionsSetState()}/>
-          <FormControlLabel className='radio'value="Vegitarian" control={<Checkbox />} label="Vegitarian"onClick={() => handleDietaryRestrictionsSetState()} />
-          <FormControlLabel className='radio'value="Kosher" control={<Checkbox />} label="Kosher" onClick={() => handleDietaryRestrictionsSetState()}/>
-          <FormControlLabel className='radio'value="Gluten Free" control={<Checkbox />} label="Gluten Free"onClick={() => handleDietaryRestrictionsSetState()} />
-          <FormControlLabel className='radio'value="Halal" control={<Checkbox />} label="Halal" onClick={() => handleDietaryRestrictionsSetState()} />
-          <FormControlLabel className='radio'value="None" control={<Checkbox />} label="None" onClick={() => handleDietaryRestrictionsSetState()}/>
+          <FormControlLabel color='#9900cc' className='radio'value="Vegan" control={<Checkbox color='default' />} label="Vegan" onClick={() => handleDietaryRestrictionsSetState()}/>
+          <FormControlLabel className='radio'value="Vegitarian" control={<Checkbox color='default' />} label="Vegitarian"onClick={() => handleDietaryRestrictionsSetState()} />
+          <FormControlLabel className='radio'value="Kosher" control={<Checkbox color='default' />} label="Kosher" onClick={() => handleDietaryRestrictionsSetState()}/>
+          <FormControlLabel className='radio'value="Gluten Free" control={<Checkbox color='default' />} label="Gluten Free"onClick={() => handleDietaryRestrictionsSetState()} />
+          <FormControlLabel className='radio'value="Halal" control={<Checkbox color='default' />} label="Halal" onClick={() => handleDietaryRestrictionsSetState()} />
+          <FormControlLabel className='radio'value="None" control={<Checkbox color='default' />} label="None" onClick={() => handleDietaryRestrictionsSetState()}/>
         </RadioGroup>
       <h1>Status</h1>
       <input id='status'type='text' onChange={handleUserStatusInput}/>
