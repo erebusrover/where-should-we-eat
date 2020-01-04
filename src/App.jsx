@@ -232,6 +232,7 @@ class App extends React.Component {
   getUsersGroups(user) {
     axios.get(`/api/users/${user}/groups`)
       .then((groupsList) => {
+        console.log(groupsList);
         this.setState((state) => {
           const groups = groupsList.data.map((group) => {
             state.groups.push(group);

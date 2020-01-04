@@ -9,6 +9,7 @@ const { pool } = require('./config.js');
 
 // add new user to db
 
+
 const addNewUser = async (userName, googleId) => {
   const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
   return pool.query(sql, [userName, googleId]);

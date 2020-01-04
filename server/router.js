@@ -39,10 +39,11 @@ router.post('/users', (req, res) => {
   const { userName } = req.body;
   // use db helper function to add new user to db, setting default values for status, diet, image
   addNewUser(userName)
-    .then((response) => {
+    .then(() => {
       res.sendStatus(201);
     })
-    .catch((err) => {
+    .catch(() => {
+
       res.sendStatus(400);
     });
 });
@@ -237,7 +238,8 @@ router.get('/users/:userName/groups', (req, res) => {
       res.status(200);
       res.send(response[0]);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.send(400);
     });
 });
