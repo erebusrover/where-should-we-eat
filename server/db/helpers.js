@@ -205,5 +205,6 @@ module.exports = {
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,
-  getAllUsers
+  getAllUsers,
+  checkDb,
 };

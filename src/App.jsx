@@ -6,9 +6,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-// import { createMuiTheme } from '@material-ui/core/styles';
-// import getMuiTheme from '@material-ui/styles/getMuiTheme';
-// import * as Colors from '@material-ui/core/colors';
 import RemoveUserForm from './RemoveUserForm.jsx';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
@@ -44,17 +41,6 @@ const options = [{
   phone: '+14152520800',
   address: '375 Amadee St',
 }];
-
-// const muiTheme = getMuiTheme({
-//   palette: {
-//     primary: Colors.purple,
-//     secondary: Colors.green,
-//     alternateTextColor: Colors.red.A200,
-//   },
-//   status: {
-//     danger: 'orange',
-//   },
-// });
 class App extends React.Component {
   constructor(props) {
     super(props);
