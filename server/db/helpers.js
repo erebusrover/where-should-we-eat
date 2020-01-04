@@ -82,8 +82,8 @@ const deleteUserFromGroup = async (userName, groupName) => {
 };
 // gets all users from database
 const getAllUsers = () => {
-  const sql = `SELECT * FROM user`
-  return query(sql)
+  const sql = 'SELECT * FROM user';
+  return pool.query(sql);
 };
 
 // delete user from user table
