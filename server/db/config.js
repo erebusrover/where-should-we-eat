@@ -1,5 +1,5 @@
 
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
 // const SSL = require('../../BaltimoreCyberTrustRoot.crt.pem');
 

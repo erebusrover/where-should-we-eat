@@ -14,6 +14,7 @@ require('./config/passport-setup');
 const app = express();
 
 // call middleware functions
+app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieSession({
@@ -22,7 +23,6 @@ app.use(cookieSession({
 }));
 app.use(helmet());
 app.use(compression());
-app.use(bodyParser.json());
 
 app.use('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

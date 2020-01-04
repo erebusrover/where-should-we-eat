@@ -12,7 +12,6 @@ const addNewUser = async (userName) => {
   const sql = `INSERT into user (userName) VALUES (?)
                 ON DUPLICATE KEY UPDATE userName = ?`;
   return pool.query(sql, [userName, userName]);
-
 };
 
 // allow user to change their username
