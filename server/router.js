@@ -40,11 +40,9 @@ router.post('/users', (req, res) => {
   // use db helper function to add new user to db, setting default values for status, diet, image
   addNewUser(userName)
     .then((response) => {
-      console.log(response);
       res.sendStatus(201);
     })
     .catch((err) => {
-      console.log(err);
       res.sendStatus(400);
     });
 });
@@ -146,7 +144,7 @@ router.get('/users/:userName/dietaryRestrictions', (req, res) => {
   getUserDietaryRestrictions(userName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.sendStatus(400);
@@ -224,7 +222,7 @@ router.get('/groups/:groupName/users', (req, res) => {
   getAllGroupMembers(groupName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.send(400);
@@ -237,7 +235,7 @@ router.get('/users/:userName/groups', (req, res) => {
   getAllUserGroups(userName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.send(400);
@@ -250,7 +248,7 @@ router.get('/groups/:userName/groups/active', (req, res) => {
   getAllActiveUserGroups(userName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.send(400);
@@ -263,7 +261,7 @@ router.get('/groups/:userName/groups/inactive', (req, res) => {
   getAllInactiveUserGroups(userName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.send(400);
@@ -343,7 +341,7 @@ router.get('/groupHistory', (req, res) => {
   getGroupHistory(groupName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.sendStatus(400);
@@ -390,7 +388,7 @@ router.get('/choices', (req, res) => {
   // get user's location
   getUserLocation().then((response) => {
     // get the lat and lng info from that api call
-    const { lat, lng } = response.location;
+    const { lat, lng } = response.data.location;
     // use it and destructured props from req body to create query to pass to getRestaurants
     const query = {
       latitude: lat,
@@ -399,12 +397,14 @@ router.get('/choices', (req, res) => {
       categories,
       price,
     };
+    // bug lives in this function, i think
     getRestaurants(query);
   })
     .then((restaurants) => {
       res.send(restaurants);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       res.sendStatus(400);
     });
 });

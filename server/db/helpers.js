@@ -8,6 +8,7 @@ const { pool } = require('./config.js');
 // const query = util.promisify(pool.query).bind(pool);
 
 // add new user to db
+
 const addNewUser = async (userName, googleId) => {
   const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
   return pool.query(sql, [userName, googleId]);
@@ -183,7 +184,6 @@ const getGroupHistory = async (groupName) => {
 
 module.exports = {
   addNewUser,
-  checkDb,
   updateUserName,
   updateUserStatus,
   addUserImage,
