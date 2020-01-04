@@ -33,11 +33,10 @@ const { getUserLocation } = require('./config/google');
 
 const router = Router();
 
-// POST to /users to add user to db --> how will google auth be involved in this?
+// POST to /users to add user to db
 router.post('/users', (req, res) => {
   // get username from req body
   const { userName } = req.body;
-  // use db helper function to add new user to db, setting default values for status, diet, image
   addNewUser(userName)
     .then(() => {
       res.sendStatus(201);
@@ -101,7 +100,7 @@ router.post('/users/:userName/image', (req, res) => {
     });
 });
 
-// TODO: PATCH /users/:user/image
+// PATCH /users/:user/image
 router.patch('/users/:userName/image', (req, res) => {
   const { userName } = req.params;
   const { newImage } = req.body;
@@ -115,7 +114,7 @@ router.patch('/users/:userName/image', (req, res) => {
 });
 
 // POST to add dietary restrictions for a given user
-// BUG: currently does not account for dupliaces
+// TODO: account for duplicates
 router.post('/users/:userName/dietaryRestrictions', (req, res) => {
   // restrictions must be an array
   const { restrictions } = req.body;
@@ -124,21 +123,23 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
     .then(() => {
       res.sendStatus(201);
     })
-    .catch((err) => {
+    .catch(() => {
       res.sendStatus(400);
     });
 });
+
 // GET all users from database
 router.get('/users', (req, res) => {
   getAllUsers()
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.sendStatus(400);
     });
 });
+
 // GET dietary restrictions for a given user
 router.get('/users/:userName/dietaryRestrictions', (req, res) => {
   const { userName } = req.params;
@@ -170,7 +171,7 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
 });
 
 // POST /groups to add new group to db
-// should also add whichever user created the group to the user_group join table
+// also adds whichever user created the group to the user_group join table
 router.post('/groups', (req, res) => {
   const { groupName, pricePoint, userName } = req.body;
   const newGroup = {
@@ -211,8 +212,7 @@ router.post('/user_group', (req, res) => {
     .then(() => {
       res.send(201);
     })
-    .catch((err) => {
-      console.log(err);
+    .catch(() => {
       res.send(400);
     });
 });
@@ -367,21 +367,6 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-// GET / renders home page, with info about active groups and sleeping groups
-
-// GET /preferences renders preferences/settings page for given user? /preferences:id?
-// call addUserDietaryRestrictions here
-
-
-// GET /groups:id renders given group page
-
-// GET /winner renders winner page for given user,
-// who is presented with option to make the choice or pass
-
-// GET /passed renders page with 'PASSED: -5' message to user,
-// has link to get back to main group page (GET /group:id)
-
-
 // GET /choices renders page with a few choices of where to eat, with a timer.
 // clicking on a given choice will ...render choices:id page for all users?
 router.get('/choices', (req, res) => {
@@ -424,5 +409,21 @@ router.patch('/groups:id/active', (req, res) => {
       res.sendStatus(400);
     });
 });
+
+// GET / renders home page, with info about active groups and sleeping groups
+
+// GET /preferences renders preferences/settings page for given user? /preferences:id?
+// call addUserDietaryRestrictions here
+
+
+// GET /groups:id renders given group page
+
+// GET /winner renders winner page for given user,
+// who is presented with option to make the choice or pass
+
+// GET /passed renders page with 'PASSED: -5' message to user,
+// has link to get back to main group page (GET /group:id)
+
+
 
 module.exports.router = router;
