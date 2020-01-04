@@ -5,7 +5,7 @@ import GroupMember from './GroupMember.jsx';
 
 const Group = (props) => {
   const {
-    user, groupName, pricePoint, groupMembers, handleViewChange, handleGetOptions, randomizer, choser, showWinner,
+    user, groupName, pricePoint, groupMembers, handleViewChange, userImages, handleGetOptions, randomizer, choser, showWinner,
   } = props;
   return (
       <div>
@@ -23,9 +23,10 @@ const Group = (props) => {
         </div>
 
           <ul>
-    {groupMembers.map((groupMember) => <GroupMember groupMember={groupMember} />)}
+    {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
 </ul>
     <Button onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+    <Button onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
     <Button onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
 

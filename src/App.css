@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.userImages {
+  border-radius: 20%;
+  border-color: aquamarine;
+}
+.radio {
+  padding: 1%;
+}
+.option {
+  border-color: blueviolet;
+}
+/* .purple {
+  .checkbox-material {
+    .check {
+      color: $checked-colour;
+    }
+    &:before{
+      background-color: $checked-colour;
+    }
+  } */

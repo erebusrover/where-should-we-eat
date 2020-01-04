@@ -25,6 +25,7 @@ const {
   addToGroupHistory,
   getGroupHistory,
   toggleGroupStatus,
+  getAllUsers,
 } = require('./db/helpers');
 // require Google and Yelp API functions
 const { getRestaurants } = require('./config/yelp');
@@ -33,16 +34,15 @@ const { getUserLocation } = require('./config/google');
 const router = Router();
 
 // POST to /users to add user to db --> how will google auth be involved in this?
-// TODO: separate userstatus change from here
 router.post('/users', (req, res) => {
   // get username from req body
   const { userName } = req.body;
   // use db helper function to add new user to db, setting default values for status, diet, image
   addNewUser(userName)
-    .then(() => {
+    .then((response) => {
       res.sendStatus(201);
     })
-    .catch(() => {
+    .catch((err) => {
       res.sendStatus(400);
     });
 });
@@ -127,14 +127,24 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
       res.sendStatus(400);
     });
 });
-
+// GET all users from database
+router.get('/users', (req, res) => {
+  getAllUsers()
+    .then((response) => {
+      res.status(200);
+      res.send(response);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
 // GET dietary restrictions for a given user
 router.get('/users/:userName/dietaryRestrictions', (req, res) => {
   const { userName } = req.params;
   getUserDietaryRestrictions(userName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.sendStatus(400);
@@ -201,6 +211,7 @@ router.post('/user_group', (req, res) => {
       res.send(201);
     })
     .catch((err) => {
+      console.log(err);
       res.send(400);
     });
 });
@@ -211,7 +222,7 @@ router.get('/groups/:groupName/users', (req, res) => {
   getAllGroupMembers(groupName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.send(400);
@@ -224,7 +235,7 @@ router.get('/users/:userName/groups', (req, res) => {
   getAllUserGroups(userName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.send(400);
@@ -237,7 +248,7 @@ router.get('/groups/:userName/groups/active', (req, res) => {
   getAllActiveUserGroups(userName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.send(400);
@@ -250,7 +261,7 @@ router.get('/groups/:userName/groups/inactive', (req, res) => {
   getAllInactiveUserGroups(userName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.send(400);
@@ -330,7 +341,7 @@ router.get('/groupHistory', (req, res) => {
   getGroupHistory(groupName)
     .then((response) => {
       res.status(200);
-      res.send(response);
+      res.send(response[0]);
     })
     .catch(() => {
       res.sendStatus(400);
@@ -344,8 +355,7 @@ router.get('/login', passport.authenticate('google', {
 
 // GET /redirect to reroute back to the app from the google consent screen
 router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
-  console.log('you hit the redirect route');
-  res.redirect('http://localhost:8080');
+  res.redirect('/');
 });
 
 
@@ -378,7 +388,7 @@ router.get('/choices', (req, res) => {
   // get user's location
   getUserLocation().then((response) => {
     // get the lat and lng info from that api call
-    const { lat, lng } = response.location;
+    const { lat, lng } = response.data.location;
     // use it and destructured props from req body to create query to pass to getRestaurants
     const query = {
       latitude: lat,
@@ -387,12 +397,14 @@ router.get('/choices', (req, res) => {
       categories,
       price,
     };
+    // bug lives in this function, i think
     getRestaurants(query);
   })
     .then((restaurants) => {
       res.send(restaurants);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       res.sendStatus(400);
     });
 });
