@@ -384,7 +384,6 @@ router.get('/choices', (req, res) => {
       categories,
       price,
     };
-    // bug lives in this function, i think
     getRestaurants(query);
   })
     .then((restaurants) => {
@@ -392,7 +391,7 @@ router.get('/choices', (req, res) => {
       // and the original lat/lng of request (restaurants.region.center)
       res.send(restaurants);
     })
-    .catch((error) => {
+    .catch(() => {
       res.sendStatus(400);
     });
 });
