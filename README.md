@@ -16,10 +16,6 @@ In the root directory, run `npm run build` to create a build of the front end.
 
 Then run `npm start` to serve the build and start the backend server on `localhost:8080`. Open `localhost:8080` in your browser to see the build.
 
-The build is minified and the filenames include the hashes.<br />
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
 ### To run the app in dev mode:
 
 `npm run local` runs the app in the development mode.<br />
