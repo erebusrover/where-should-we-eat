@@ -27,7 +27,7 @@ In order to test or work with our router and database functions, you're going to
 
 ### Install Google Cloud SDK
 
-The Google Cloud SDK will allow you to redeploy a new version of this app when you're ready with the `gcloud app deploy` command.
+The Google Cloud SDK (software development kit) will allow you to redeploy a new version of this app, when you're ready, with the `gcloud app deploy` command.
 
 Follow the steps in the [Google Documentation](https://cloud.google.com/sdk/docs/downloads-interactive) to download it onto your local machine.
 
