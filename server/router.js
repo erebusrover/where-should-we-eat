@@ -226,7 +226,8 @@ router.get('/users/:userName/groups', (req, res) => {
       res.status(200);
       res.send(response[0]);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.send(400);
     });
 });

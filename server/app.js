@@ -27,18 +27,15 @@ app.use(bodyParser.json());
 app.use('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  // res.setHeader('Content-Security-Policy', 'script-src "self", manifest-src "self"');
   next();
 });
 
-app.options('*', cors());
 app.use('/api', router);
-
+app.options('*', cors());
 
 // serve static assets
 const CLIENT_PATH = path.resolve(__dirname, '../build');
 app.use(express.static(CLIENT_PATH));
-// app.use(express.static('wwwroot'));
 // send users to main index page on all endpoints
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
