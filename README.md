@@ -4,7 +4,7 @@ Where Should We Eat is built on NodeJS, Express, and ReactJS, and deployed on Go
 
 Below, you can find instructions on running the app on your local machine, how to access and manipulate the Google Cloud SQL database, and how to redeploy.
 
-If you're an Op Spark developer adding a feature to this project for Legacy, reach out to one of the Magnificent Marsupials for `.env` variables, the `app.yaml` file (super important for deployment) API keys, and Google Cloud permissions.
+If you're an Op Spark developer adding a feature to this project for Legacy, reach out to one of the Magnificent Marsupials for `.env` variables, the `app.yaml` file, API keys, and Google Cloud permissions.
 
 If you have any questions that aren't answered here, the Google Cloud Documentation is pretty stellar.
 
