@@ -20,10 +20,10 @@ passport.use(
   }, (accessToken, refreshToken, profile, done) => {
     checkDb(profile.id)
       .then((currentUser) => {
-        if (currentUser.length === 1) {
+        if (currentUser[0].length === 1) {
           done(null, currentUser);
         }
-        if (currentUser.length === 0) {
+        if (currentUser[0].length === 0) {
           console.log(profile.id);
           addNewUser(profile.displayName, profile.id)
             .then((newUser) => {
