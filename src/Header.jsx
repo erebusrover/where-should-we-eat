@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 const Header = (props) => {
   const { handleViewChange, handleSignOutWithGoogle, handleSignInWithGoogle } = props;
   return (
-  <AppBar position="static">
+  <AppBar style={{ background: '#9900cc' }} position="static">
   <Toolbar>
     <IconButton edge="start" className='one' color="inherit" aria-label="menu">
     </IconButton>
