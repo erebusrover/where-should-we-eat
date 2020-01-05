@@ -4,15 +4,25 @@ import OptionItem from './OptionItem.jsx';
 
 const Options = (props) => {
   const { options, handlePass} = props;
-  const { businesses } = options.data;
-  console.log(businesses);
+  console.log(options);
   return (
       <div>
           <h2>{}</h2>
-          <div>{businesses.map((option) => (
-                  <OptionItem key={option.id} option={option} className='option'/>
+          <div>{options.map((option) => (
+                  <OptionItem
+                    key={option.id}
+                    name={option.name}
+                    price={option.price}
+                    rating={option.rating}
+                    image_url={option.image_url}
+                    phone={option.display_phone}
+                    is_closed={option.is_closed}
+                    url={option.url}
+                    lat={option.coordinates.latitude}
+                    lng={option.coordinates.longitude}
+                    className='option'/>
           ))}</div>
-             <Button variant="contained" color="primary" onClick={() => { handlePass() }}>Pass</Button>
+             <Button variant="contained" color="primary" onClick={() => { handlePass(); }}>Pass</Button>
       </div>
 
   );

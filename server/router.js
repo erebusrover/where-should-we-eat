@@ -387,11 +387,11 @@ router.get('/choices', (req, res) => {
     return getRestaurants(query);
   })
     .then((response) => {
-      console.log(response.data);
+      console.log(response.data.businesses);
       // response contains array of businesses (restaurants.businesses)
       // and the original lat/lng of request (restaurants.region.center)
       res.status(200);
-      res.send(response.data);
+      res.send(response.data.businesses);
     })
     .catch((err) => {
       console.log(err);
