@@ -374,8 +374,8 @@ router.get('/login', passport.authenticate('google', {
 // GET /redirect to reroute back to the app from the google consent screen
 router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
   const { userName } = res.req._passport.session.user[0][0];
-  // res.send(userName);
-  res.redirect('/');
+  res.send(userName);
+  // res.redirect('/');
 });
 
 
