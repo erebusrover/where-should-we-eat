@@ -19,8 +19,8 @@ const OptionItem = (props) => {
       <div>
        <h1>{name}</h1>
        <Button onClick={handleChooseOption}>We're eating here</Button>
-       <h2>{price}</h2>
-       <h2>{rating}</h2>
+       <h2>Price level: {price}</h2>
+       <h2>Rating: {rating}</h2>
        <h2>Open? {is_closed}</h2>
        <h2>Phone: {phone}</h2>
        <img src={image_url}/>
