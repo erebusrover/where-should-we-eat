@@ -46,7 +46,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       view: '',
-      user: '',
+      user: 'dot',
       userStatus: '',
       groups: [],
       dietaryRestriction: 'vegan',
@@ -58,6 +58,7 @@ class App extends React.Component {
       options: [],
       categories: 'vegan',
       choser: '',
+      choice: '',
       showWinner: false,
       userImages,
       open: false,
