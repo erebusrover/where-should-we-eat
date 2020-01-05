@@ -384,14 +384,14 @@ router.get('/choices', (req, res) => {
       categories,
       price,
     };
-    // bug lives in this function, i think
     getRestaurants(query);
   })
     .then((restaurants) => {
+      // response contains array of businesses (restaurants.businesses)
+      // and the original lat/lng of request (restaurants.region.center)
       res.send(restaurants);
     })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
       res.sendStatus(400);
     });
 });
