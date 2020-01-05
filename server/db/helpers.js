@@ -186,7 +186,6 @@ const deleteGroup = async (groupName) => {
 };
 
 // add chosen location to grouphistory table
-// TODO: figure out how location is being stored. Are we assigning them ids?
 const addToGroupHistory = async (group) => {
   const { groupName, location } = group;
   const sql = `INSERT into groupHistory (groupp_id, location_id) VALUES 
