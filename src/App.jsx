@@ -268,7 +268,7 @@ class App extends React.Component {
     const dietaryRestrictionArr = [dietaryRestriction];
 
     axios.post('/api/users', { userName: user })
-      .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
+      // .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
       .then(() => axios.post(`/api/users/${user}/image`, { image }))
     // axios.post(`/api/users/${this.state.user}/userName`, {
     //   userStatus: this.state.status,
@@ -330,9 +330,11 @@ class App extends React.Component {
               sugarGlider={'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg'}
               handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
               handleUserStatusInput={handleUserStatusInput}
+              handleSignInWithGoogle={handleSignInWithGoogle}
               handleSetState={handleSetState}
               handlePreferenceChange={handlePreferenceChange}
               handleSubmitPreferences={handleSubmitPreferences}
+              handleViewChange={handleViewChange}
               handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup
