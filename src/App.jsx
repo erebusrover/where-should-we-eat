@@ -28,7 +28,7 @@ class App extends React.Component {
       view: 'titlepage',
       user: 'x',
       userStatus: '',
-      groups: ['a', 'b'],
+      groups: [],
       dietaryRestriction: 'vegan',
       image: '',
       groupName: 'supercoolpeople',
@@ -69,15 +69,6 @@ class App extends React.Component {
     this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
   }
 
-  componentDidMount() {
-    // this.getUsersGroups(this.state.user);
-    this.getGroupMembers(this.state.groupName);
-  }
-
-  componentDidUpdate() {
-    // this.getUsersGroups(this.state.user);
-  }
-
   toggleDialog() {
     // toggles error dialog box
     if (this.state.open === false) {
@@ -99,6 +90,7 @@ class App extends React.Component {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
     this.getUsersGroups(this.state.user);
+    this.getGroupMembers(this.state.groupName);
     console.log('state set');
   }
 
@@ -253,6 +245,7 @@ class App extends React.Component {
       .then((groupList) => {
         this.setState({ groups: groupList })
           .catch(() => {
+            console.log(this.state)
             this.toggleDialog();
           });
       });
@@ -285,7 +278,8 @@ class App extends React.Component {
     const dietaryRestrictionArr = [dietaryRestriction];
 
     axios.post('/api/users', { userName: user })
-      // .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
+    .then(console.log('please wait'))
+      .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
       .then(() => axios.post(`/api/users/${user}/image`, { image }))
     // axios.post(`/api/users/${this.state.user}/userName`, {
     //   userStatus: this.state.status,

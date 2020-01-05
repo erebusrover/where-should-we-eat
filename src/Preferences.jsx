@@ -31,24 +31,16 @@ const Preferences = (props) => {
     handleUserStatusInput,
     handleViewChange,
     handleSetState,
-    handleViewChange,
     user,
     userStatus,
     dietaryRestrictions,
     userImages,
   } = props;
-<<<<<<< HEAD
-const onclick = () => {
-  handleSignInWithGoogle();
-  handleViewChange('home')
-}
-=======
   const onclick = () => {
     handleSubmitPreferences();
     handleSignInWithGoogle();
     handleViewChange('home');
   };
->>>>>>> e560317e661bc6c7f5c00292e6330134931b5d2c
   return (
     <div>
       <ul>

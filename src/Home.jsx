@@ -8,7 +8,7 @@ const Home = (props) => {
   } = props;
   return (
 <div>
-{groups.map((group) => <GroupItem groupName={group.groupName} userImages={userImages} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState} getGroupMembers={getGroupMembers} />)}
+{groups.data.map((group) => <GroupItem groupName={group.groupName} userImages={userImages} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState} getGroupMembers={getGroupMembers} />)}
 <h1>hi {user}</h1>
 
 </div>
