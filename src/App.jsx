@@ -1,4 +1,4 @@
-
+// temp state for username and permstate on submit
 import React from 'react';
 import axios from 'axios';
 import { Avatar } from '@material-ui/core';
@@ -17,40 +17,20 @@ import Group from './Group.jsx';
 import AddUserForm from './AddUserForm.jsx';
 import Options from './Options.jsx';
 import './App.css';
+import Title from './TitlePage.jsx';
 
 
-const userImages = {
-  oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
-  koala: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg',
-  kangaroo: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg',
-  bilby: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg',
-  sugarGlider: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg',
-
-};
-// const options = [{
-//   name: 'Four Barrel Rum',
-//   rating: 8,
-//   price: '$$',
-//   phone: '+14152520800',
-//   address: '375 Valencia St',
-// },
-// {
-//   name: 'Four Barrel Coffee',
-//   rating: 4,
-//   price: '$',
-//   phone: '+14152520800',
-//   address: '375 Amadee St',
-// }];
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: '',
-      user: 'dot',
+
+      view: 'titlepage',
+      user: 'x',
       userStatus: '',
-      groups: [],
+      groups: ['a', 'b'],
       dietaryRestriction: 'vegan',
-      image: null,
+      image: '',
       groupName: 'supercoolpeople',
       pricePoint: '',
       members: [],
@@ -60,7 +40,6 @@ class App extends React.Component {
       choser: '',
       choice: '',
       showWinner: false,
-      userImages,
       open: false,
       login: false,
     };
@@ -91,8 +70,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getUsersGroups(this.state.user);
+    // this.getUsersGroups(this.state.user);
     this.getGroupMembers(this.state.groupName);
+  }
+
+  componentDidUpdate() {
+    // this.getUsersGroups(this.state.user);
   }
 
   toggleDialog() {
@@ -115,6 +98,7 @@ class App extends React.Component {
   handleViewChange(view) {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
+    this.getUsersGroups(this.state.user);
     console.log('state set');
   }
 
@@ -123,7 +107,7 @@ class App extends React.Component {
   }
 
   handleSignInWithGoogle() {
-    return window.open('/api/login', '_self');
+    return window.open('/api/login', '_blank');
   }
 
   handleSignOutWithGoogle() {
@@ -228,20 +212,16 @@ class App extends React.Component {
   }
 
   handlePreferenceChange(k, v) {
-    axios.patch(`/api/users/:${this.state.user}/${k}`, {
-      k: v,
-    })
-      .then(this.handleSetState(k, v))
-      .then(console.log(this.state))
-      .catch(() => {
-        this.toggleDialog();
-      });
+    // this.handleSetState(k, v);
+    this.setState({ [k]: v });
+    console.log('statetetet', this.state)
   }
 
   handleNewGroupPricePoint(newPricePoint) {
     this.setState({
       pricePoint: newPricePoint,
     });
+    console.log(this.state);
   }
 
   handleNewGroupSubmit() {
@@ -270,18 +250,11 @@ class App extends React.Component {
 
   getUsersGroups(user) {
     axios.get(`/api/users/${user}/groups`)
-      .then((groupsList) => {
-        this.setState((state) => {
-          const groups = groupsList.data.map((group) => {
-            state.groups.push(group);
-            return {
-              groups,
-            };
+      .then((groupList) => {
+        this.setState({ groups: groupList })
+          .catch(() => {
+            this.toggleDialog();
           });
-        });
-      })
-      .catch(() => {
-        this.toggleDialog();
       });
   }
 
@@ -304,18 +277,22 @@ class App extends React.Component {
 
   handleUserNameInput(e) {
     const user = e.target.value;
-    if (this.state.user.length === 0) {
-      this.setState({ user });
-    }
+    this.setState({ user });
   }
 
   handleSubmitPreferences() {
+    const { user, image, dietaryRestriction } = this.state;
+    const dietaryRestrictionArr = [dietaryRestriction];
+
+    axios.post('/api/users', { userName: user })
+      .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
+      .then(() => axios.post(`/api/users/${user}/image`, { image }))
     // axios.post(`/api/users/${this.state.user}/userName`, {
     //   userStatus: this.state.status,
     // })
-    //   .catch(() => {
-    //     this.toggleDialog();
-    //   });
+      .catch(() => {
+        this.toggleDialog();
+      });
   }
 
   handleAddUserToGroup() {
@@ -334,18 +311,18 @@ class App extends React.Component {
     this.setState({ userStatus: e.target.value });
   }
 
-  handleDietaryRestrictionsSetState(e) {
-    const { user, dietaryRestriction } = this.state;
-    const restrictions = dietaryRestriction.split();
-    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
-      .then(() => {
-        this.setState({
-          dietartRetriction: this.state.dietaryRestriction.push(e),
-        });
-      })
-      .catch(() => {
-        this.toggleDialog();
-      });
+  handleDietaryRestrictionsSetState(value) {
+    // const { user, dietaryRestriction } = this.state;
+    // const restrictions = dietaryRestriction.split();
+    // axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
+    //   .then(() => {
+    //     this.setState({
+    //       dietaryRetriction: e,
+    //     });
+    //   })
+    //   .catch(() => {
+    //     this.toggleDialog();
+    //   });
   }
 
   render() {
@@ -363,10 +340,18 @@ class App extends React.Component {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
       View = <Preferences
-              userImages={userImages}
+              koala={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg'}
+              oppossum={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg'}
+              bilby={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg'}
+              kangaroo={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg'}
+              sugarGlider={'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg'}
               handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
               handleUserStatusInput={handleUserStatusInput}
               handleSetState={handleSetState}
+              handleViewChange={handleViewChange}
+              handleSignInWithGoogle={handleSignInWithGoogle}
+              handlePreferenceChange={handlePreferenceChange}
+              handleSubmitPreferences={handleSubmitPreferences}
               handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup
@@ -378,10 +363,12 @@ class App extends React.Component {
               handleNewGroupSubmit={handleNewGroupSubmit}
               handleAddUserToGroup={handleAddUserToGroup}
       />;
+    } else if (view === '/home') {
+      View = <Home groups={groups} user={user} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
     } else if (view === '/userSetting') {
       View = <UserSettings handleUserSettings={handleUserSettings} handleUserStatusInput={handleUserStatusInput} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
-      View = <Group user={user} userImages={userImages} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
+      View = <Group user={user} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === 'removeUserFromGroup') {
@@ -389,14 +376,14 @@ class App extends React.Component {
     } else if (view === '/options') {
       View = <Options options={options} handlePass={handlePass} handleChooseOption={handleChooseOption}/>;
     } else {
-      View = <Home groups={groups} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
+      View = <Title handleViewChange={handleViewChange} />;
     }
 
     return (
             <div>
                {/* <MuiThemeProvider muiTheme={muiTheme}></MuiThemeProvider> */}
                 <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
-                <Avatar src={userImages.kangaroo}/>
+                {/* <Avatar src={userImages.kangaroo}/> */}
                 <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
                     <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
                 </Dialog>
