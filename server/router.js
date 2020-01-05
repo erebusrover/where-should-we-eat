@@ -384,12 +384,13 @@ router.get('/choices', (req, res) => {
       categories,
       price,
     };
-    getRestaurants(query);
+    return getRestaurants(query);
   })
-    .then((restaurants) => {
+    .then((response) => {
       // response contains array of businesses (restaurants.businesses)
       // and the original lat/lng of request (restaurants.region.center)
-      res.send(restaurants);
+      res.status(200);
+      res.send(response.data);
     })
     .catch(() => {
       res.sendStatus(400);
