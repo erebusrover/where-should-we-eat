@@ -70,6 +70,7 @@ class App extends React.Component {
     this.handleGetOptions = this.handleGetOptions.bind(this);
     this.handleChooseOption = this.handleChooseOption.bind(this);
     this.getGroupMembers = this.getGroupMembers.bind(this);
+    this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
     this.getUsersGroups = this.getUsersGroups.bind(this);
     this.handleGroupSetState = this.handleGroupSetState.bind(this);
     this.randomizer = this.randomizer.bind(this);
@@ -218,6 +219,19 @@ class App extends React.Component {
       });
   }
 
+  getGroupPricePoint(group) {
+    axios.get(`/api/groups/${group}/pricePoint`)
+      .then((response) => {
+        const { pricePoint } = response.data[0];
+        this.setState({
+          pricePoint,
+        });
+      })
+      .catch(() => {
+        this.toggleDialog();
+      });
+  }
+
   randomizer() {
     const { members } = this.state;
     const memberIndex = Math.floor(Math.random() * (members.length));
@@ -346,10 +360,10 @@ class App extends React.Component {
       view, groups, group, members,
       options, groupName, pricePoint, open,
       chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
-      showWinner, user, userImages, dietaryRestriction, users, 
+      showWinner, user, userImages, dietaryRestriction, users,
     } = this.state;
     const {
-      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions,
+      randomizer, getGroupMembers, getGroupPricePoint, handleGroupSetState, handleGetOptions,
       handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleLoginClick, toggleLoginDialog, handleSignInWithGoogle, handleNewGroupName,
@@ -400,6 +414,7 @@ class App extends React.Component {
                 groups={groups}
                 user={user}
                 getGroupMembers={getGroupMembers}
+                getGroupPricePoint={getGroupPricePoint}
                 handleViewChange={handleViewChange}
                 handleGroupSetState={handleGroupSetState}/>;
     } else if (view === '/userSetting') {
@@ -408,7 +423,6 @@ class App extends React.Component {
                 handleUserStatusInput={handleUserStatusInput}
                 handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
-
       View = <Group user={user}
                 userImages={userImages}
                 group={group} groupName={groupName}
@@ -416,6 +430,7 @@ class App extends React.Component {
                 pricePoint={pricePoint}
                 handleGetOptions={handleGetOptions}
                 getGroupMembers={getGroupMembers}
+                getGroupPricePoint={getGroupPricePoint}
                 handleViewChange={handleViewChange}
                 randomizer={randomizer}
                 chooser={chooser}

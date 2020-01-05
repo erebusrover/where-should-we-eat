@@ -3,11 +3,12 @@ import React from 'react';
 
 const GroupItem = (props) => {
   const {
-    handleViewChange, groupName, handleGroupSetState, getGroupMembers
+    handleViewChange, groupName, handleGroupSetState, getGroupMembers, getGroupPricePoint
   } = props;
   const clickFunction = () => {
     handleGroupSetState(groupName);
     getGroupMembers(groupName);
+    getGroupPricePoint(groupName);
     handleViewChange('group');
   };
   return (
