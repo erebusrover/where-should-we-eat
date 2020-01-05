@@ -278,7 +278,7 @@ class App extends React.Component {
     // dietary
     axios.post('/api/users', { userName: user })
       .then(axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestriction }))
-      .then(axios.post(`/api/users/${user}/image`))
+      .then(axios.post(`/api/users/${user}/image`, { image }))
     // axios.post(`/api/users/${this.state.user}/userName`, {
     //   userStatus: this.state.status,
     // })
@@ -342,6 +342,7 @@ class App extends React.Component {
               handleUserStatusInput={handleUserStatusInput}
               handleSetState={handleSetState}
               handlePreferenceChange={handlePreferenceChange}
+              handleSubmitPreferences={handleSubmitPreferences}
               handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup

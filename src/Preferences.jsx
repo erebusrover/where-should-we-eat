@@ -21,22 +21,19 @@ const PurpleRadio = withStyles({
 // TODO allow user to pick more than one dietary restriction
 const Preferences = (props) => {
   const {
-    handlePreferenceChange, handleLoginClick, 
-    koala, bilby, kangaroo , sugarGlider, 
+    handlePreferenceChange, handleLoginClick,
+    koala, bilby, kangaroo, sugarGlider,
     oppossum,
     handleSubmitPreferences,
-    handleUserSettings,
     handleUserNameInput,
-    handleDietaryRestrictionsSetState,
     handleUserStatusInput,
     handleSetState,
-    userImages,
-    userImage,
-    user, 
-    userStatus, dietaryRestrictions,
+    user,
+    userStatus,
+    dietaryRestrictions,
   } = props;
   const onclick = () => {
-  //  handleSubmitPreferences();
+    handleSubmitPreferences();
     handleLoginClick();
   };
   return (
