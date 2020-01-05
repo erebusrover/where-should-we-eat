@@ -373,26 +373,28 @@ router.get('/choices', (req, res) => {
   const { radius, categories, price } = req.body;
   // req body should contain query argument for get Restaurants (see config/yelp.js)
   // get user's location
-  getUserLocation().then((response) => {
+  return getUserLocation().then((response) => {
     // get the lat and lng info from that api call
     const { lat, lng } = response.data.location;
     // use it and destructured props from req body to create query to pass to getRestaurants
     const query = {
-      latitude: lat,
-      longitude: lng,
-      radius,
-      categories,
-      price,
+      latitude: 29.985996800000002,
+      longitude: -90.08414719999999,
+      radius: 30000,
+      categories: 'vegan',
+      price: 1,
     };
     return getRestaurants(query);
   })
     .then((response) => {
+      console.log(response.data);
       // response contains array of businesses (restaurants.businesses)
       // and the original lat/lng of request (restaurants.region.center)
       res.status(200);
       res.send(response.data);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.sendStatus(400);
     });
 });
