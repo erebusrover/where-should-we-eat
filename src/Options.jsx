@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import OptionItem from './OptionItem.jsx';
 
 const Options = (props) => {
-  const { options, handlePass} = props;
+  const { options, handlePass, handleChooseOption} = props;
   console.log(options);
   return (
       <div>
@@ -11,6 +11,7 @@ const Options = (props) => {
           <div>{options.map((option) => (
                   <OptionItem
                     key={option.id}
+                    id={option.id}
                     name={option.name}
                     price={option.price}
                     rating={option.rating}
@@ -20,7 +21,8 @@ const Options = (props) => {
                     url={option.url}
                     lat={option.coordinates.latitude}
                     lng={option.coordinates.longitude}
-                    className='option'/>
+                    className='option'
+                    handleChooseOption={handleChooseOption}/>
           ))}</div>
              <Button variant="contained" color="primary" onClick={() => { handlePass(); }}>Pass</Button>
       </div>

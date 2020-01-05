@@ -186,12 +186,11 @@ const deleteGroup = async (groupName) => {
 };
 
 // add chosen location to grouphistory table
-// TODO: figure out how location is being stored. Are we assigning them ids?
 const addToGroupHistory = async (group) => {
-  const { groupName, location } = group;
+  const { groupName, id } = group;
   const sql = `INSERT into groupHistory (groupp_id, location_id) VALUES 
-    ((SELECT groupp_id FROM groupp WHERE groupName = ?), ?)`;
-  return pool.query(sql, [groupName, location]);
+                ((SELECT groupp_id FROM groupp WHERE groupName = ?), ?)`;
+  return pool.query(sql, [groupName, id]);
 };
 
 // get group location history
