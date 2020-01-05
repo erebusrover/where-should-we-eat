@@ -25,6 +25,7 @@ const {
   getAllActiveUserGroups,
   getAllInactiveUserGroups,
   changeGroupName,
+  getGroupPricePoint,
   changeGroupPricePoint,
   addToGroupHistory,
   getGroupHistory,
@@ -191,9 +192,10 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
 // also adds whichever user created the group to the user_group join table
 router.post('/groups', (req, res) => {
   const { groupName, pricePoint, userName } = req.body;
+  const priceNumber = pricePoint.length;
   const newGroup = {
     groupName,
-    pricePoint,
+    pricePoint: priceNumber,
   };
     // use db helper function to add new group to db
   addNewGroup(newGroup)
@@ -324,9 +326,10 @@ router.patch('/groups/:groupName/pricePoint', (req, res) => {
   // what if we wanted to include multiple price points
   // when is price point set, and by whom?
   const { newPricePoint } = req.body;
+  const priceNumber = newPricePoint.length;
   const group = {
     groupName,
-    newPricePoint,
+    newPricePoint: priceNumber,
   };
   changeGroupPricePoint(group)
     .then(() => {
@@ -394,22 +397,25 @@ router.get('/choices', (req, res) => {
   // db query to get dietary restrictions, pricepoint?
   // const categories = getAllUserRestrictions(groupName);
   return getAllUserRestrictions(groupName).then(function (restrictions) {
-    return getUserLocation().then(function (location) {
-      const categories = restrictions[0].map((restriction) => {
-        return restriction.restriction;
-      });
-      const { lat, lng } = location.data.location;
-      const query = {
-        latitude: lat,
-        longitude: lng,
-        radius: 40000,
-        categories: categories[0],
-        price: 1,
-      };
-      return getRestaurants(query).then(function (response) {
-        const { businesses } = response.data;
-        res.status(200);
-        res.send(businesses);
+    return getGroupPricePoint(groupName).then(function(pricePoint) {
+      console.log(pricePoint);
+      return getUserLocation().then(function (location) {
+        const categories = restrictions[0].map((restriction) => {
+          return restriction.restriction;
+        });
+        const { lat, lng } = location.data.location;
+        const query = {
+          latitude: lat,
+          longitude: lng,
+          radius: 40000,
+          categories: categories[0],
+          price: 1,
+        };
+        return getRestaurants(query).then(function (response) {
+          const { businesses } = response.data;
+          res.status(200);
+          res.send(businesses);
+        });
       });
     });
   })

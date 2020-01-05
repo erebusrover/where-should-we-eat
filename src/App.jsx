@@ -26,6 +26,7 @@ const userImages = {
   bilby: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg',
   sugarGlider: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg',
 };
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -35,6 +36,7 @@ class App extends React.Component {
       user: 'x',
       userStatus: '',
       groups: [],
+      userImages,
       dietaryRestriction: 'vegan',
       image: '',
       groupName: 'supercoolpeople',
@@ -152,12 +154,8 @@ class App extends React.Component {
   }
 
   handleGetOptions() {
-    const { categories, pricePoint } = this.state;
-    axios.get('/api/choices', {
-      radius: 40000,
-      categories,
-      price: pricePoint,
-    })
+    const { groupName } = this.state;
+    axios.get('/api/choices', { groupName })
       .then((response) => {
         const { data } = response;
         this.setState({
