@@ -6,9 +6,8 @@ const GroupMember = (props) => {
   const { groupMember, userImages } = props;
   return (
       <div>
-        <Avatar src={userImages.kangaroo}/>
-          <h2>{groupMember.userName}</h2>
-          <h2>MemberStatus</h2>
+        <h2><Avatar src={userImages.kangaroo}/>
+          {groupMember.userName}</h2>
       </div>
 
   );
