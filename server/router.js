@@ -1,3 +1,5 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable prefer-arrow-callback */
 const { Router } = require('express');
 const passport = require('passport');
 
@@ -18,6 +20,7 @@ const {
   addUserToGroup,
   deleteUserFromGroup,
   getAllGroupMembers,
+  getAllUserRestrictions,
   getAllUserGroups,
   getAllActiveUserGroups,
   getAllInactiveUserGroups,
@@ -43,7 +46,6 @@ router.post('/users', (req, res) => {
       res.sendStatus(201);
     })
     .catch(() => {
-
       res.sendStatus(400);
     });
 });
@@ -388,28 +390,31 @@ router.get('/logout', (req, res) => {
 // GET /choices renders page with a few choices of where to eat, with a timer.
 // clicking on a given choice will ...render choices:id page for all users?
 router.get('/choices', (req, res) => {
-  const { radius, categories, price } = req.body;
-  // req body should contain query argument for get Restaurants (see config/yelp.js)
-  // get user's location
-  getUserLocation().then((response) => {
-    // get the lat and lng info from that api call
-    const { lat, lng } = response.data.location;
-    // use it and destructured props from req body to create query to pass to getRestaurants
-    const query = {
-      latitude: lat,
-      longitude: lng,
-      radius,
-      categories,
-      price,
-    };
-    getRestaurants(query);
+  const { groupName } = req.body;
+  // db query to get dietary restrictions, pricepoint?
+  // const categories = getAllUserRestrictions(groupName);
+  return getAllUserRestrictions(groupName).then(function (restrictions) {
+    return getUserLocation().then(function (location) {
+      const categories = restrictions[0].map((restriction) => {
+        return restriction.restriction;
+      });
+      const { lat, lng } = location.data.location;
+      const query = {
+        latitude: lat,
+        longitude: lng,
+        radius: 40000,
+        categories: categories[0],
+        price: 1,
+      };
+      return getRestaurants(query).then(function (response) {
+        const { businesses } = response.data;
+        res.status(200);
+        res.send(businesses);
+      });
+    });
   })
-    .then((restaurants) => {
-      // response contains array of businesses (restaurants.businesses)
-      // and the original lat/lng of request (restaurants.region.center)
-      res.send(restaurants);
-    })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.sendStatus(400);
     });
 });
@@ -441,7 +446,6 @@ router.patch('/groups:id/active', (req, res) => {
 
 // GET /passed renders page with 'PASSED: -5' message to user,
 // has link to get back to main group page (GET /group:id)
-
 
 
 module.exports.router = router;

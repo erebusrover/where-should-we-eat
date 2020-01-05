@@ -28,20 +28,20 @@ const userImages = {
   sugarGlider: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg',
 
 };
-const options = [{
-  name: 'Four Barrel Rum',
-  rating: 8,
-  price: '$$',
-  phone: '+14152520800',
-  address: '375 Valencia St',
-},
-{
-  name: 'Four Barrel Coffee',
-  rating: 4,
-  price: '$',
-  phone: '+14152520800',
-  address: '375 Amadee St',
-}];
+// const options = [{
+//   name: 'Four Barrel Rum',
+//   rating: 8,
+//   price: '$$',
+//   phone: '+14152520800',
+//   address: '375 Valencia St',
+// },
+// {
+//   name: 'Four Barrel Coffee',
+//   rating: 4,
+//   price: '$',
+//   phone: '+14152520800',
+//   address: '375 Amadee St',
+// }];
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -56,8 +56,8 @@ class App extends React.Component {
       pricePoint: '',
       members: [],
       newMember: '',
-      options,
-      catagories: 'vegan',
+      options: [],
+      categories: 'vegan',
       choser: '',
       showWinner: false,
       userImages,
@@ -120,6 +120,7 @@ class App extends React.Component {
   handleViewChange(view) {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
+    console.log('state set');
   }
 
   handleLoginClick() {
@@ -164,16 +165,22 @@ class App extends React.Component {
   }
 
   handleGetOptions() {
-    const { catagories, pricePoint } = this.state;
+    const { categories, pricePoint } = this.state;
     axios.get('/api/choices', {
       radius: 40000,
-      categories: catagories,
+      categories,
       price: pricePoint,
     })
-      .then((options) => this.setState({
-        options,
-      }))
-      .catch(() => {
+      .then((response) => {
+        const { data } = response;
+        this.setState({
+          options: data,
+        });
+      }).then(() => {
+        this.handleViewChange('options');
+      })
+      .catch((error) => {
+        console.log(error);
         this.toggleDialog();
       });
   }
@@ -255,7 +262,6 @@ class App extends React.Component {
   getUsersGroups(user) {
     axios.get(`/api/users/${user}/groups`)
       .then((groupsList) => {
-        console.log(groupsList);
         this.setState((state) => {
           const groups = groupsList.data.map((group) => {
             state.groups.push(group);
@@ -263,10 +269,10 @@ class App extends React.Component {
               groups,
             };
           });
-        })
-          .catch(() => {
-            this.toggleDialog();
-          });
+        });
+      })
+      .catch(() => {
+        this.toggleDialog();
       });
   }
 
@@ -353,23 +359,28 @@ class App extends React.Component {
     if (view === '/login') {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
-      View = <Preferences handleLoginClick={handleLoginClick} handleSubmitPreferences={handleSubmitPreferences} handlePreferenceChange={handlePreferenceChange} dietaryRestriction={dietaryRestriction} userStatus={userStatus} userImage={userImage} user={user} handleUserSettings={handleUserSettings} userImages={userImages} handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState} handleUserStatusInput={handleUserStatusInput} handleSetState={handleSetState} handleUserNameInput={handleUserNameInput}/>;
+      View = <Preferences
+              userImages={userImages}
+              handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
+              handleUserStatusInput={handleUserStatusInput}
+              handleSetState={handleSetState}
+              handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup
-      handleViewChange={handleViewChange}
-      handleNewGroupName={handleNewGroupName}
-      handlePreferenceChange={handlePreferenceChange}
-      handleSetState={handleSetState}
-      handleNewGroupPricePoint={handleNewGroupPricePoint}
-      handleNewGroupSubmit={handleNewGroupSubmit}
-      handleAddUserToGroup={handleAddUserToGroup}
+              handleViewChange={handleViewChange}
+              handleNewGroupName={handleNewGroupName}
+              handlePreferenceChange={handlePreferenceChange}
+              handleSetState={handleSetState}
+              handleNewGroupPricePoint={handleNewGroupPricePoint}
+              handleNewGroupSubmit={handleNewGroupSubmit}
+              handleAddUserToGroup={handleAddUserToGroup}
       />;
     } else if (view === '/title') {
       View = <Title/>;
     } else if (view === '/userSetting') {
       View = <UserSettings handleUserSettings={handleUserSettings} handleUserStatusInput={handleUserStatusInput} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
-      View = <Group user={user} userImages={userImages}group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
+      View = <Group user={user} userImages={userImages} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === 'removeUserFromGroup') {

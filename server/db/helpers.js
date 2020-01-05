@@ -123,6 +123,14 @@ const getAllGroupMembers = async (groupName) => {
   return pool.query(sql, [groupName]);
 };
 
+// get all dietary restrictions for users of a given group
+const getAllUserRestrictions = async (groupName) => {
+  const sql = `SELECT restriction from dietaryRestrictions WHERE user_id IN
+                (SELECT user_id FROM user_group WHERE groupp_id IN 
+                  (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
+  return pool.query(sql, [groupName]);
+};
+
 // get all groups that a given user belongs to
 const getAllUserGroups = async (userName) => {
   const sql = `SELECT * FROM groupp WHERE groupp_id IN  
@@ -205,6 +213,7 @@ module.exports = {
   addNewGroup,
   addUserToGroup,
   getAllGroupMembers,
+  getAllUserRestrictions,
   getAllUserGroups,
   getAllActiveUserGroups,
   getAllInactiveUserGroups,
