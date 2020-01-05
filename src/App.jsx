@@ -221,7 +221,9 @@ class App extends React.Component {
 
   getGroupPricePoint(group) {
     axios.get(`/api/groups/${group}/pricePoint`)
-      .then((pricePoint) => {
+      .then((response) => {
+        const { pricePoint } = response.data[0];
+        console.log(pricePoint);
         this.setState({
           pricePoint,
         });
@@ -362,7 +364,7 @@ class App extends React.Component {
       showWinner, user, userImages, dietaryRestriction, users,
     } = this.state;
     const {
-      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions,
+      randomizer, getGroupMembers, getGroupPricePoint, handleGroupSetState, handleGetOptions,
       handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleLoginClick, toggleLoginDialog, handleSignInWithGoogle, handleNewGroupName,
@@ -413,6 +415,7 @@ class App extends React.Component {
                 groups={groups}
                 user={user}
                 getGroupMembers={getGroupMembers}
+                getGroupPricePoint={getGroupPricePoint}
                 handleViewChange={handleViewChange}
                 handleGroupSetState={handleGroupSetState}/>;
     } else if (view === '/userSetting') {
@@ -421,7 +424,6 @@ class App extends React.Component {
                 handleUserStatusInput={handleUserStatusInput}
                 handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
-
       View = <Group user={user}
                 userImages={userImages}
                 group={group} groupName={groupName}
@@ -429,6 +431,7 @@ class App extends React.Component {
                 pricePoint={pricePoint}
                 handleGetOptions={handleGetOptions}
                 getGroupMembers={getGroupMembers}
+                getGroupPricePoint={getGroupPricePoint}
                 handleViewChange={handleViewChange}
                 randomizer={randomizer}
                 chooser={chooser}

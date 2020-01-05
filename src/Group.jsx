@@ -17,21 +17,23 @@ const Group = (props) => {
   return (
       <div>
         <h1>{groupName}</h1>
-        <h2>PRICEPOINT $</h2>
-        <h2>{pricePoint}</h2>
+        <h2>Price point: {pricePoint}</h2>
         <br />
         <div> {showWinner === true
-          ? <h1>{chooser} is the lucky decision maker</h1>
-          : <h2>Start Game To Select Decision Maker</h2>}
+          ? <h1>{chooser} is the lucky Decision Maker</h1>
+          : <div>
+              <h2>Click Start Game to choose the Decision Maker</h2>
+              <Button onClick={() => { randomizer(); }}>Start Game</Button>
+            </div>}
         </div>
         <div> {user === chooser
-          ? <Button onClick={() => { handleGetOptions(); }}>Show Options</Button>
-          : <h2></h2>}
+          ? <Button onClick={() => { handleGetOptions(); }}>See your options for a nearby restaurant</Button>
+          : <div></div>}
         </div>
-      <Dialog onBackdropClick={() => { toggleDialog(); }} open={open}>
-        <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
-        <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
-      </Dialog>
+        <Dialog onBackdropClick={() => { toggleDialog(); }} open={open}>
+          <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
+          <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
+        </Dialog>
         <ul>
           {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
         </ul>
