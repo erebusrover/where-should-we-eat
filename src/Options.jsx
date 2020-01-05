@@ -10,7 +10,7 @@ const Options = (props) => {
           <div>{options.map((option) => (
                   <OptionItem option={option} className='option'/>
           ))}</div>
-             <Button variant="contained" color="primary" onClick={() => {handlePass() }}>Pass</Button>
+             <Button variant="contained" color="primary" onClick={() => { handlePass() }}>Pass</Button>
       </div>
 
   );

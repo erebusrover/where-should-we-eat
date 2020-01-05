@@ -79,6 +79,7 @@ router.delete('/users/:userName', (req, res) => {
 router.get('/users/:userName/status', (req, res) => {
   const { userName } = req.params;
   getUserStatus(userName, newStatus)
+  //TODO this is  probably why the user status is angry
     .then(() => {
       res.sendStatus(201);
     })
@@ -250,6 +251,7 @@ router.get('/users/:userName/groups', (req, res) => {
   getAllUserGroups(userName)
     .then((response) => {
       res.status(200);
+      console.log(response[0]);
       res.send(response[0]);
     })
     .catch((err) => {
@@ -372,8 +374,8 @@ router.get('/login', passport.authenticate('google', {
 // GET /redirect to reroute back to the app from the google consent screen
 router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
   const { userName } = res.req._passport.session.user[0][0];
-  // res.send(userName);
-  res.redirect('/');
+  res.send(userName);
+  // res.redirect('/');
 });
 
 

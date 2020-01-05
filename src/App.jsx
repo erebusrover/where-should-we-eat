@@ -1,4 +1,4 @@
-
+// temp state for username and permstate on submit
 import React from 'react';
 import axios from 'axios';
 import { Avatar } from '@material-ui/core';
@@ -17,6 +17,7 @@ import Group from './Group.jsx';
 import AddUserForm from './AddUserForm.jsx';
 import Options from './Options.jsx';
 import './App.css';
+import Title from './Title.jsx';
 
 
 const userImages = {
@@ -45,8 +46,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: '',
-      user: '',
+      view: 'title',
+      user: 'x',
       userStatus: '',
       groups: [],
       dietaryRestriction: 'vegan',
@@ -62,6 +63,7 @@ class App extends React.Component {
       userImages,
       open: false,
       login: false,
+      tempUserName: '',
     };
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
@@ -121,7 +123,7 @@ class App extends React.Component {
   }
 
   handleSignInWithGoogle() {
-    return window.open('/api/login', '_self');
+    return window.open('/api/login', '_blank');
   }
 
 
@@ -219,6 +221,7 @@ class App extends React.Component {
     this.setState({
       pricePoint: newPricePoint,
     });
+    console.log(this.state);
   }
 
   handleNewGroupSubmit() {
@@ -282,9 +285,15 @@ class App extends React.Component {
 
   handleUserNameInput(e) {
     const user = e.target.value;
-    if (this.state.user.length === 0) {
-      this.setState({ user });
-    }
+    axios.get('/groups')
+      .then(
+        this.setState({ user }),
+      )
+      .then(console.log(this.state))
+      .then(this.getUsersGroups(this.state.user))
+      .catch(() => {
+        this.toggleDialog();
+      });
   }
 
   handleSubmitPreferences() {
@@ -318,7 +327,7 @@ class App extends React.Component {
     axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
       .then(() => {
         this.setState({
-          dietartRetriction: this.state.dietaryRestriction.push(e),
+          dietaryRetriction: this.state.dietaryRestriction.push(e),
         });
       })
       .catch(() => {
@@ -351,6 +360,8 @@ class App extends React.Component {
       handleNewGroupSubmit={handleNewGroupSubmit}
       handleAddUserToGroup={handleAddUserToGroup}
       />;
+    } else if (view === '/title') {
+      View = <Title/>;
     } else if (view === '/userSetting') {
       View = <UserSettings handleUserSettings={handleUserSettings} handleUserStatusInput={handleUserStatusInput} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
@@ -362,7 +373,7 @@ class App extends React.Component {
     } else if (view === '/options') {
       View = <Options options={options} handlePass={handlePass}/>;
     } else {
-      View = <Home groups={groups} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
+      View = <Home groups={groups} user={user} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
     }
 
     return (
