@@ -341,10 +341,10 @@ router.patch('/groups/:groupName/pricePoint', (req, res) => {
 // whenever a choice is made
 // how are we storing the locations in this table? by name? id?
 router.post('/groupHistory', (req, res) => {
-  const { groupName, location } = req.body;
+  const { groupName, id } = req.body;
   const group = {
     groupName,
-    location,
+    id,
   };
   addToGroupHistory(group)
     .then(() => {
