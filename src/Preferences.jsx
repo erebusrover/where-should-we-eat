@@ -7,7 +7,8 @@ import { Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 
-
+// this is a change to proove to github that I am changing something because
+// it seems to thing I have done no work today
 const PurpleRadio = withStyles({
   root: {
     color: deepPurple[400],
@@ -28,6 +29,7 @@ const Preferences = (props) => {
     handleSubmitPreferences,
     handleUserNameInput,
     handleUserStatusInput,
+    handleViewChange,
     handleSetState,
     handleViewChange,
     user,
@@ -35,10 +37,18 @@ const Preferences = (props) => {
     dietaryRestrictions,
     userImages,
   } = props;
+<<<<<<< HEAD
 const onclick = () => {
   handleSignInWithGoogle();
   handleViewChange('home')
 }
+=======
+  const onclick = () => {
+    handleSubmitPreferences();
+    handleSignInWithGoogle();
+    handleViewChange('home');
+  };
+>>>>>>> e560317e661bc6c7f5c00292e6330134931b5d2c
   return (
     <div>
       <ul>

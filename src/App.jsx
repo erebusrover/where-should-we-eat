@@ -24,6 +24,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+
       view: 'titlepage',
       user: 'x',
       userStatus: '',
@@ -37,6 +38,7 @@ class App extends React.Component {
       options: [],
       categories: 'vegan',
       choser: '',
+      choice: '',
       showWinner: false,
       open: false,
       login: false,
@@ -51,6 +53,7 @@ class App extends React.Component {
     this.handleAddUserToGroup = this.handleAddUserToGroup.bind(this);
     this.handleNewGroupMember = this.handleNewGroupMember.bind(this);
     this.handleGetOptions = this.handleGetOptions.bind(this);
+    this.handleChooseOption = this.handleChooseOption.bind(this);
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getUsersGroups = this.getUsersGroups.bind(this);
     this.handleGroupSetState = this.handleGroupSetState.bind(this);
@@ -92,7 +95,6 @@ class App extends React.Component {
     }
   }
 
-
   handleViewChange(view) {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
@@ -107,7 +109,6 @@ class App extends React.Component {
   handleSignInWithGoogle() {
     return window.open('/api/login', '_blank');
   }
-
 
   handleSignOutWithGoogle() {
     axios.get('/api/logout')
@@ -159,6 +160,22 @@ class App extends React.Component {
       .catch((error) => {
         console.log(error);
         this.toggleDialog();
+      });
+  }
+
+  handleChooseOption(id) {
+    // set state
+    this.setState({
+      choice: id,
+    });
+    const { groupName } = this.state;
+    // make axios request to add choice to database
+    axios.post('/api/groupHistory', { id, groupName }).then(() => {
+      // render group view
+      this.handleViewChange('group');
+    })
+      .catch(() => {
+        this.toggleDialoque();
       });
   }
 
@@ -313,7 +330,7 @@ class App extends React.Component {
       view, groups, group, members, options, groupName, pricePoint, choser, userStatus, userImage, showWinner, user, userImages, dietaryRestriction,
     } = this.state;
     const {
-      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange, handleSubmitPreferences,
+      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange, handleLoginClick, toggleLoginDialog,
       handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
       handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
@@ -332,6 +349,8 @@ class App extends React.Component {
               handleUserStatusInput={handleUserStatusInput}
               handleSignInWithGoogle={handleSignInWithGoogle}
               handleSetState={handleSetState}
+              handleViewChange={handleViewChange}
+              handleSignInWithGoogle={handleSignInWithGoogle}
               handlePreferenceChange={handlePreferenceChange}
               handleSubmitPreferences={handleSubmitPreferences}
               handleViewChange={handleViewChange}
@@ -357,7 +376,7 @@ class App extends React.Component {
     } else if (view === 'removeUserFromGroup') {
       View = <RemoveUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/options') {
-      View = <Options options={options} handlePass={handlePass}/>;
+      View = <Options options={options} handlePass={handlePass} handleChooseOption={handleChooseOption}/>;
     } else {
       View = <Title handleViewChange={handleViewChange} />;
     }
