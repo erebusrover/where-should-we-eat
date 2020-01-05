@@ -62,6 +62,7 @@ class App extends React.Component {
       choiceName: '',
       choiceLat: '',
       choiceLng: '',
+      choiceAddress: '',
       chosen: false,
       showWinner: false,
       userImages,
@@ -183,13 +184,12 @@ class App extends React.Component {
       });
   }
 
-  handleChooseOption(id, name, lat, lng) {
+  handleChooseOption(id, name, address, city, state, zipCode) {
     // set state
     this.setState({
       choiceId: id,
       choiceName: name,
-      choiceLat: lat,
-      choiceLng: lng,
+      choiceAddress: `${address} ${city} ${state} ${zipCode}`,
     });
     const { groupName } = this.state;
     // make axios request to add choice to database
@@ -363,7 +363,7 @@ class App extends React.Component {
     const {
       view, groups, group, members,
       options, groupName, pricePoint, open,
-      chooser, choiceId, choiceName, choiceLat, choiceLng, chosen, userStatus, userImage,
+      chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
       showWinner, user, userImages, dietaryRestriction,
     } = this.state;
     const {
@@ -412,8 +412,7 @@ class App extends React.Component {
                 showWinner={showWinner}
                 open={open}
                 toggleDialog={toggleDialog}
-                choiceLat={choiceLat}
-                choiceLng={choiceLng}
+                choiceAddress={choiceAddress}
                 choiceName={choiceName}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm

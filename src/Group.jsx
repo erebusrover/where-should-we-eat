@@ -10,9 +10,10 @@ const Group = (props) => {
   const {
     user, groupName, pricePoint, groupMembers,
     handleViewChange, userImages, handleGetOptions,
-    choiceName, choiceLat, choiceLng, randomizer, chooser, showWinner,
+    choiceName, choiceAddress, randomizer, chooser, showWinner,
     toggleDialog, open,
   } = props;
+  const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination="${choiceName} ${choiceAddress}"`;
   return (
       <div>
         <h1>{groupName}</h1>
@@ -29,7 +30,7 @@ const Group = (props) => {
         </div>
       <Dialog onBackdropClick={() => { toggleDialog(); }} open={open}>
         <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
-        <Link href="www.google.com" target="_blank" rel="noreferrer">Click here for directions.</Link>
+        <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
       </Dialog>
         <ul>
           {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
