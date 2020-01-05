@@ -24,9 +24,11 @@ const Preferences = (props) => {
     handlePreferenceChange, handleLoginClick,
     koala, bilby, kangaroo, sugarGlider,
     oppossum,
+    handleSignInWithGoogle,
     handleSubmitPreferences,
     handleUserNameInput,
     handleUserStatusInput,
+    handleViewChange,
     handleSetState,
     user,
     userStatus,
@@ -35,7 +37,8 @@ const Preferences = (props) => {
   } = props;
   const onclick = () => {
     handleSubmitPreferences();
-    // handleLoginClick();
+    handleSignInWithGoogle();
+    handleViewChange('home');
   };
   return (
     <div>

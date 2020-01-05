@@ -331,6 +331,8 @@ class App extends React.Component {
               handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
               handleUserStatusInput={handleUserStatusInput}
               handleSetState={handleSetState}
+              handleViewChange={handleViewChange}
+              handleSignInWithGoogle={handleSignInWithGoogle}
               handlePreferenceChange={handlePreferenceChange}
               handleSubmitPreferences={handleSubmitPreferences}
               handleUserNameInput={handleUserNameInput}/>;
