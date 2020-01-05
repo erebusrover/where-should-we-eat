@@ -74,6 +74,7 @@ class App extends React.Component {
     this.handleAddUserToGroup = this.handleAddUserToGroup.bind(this);
     this.handleNewGroupMember = this.handleNewGroupMember.bind(this);
     this.handleGetOptions = this.handleGetOptions.bind(this);
+    this.handleChooseOption = this.handleChooseOption.bind(this);
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getUsersGroups = this.getUsersGroups.bind(this);
     this.handleGroupSetState = this.handleGroupSetState.bind(this);
@@ -111,7 +112,6 @@ class App extends React.Component {
     }
   }
 
-
   handleViewChange(view) {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
@@ -125,7 +125,6 @@ class App extends React.Component {
   handleSignInWithGoogle() {
     return window.open('/api/login', '_self');
   }
-
 
   handleSignOutWithGoogle() {
     axios.get('/api/logout')
@@ -178,6 +177,10 @@ class App extends React.Component {
         console.log(error);
         this.toggleDialog();
       });
+  }
+
+  handleChooseOption() {
+
   }
 
   handleSetState(k, v) {
