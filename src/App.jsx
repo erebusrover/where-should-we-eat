@@ -179,23 +179,18 @@ class App extends React.Component {
       });
   }
 
-  handleChooseOption(choice) {
+  handleChooseOption(id) {
     // set state
-    console.log('clicked');
+    console.log(id);
     this.setState({
-      choice: choice.id,
+      choice: id,
     });
-    const id = choice.id;
+    console.log(id);
     const { groupName } = this.state;
     // make axios request to add choice to database
-    axios.post('/api/groupHistory', { id, groupName }).then(() => {
-      console.log('added');
-    })
-      .then(() => {
-
-      })
-      .catch((error) => {
-        console.log(error);
+    axios.post('/api/groupHistory', { id, groupName })
+      .catch(() => {
+        this.toggleDialoque();
       });
   }
 
