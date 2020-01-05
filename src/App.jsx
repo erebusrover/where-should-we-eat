@@ -148,11 +148,10 @@ class App extends React.Component {
   }
 
   handleGetOptions() {
-    const { categories, pricePoint } = this.state;
+    const { categories, groupName } = this.state;
     axios.get('/api/choices', {
       radius: 40000,
-      categories,
-      price: pricePoint,
+      groupName,
     })
       .then((response) => {
         const { data } = response;
