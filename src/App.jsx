@@ -46,7 +46,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       view: '',
-      user: 'dot',
+      user: '',
       userStatus: '',
       groups: [],
       dietaryRestriction: 'vegan',
@@ -61,6 +61,7 @@ class App extends React.Component {
       showWinner: false,
       userImages,
       open: false,
+      login: false,
     };
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
@@ -82,7 +83,9 @@ class App extends React.Component {
     this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
     this.handleDietaryRestrictionsSetState = this.handleDietaryRestrictionsSetState.bind(this);
-
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.toggleLoginDialog = this.toggleLoginDialog.bind(this);
+    this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
   }
 
   componentDidMount() {
@@ -99,16 +102,29 @@ class App extends React.Component {
     }
   }
 
+  toggleLoginDialog() {
+    if (this.state.login === false) {
+      this.setState({ login: true });
+    } else {
+      this.setState({ login: false });
+    }
+  }
+
+
   handleViewChange(view) {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
     console.log('state set');
   }
 
+  handleLoginClick() {
+    this.handleSignInWithGoogle();
+  }
 
   handleSignInWithGoogle() {
     return window.open('/api/login', '_self');
   }
+
 
   handleSignOutWithGoogle() {
     axios.get('/api/logout')
@@ -119,7 +135,7 @@ class App extends React.Component {
   }
 
   getAllUsers() {
-    //TODO finish this function
+    // TODO finish this function
     axios.get('/api/users')
       .catch(() => {
         this.toggleDialog();
@@ -201,7 +217,7 @@ class App extends React.Component {
     })
       .then(this.handleSetState(k, v))
       .then(console.log(this.state))
-      .catch((err) => {
+      .catch(() => {
         this.toggleDialog();
       });
   }
@@ -271,7 +287,19 @@ class App extends React.Component {
   }
 
   handleUserNameInput(e) {
-    this.setState({ user: e.target.value });
+    const user = e.target.value;
+    if (this.state.user.length === 0) {
+      this.setState({ user });
+    }
+  }
+
+  handleSubmitPreferences() {
+    axios.post(`/api/users/${this.state.user}/userName`, {
+      userStatus: this.state.status,
+    })
+      .catch(() => {
+        this.toggleDialog();
+      });
   }
 
   handleAddUserToGroup() {
@@ -286,6 +314,7 @@ class App extends React.Component {
   }
 
   handleUserStatusInput(e) {
+    // TODO axios
     this.setState({ userStatus: e.target.value });
   }
 
@@ -305,11 +334,11 @@ class App extends React.Component {
 
   render() {
     const {
-      view, groups, group, members, options, groupName, pricePoint, choser, showWinner, user, userImages,
+      view, groups, group, members, options, groupName, pricePoint, choser, userStatus, userImage, showWinner, user, userImages, dietaryRestriction,
     } = this.state;
     const {
-      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange,
-      handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
+      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange, handleSubmitPreferences,
+      handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange, handleLoginClick, toggleLoginDialog,
       handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
       handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
     } = this;
@@ -350,10 +379,13 @@ class App extends React.Component {
     return (
             <div>
                {/* <MuiThemeProvider muiTheme={muiTheme}></MuiThemeProvider> */}
-                <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleSignInWithGoogle}handleSignOutWithGoogle={handleSignOutWithGoogle} />
+                <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
                 <Avatar src={userImages.kangaroo}/>
                 <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
                     <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
+                </Dialog>
+                <Dialog onBackdropClick={() => { toggleLoginDialog(); }} open={this.state.login}>
+                    <DialogTitle>Welcome {user} You have signed in</DialogTitle>
                 </Dialog>
                 {View}
         </div>

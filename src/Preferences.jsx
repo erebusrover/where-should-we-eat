@@ -19,22 +19,13 @@ const PurpleRadio = withStyles({
   checked: {},
 })(props => <Radio color="default" {...props} />);
 
-const PurpleCheckbox = withStyles({
-  root: {
-    color: deepPurple[400],
-    '&$checked': {
-      color: deepPurple[600],
-    },
-  },
-  checked: {},
-})(props => <Radio color="default" {...props} />);
-
-
-
 // TODO allow user to pick more than one dietary restriction
 const Preferences = (props) => {
-  const { preferenceChange, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, handleSetState, userImages, } = props;
- 
+  const { handlePreferenceChange, handleLoginClick, handleSubmitPreferences, handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, handleSetState, userImages, userImage, user, userStatus, dietaryRestrictions, } = props;
+  const onclick = () => {
+   handleSubmitPreferences();
+   handleLoginClick();
+  }
   return (
     <div>
       <ul>
@@ -43,15 +34,15 @@ const Preferences = (props) => {
         <h1>Select a User Image </h1>
         <RadioGroup row="true" aria-label="image" name="image">
           <img className='userImages' src={userImages.oppossum} width="130" height="121" border="5"/>
-          <FormControlLabel className='radio'value={userImages.oppossum} control={<PurpleRadio color="#730099" />}onClick={() => handleSetState('image', userImages.oppossum)} />
+          <FormControlLabel className='radio'value={userImages.oppossum} control={<PurpleRadio color="#730099" />}onClick={() => handlePreferenceChange('image', userImages.oppossum)} />
           <img className='userImages' src={userImages.koala} width="130" height="121" border="5"/>
-          <FormControlLabel className='radio'value={userImages.koala} control={<PurpleRadio color='#9900cc' />} onClick={() => handleSetState('image', userImages.koala)}/>
+          <FormControlLabel className='radio'value={userImages.koala} control={<PurpleRadio color='#9900cc' />} onClick={() => handlePreferenceChange('image', userImages.koala)}/>
           <img className='userImages' src={userImages.bilby} width="130" height="121" border="5"/>
-          <FormControlLabel className='radio'value={userImages.bilby} control={<PurpleRadio />} onClick={() => handleSetState('image', userImages.bilby)} />
+          <FormControlLabel className='radio'value={userImages.bilby} control={<PurpleRadio />} onClick={() => handlePreferenceChange('image', userImages.bilby)} />
           <img className='userImages' src={userImages.kangaroo} width="130" height="121" border="5"/>
-          <FormControlLabel className='radio'value={userImages.kangaroo} control={<PurpleRadio />} onClick={() => handleSetState('image', userImages.kangaroo)} />
+          <FormControlLabel className='radio'value={userImages.kangaroo} control={<PurpleRadio />} onClick={() => handlePreferenceChange('image', userImages.kangaroo)} />
           <img className='userImages' src={userImages.sugarGlider} width="130" height="121" border="5"/>
-          <FormControlLabel className='radio'value={userImages.sugarGlider} control={<PurpleRadio />} onClick={() => handleSetState('image', userImages.sugarGlider)} />
+          <FormControlLabel className='radio'value={userImages.sugarGlider} control={<PurpleRadio />} onClick={() => handlePreferenceChange('image', userImages.sugarGlider)} />
         </RadioGroup>
         <h2> Select Dietary Restricitons</h2>
         <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
@@ -65,7 +56,7 @@ const Preferences = (props) => {
       <h1>Status</h1>
       <input id='status'type='text' onChange={handleUserStatusInput}/>
       </ul>
-      <Button variant="contained" color="primary">Submit</Button>
+      <Button variant="contained" color="primary" onClick={()=> {onclick()}}>Submit & SignIn with Google</Button>
     </div>
   );
 };

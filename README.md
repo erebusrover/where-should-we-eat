@@ -45,7 +45,8 @@ Copy this file's path and save that path as the value of the GOOGLE_APPLICATION_
 
 Run the CONNECTION SHELL command from the `.env` file to create a connection to the Cloud SQL db. If prompted for a password, enter the DB_PASS from `.env`. Keep this terminal open while working with the database.
 
-In a separate terminal, run the commands in the `schema.sql` file to initialize the database and shell into MYSQL if desired. `use wswe` to manipulate our `wswe` database from within the MYSQL shell.
+It might take a moment to connect to the database. Once you see <br>`listening on /cloudsql/where-should-we--1577491661730:us-central1:marsupials for where-should-we--1577491661730:us-central1:marsupials` and `Ready for new connections`,
+in a separate terminal, run the commands in the `schema.sql` file to initialize the database and shell into MYSQL if desired. `use wswe` to manipulate our `wswe` database from within the MYSQL shell.
 
 ## 3. Deploy your new feature
 

@@ -5,7 +5,7 @@ app.yaml
 
 cloud_sql_proxy
 
-where-should-we--1577491661730-acd310b40639.json
+/home/dot/Documents/Senior/greenfield/where-should-we-eat-1/where-should-we-eat.json
 
 #api keys
 server/config/keys.js
