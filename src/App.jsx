@@ -223,7 +223,6 @@ class App extends React.Component {
     axios.get(`/api/groups/${group}/pricePoint`)
       .then((response) => {
         const { pricePoint } = response.data[0];
-        console.log(pricePoint);
         this.setState({
           pricePoint,
         });
