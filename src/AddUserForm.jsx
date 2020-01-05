@@ -9,7 +9,7 @@ const AddUserForm = (props) => {
       <div>
         <Select multiple='true' autoWidth='true' IconComponent='ArrowDropDownIcon'></Select>
           <h1>Add Group Member By Name</h1>
-          <FormControl style={{minWidth: 150}} variant="outlined">
+          <FormControl style={{minWidth: 160}} variant="outlined">
             <InputLabel>User</InputLabel>
           <Select fullWidth='true' value={user}>  
           {users.data.map((user)=>(<MenuItem>{user.userName}</MenuItem>))}
