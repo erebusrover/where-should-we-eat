@@ -81,6 +81,7 @@ router.delete('/users/:userName', (req, res) => {
 router.get('/users/:userName/status', (req, res) => {
   const { userName } = req.params;
   getUserStatus(userName, newStatus)
+  //TODO this is  probably why the user status is angry
     .then(() => {
       res.sendStatus(201);
     })
@@ -252,6 +253,7 @@ router.get('/users/:userName/groups', (req, res) => {
   getAllUserGroups(userName)
     .then((response) => {
       res.status(200);
+      console.log(response[0]);
       res.send(response[0]);
     })
     .catch((err) => {
