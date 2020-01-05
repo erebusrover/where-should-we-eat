@@ -205,13 +205,7 @@ class App extends React.Component {
   }
 
   handlePreferenceChange(k, v) {
-    axios.patch(`/api/users/:${this.state.user}/${k}`, {
-      k: v,
-    })
-      .then(this.handleSetState(k, v))
-      .catch(() => {
-        this.toggleDialog();
-      });
+    (this.handleSetState(k, v));
   }
 
   handleNewGroupPricePoint(newPricePoint) {
@@ -278,9 +272,16 @@ class App extends React.Component {
   }
 
   handleSubmitPreferences() {
-    axios.post(`/api/users/${this.state.user}/userName`, {
-      userStatus: this.state.status,
-    })
+    const { user, image, dietaryRestriction } = this.state;
+    // name
+    // image
+    // dietary
+    axios.post('/api/users', { userName: user })
+      .then(axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestriction }))
+      .then(axios.post(`/api/users/${user}/image`))
+    // axios.post(`/api/users/${this.state.user}/userName`, {
+    //   userStatus: this.state.status,
+    // })
       .catch(() => {
         this.toggleDialog();
       });
@@ -302,18 +303,18 @@ class App extends React.Component {
     this.setState({ userStatus: e.target.value });
   }
 
-  handleDietaryRestrictionsSetState(e) {
-    const { user, dietaryRestriction } = this.state;
-    const restrictions = dietaryRestriction.split();
-    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
-      .then(() => {
-        this.setState({
-          dietaryRetriction: this.state.dietaryRestriction.push(e),
-        });
-      })
-      .catch(() => {
-        this.toggleDialog();
-      });
+  handleDietaryRestrictionsSetState(value) {
+    // const { user, dietaryRestriction } = this.state;
+    // const restrictions = dietaryRestriction.split();
+    // axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
+    //   .then(() => {
+    //     this.setState({
+    //       dietaryRetriction: e,
+    //     });
+    //   })
+    //   .catch(() => {
+    //     this.toggleDialog();
+    //   });
   }
 
   render() {

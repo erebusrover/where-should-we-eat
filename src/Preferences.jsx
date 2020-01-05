@@ -21,7 +21,19 @@ const PurpleRadio = withStyles({
 // TODO allow user to pick more than one dietary restriction
 const Preferences = (props) => {
   const {
-    handlePreferenceChange, handleLoginClick, koala, bilby, kangaroo , sugarGlider,oppossum, handleSubmitPreferences, handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, handleSetState, userImages, userImage, user, userStatus, dietaryRestrictions,
+    handlePreferenceChange, handleLoginClick, 
+    koala, bilby, kangaroo , sugarGlider, 
+    oppossum,
+    handleSubmitPreferences,
+    handleUserSettings,
+    handleUserNameInput,
+    handleDietaryRestrictionsSetState,
+    handleUserStatusInput,
+    handleSetState,
+    userImages,
+    userImage,
+    user, 
+    userStatus, dietaryRestrictions,
   } = props;
   const onclick = () => {
   //  handleSubmitPreferences();
@@ -47,12 +59,12 @@ const Preferences = (props) => {
         </RadioGroup>
         <h2> Select Dietary Restricitons</h2>
         <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
-          <FormControlLabel color='#9900cc' className='radio'value="Vegan" control={<Checkbox color='default' />} label="Vegan" onClick={() => handleDietaryRestrictionsSetState()}/>
-          <FormControlLabel className='radio'value="Vegitarian" control={<Checkbox color='default' />} label="Vegitarian"onClick={() => handleDietaryRestrictionsSetState()} />
-          <FormControlLabel className='radio'value="Kosher" control={<Checkbox color='default' />} label="Kosher" onClick={() => handleDietaryRestrictionsSetState()}/>
-          <FormControlLabel className='radio'value="Gluten Free" control={<Checkbox color='default' />} label="Gluten Free"onClick={() => handleDietaryRestrictionsSetState()} />
-          <FormControlLabel className='radio'value="Halal" control={<Checkbox color='default' />} label="Halal" onClick={() => handleDietaryRestrictionsSetState()} />
-          <FormControlLabel className='radio'value="None" control={<Checkbox color='default' />} label="None" onClick={() => handleDietaryRestrictionsSetState()}/>
+          <FormControlLabel color='#9900cc' className='radio'value="Vegan" control={<PurpleRadio color='default' />} label="Vegan" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegan')}/>
+          <FormControlLabel className='radio'value="Vegitarian" control={<PurpleRadio color='default' />} label="Vegitarian" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegitarian')} />
+          <FormControlLabel className='radio'value="Kosher" control={<PurpleRadio color='default' />} label="Kosher" onClick={() => handlePreferenceChange('dietaryRestriction', 'Kosher')}/>
+          <FormControlLabel className='radio'value="Gluten Free" control={<PurpleRadio color='default' />} label="Gluten Free" onClick={() => handlePreferenceChange('dietaryRestriction', 'Gluten Free')} />
+          <FormControlLabel className='radio'value="Halal" control={<PurpleRadio color='default' />} label="Halal" onClick={() => handlePreferenceChange('dietaryRestriction', 'Halal')} />
+          <FormControlLabel className='radio'value="None" control={<PurpleRadio color='default' />} label="None" onClick={() => handlePreferenceChange('dietaryRestriction', 'None')}/>
         </RadioGroup>
       <h1>Status</h1>
       <input id='status'type='text' onChange={handleUserStatusInput}/>
