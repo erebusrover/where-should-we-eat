@@ -190,6 +190,9 @@ class App extends React.Component {
     axios.post('/api/groupHistory', { id, groupName }).then(() => {
       // render group view
       this.handleViewChange('group');
+      this.setState({
+        chosen: true,
+      });
     })
       .catch(() => {
         this.toggleDialoque();
