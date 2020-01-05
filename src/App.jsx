@@ -277,8 +277,8 @@ class App extends React.Component {
     // image
     // dietary
     axios.post('/api/users', { userName: user })
-      .then(axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestriction }))
-      .then(axios.post(`/api/users/${user}/image`, { image }))
+      .then(axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { restrictions: dietaryRestriction }))
+      .then(axios.post(`/api/users/${this.state.user}/image`, { image }))
     // axios.post(`/api/users/${this.state.user}/userName`, {
     //   userStatus: this.state.status,
     // })
