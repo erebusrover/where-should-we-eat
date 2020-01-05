@@ -362,16 +362,10 @@ class App extends React.Component {
               handleSignInWithGoogle={handleSignInWithGoogle}
               handleSetState={handleSetState}
               handleViewChange={handleViewChange}
-              handleSignInWithGoogle={handleSignInWithGoogle}
               handlePreferenceChange={handlePreferenceChange}
               handleSubmitPreferences={handleSubmitPreferences}
-              handleViewChange={handleViewChange}
-              handleUserNameInput={handleUserNameInput}/>;
-                userImages={userImages}
-                handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
-                handleUserStatusInput={handleUserStatusInput}
-                handleSetState={handleSetState}
-                handleUserNameInput={handleUserNameInput}/>;
+              handleUserNameInput={handleUserNameInput}
+              userImages={userImages}/>;
 
     } else if (view === '/createGroup') {
       View = <CreateGroup
