@@ -1,10 +1,27 @@
 // database connection and helper functions
 const { pool } = require('./config.js');
 
+
+// const connection = mysql.createConnection(mysqlConfig);
+// Just like `connection.query`, but returns a promise!
+// const query = util.promisify(pool.query).bind(pool);
+
+// get user status
+const getUserStatus = async (userName) => {
+  const sql = 'SELECT userStatus FROM user WHERE userName = ?'; 
+  return pool.query(sql, [userName]);
+};
+// add new user to db
+
+// const addNewUser = async (userName, googleId, userStatus) => {
+//   const sql = 'INSERT into user (userName, google_id, userStatus) VALUES (?,?,?)';
+//   return pool.query(sql, [userName, googleId, userStatus]);
+
 // add new user to db
 const addNewUser = async (userName, googleId) => {
   const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
   return pool.query(sql, [userName, googleId]);
+
 };
 
 // check db for user by Google ID
@@ -108,6 +125,14 @@ const getAllGroupMembers = async (groupName) => {
   return pool.query(sql, [groupName]);
 };
 
+// get all dietary restrictions for users of a given group
+const getAllUserRestrictions = async (groupName) => {
+  const sql = `SELECT restriction from dietaryRestrictions WHERE user_id IN
+                (SELECT user_id FROM user_group WHERE groupp_id IN 
+                  (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
+  return pool.query(sql, [groupName]);
+};
+
 // get all groups that a given user belongs to
 const getAllUserGroups = async (userName) => {
   const sql = `SELECT * FROM groupp WHERE groupp_id IN  
@@ -190,6 +215,7 @@ module.exports = {
   addNewGroup,
   addUserToGroup,
   getAllGroupMembers,
+  getAllUserRestrictions,
   getAllUserGroups,
   getAllActiveUserGroups,
   getAllInactiveUserGroups,
@@ -201,4 +227,5 @@ module.exports = {
   toggleGroupStatus,
   getAllUsers,
   checkDb,
+  getUserStatus,
 };

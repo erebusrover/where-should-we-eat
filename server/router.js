@@ -1,8 +1,11 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable prefer-arrow-callback */
 const { Router } = require('express');
 const passport = require('passport');
 
 // require DB helpers
 const {
+  getUserStatus,
   addNewUser,
   deleteUser,
   updateUserName,
@@ -17,6 +20,7 @@ const {
   addUserToGroup,
   deleteUserFromGroup,
   getAllGroupMembers,
+  getAllUserRestrictions,
   getAllUserGroups,
   getAllActiveUserGroups,
   getAllInactiveUserGroups,
@@ -42,18 +46,17 @@ router.post('/users', (req, res) => {
       res.sendStatus(201);
     })
     .catch(() => {
-
       res.sendStatus(400);
     });
 });
 
 
 // PATCH to /users/:userName/newUserName to update username
-router.patch('/users/:userName/userName', (req, res) => {
+router.post('/users/:userName/userName', (req, res) => {
   // get username from params and new username from body
   const { userName } = req.params;
-  const { newUserName } = req.body;
-  updateUserName(userName, newUserName)
+  const { userStatus } = req.body;
+  addNewUser(userName)
     .then(() => {
       res.sendStatus(201);
     })
@@ -74,15 +77,28 @@ router.delete('/users/:userName', (req, res) => {
     });
 });
 
+// GET to /users/:username/status to get user status
+router.get('/users/:userName/status', (req, res) => {
+  const { userName } = req.params;
+  getUserStatus(userName, newStatus)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
+
 // PATCH to /users/:username/status to update user status
-router.patch('/users/:userName/status', (req, res) => {
+router.post('/users/:userName/status', (req, res) => {
   const { userName } = req.params;
   const { newStatus } = req.body;
   updateUserStatus(userName, newStatus)
     .then(() => {
       res.sendStatus(201);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.sendStatus(400);
     });
 });
@@ -353,10 +369,12 @@ router.get('/groupHistory', (req, res) => {
 // GET /login verify user login using Passport --> google auth?
 router.get('/login', passport.authenticate('google', {
   scope: ['profile'],
-}));
+}))
 
 // GET /redirect to reroute back to the app from the google consent screen
 router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
+  const { userName } = res.req._passport.session.user[0][0];
+  // res.send(userName);
   res.redirect('/');
 });
 
@@ -370,28 +388,31 @@ router.get('/logout', (req, res) => {
 // GET /choices renders page with a few choices of where to eat, with a timer.
 // clicking on a given choice will ...render choices:id page for all users?
 router.get('/choices', (req, res) => {
-  const { radius, categories, price } = req.body;
-  // req body should contain query argument for get Restaurants (see config/yelp.js)
-  // get user's location
-  getUserLocation().then((response) => {
-    // get the lat and lng info from that api call
-    const { lat, lng } = response.data.location;
-    // use it and destructured props from req body to create query to pass to getRestaurants
-    const query = {
-      latitude: lat,
-      longitude: lng,
-      radius,
-      categories,
-      price,
-    };
-    return getRestaurants(query);
+  const { groupName } = req.body;
+  // db query to get dietary restrictions, pricepoint?
+  // const categories = getAllUserRestrictions(groupName);
+  return getAllUserRestrictions(groupName).then(function (restrictions) {
+    return getUserLocation().then(function (location) {
+      const categories = restrictions[0].map((restriction) => {
+        return restriction.restriction;
+      });
+      const { lat, lng } = location.data.location;
+      const query = {
+        latitude: lat,
+        longitude: lng,
+        radius: 40000,
+        categories: categories[0],
+        price: 1,
+      };
+      return getRestaurants(query).then(function (response) {
+        const { businesses } = response.data;
+        res.status(200);
+        res.send(businesses);
+      });
+    });
   })
-    .then((response) => {
-      // response contains array of businesses (response.data.businesses)
-      // and the original lat/lng of request (response.data.region.center)
-      res.send(response.data);
-    })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.sendStatus(400);
     });
 });
@@ -423,7 +444,6 @@ router.patch('/groups:id/active', (req, res) => {
 
 // GET /passed renders page with 'PASSED: -5' message to user,
 // has link to get back to main group page (GET /group:id)
-
 
 
 module.exports.router = router;
