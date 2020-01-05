@@ -20,14 +20,6 @@ import './App.css';
 import Title from './TitlePage.jsx';
 
 
-const userImages = {
-  oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
-  koala: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg',
-  kangaroo: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg',
-  bilby: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg',
-  sugarGlider: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg',
-
-};
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +29,7 @@ class App extends React.Component {
       userStatus: '',
       groups: ['a', 'b'],
       dietaryRestriction: 'vegan',
-      image: null,
+      image: '',
       groupName: 'supercoolpeople',
       pricePoint: '',
       members: [],
@@ -46,10 +38,8 @@ class App extends React.Component {
       categories: 'vegan',
       choser: '',
       showWinner: false,
-      userImages,
       open: false,
       login: false,
-      tempUserName: '',
     };
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
@@ -205,7 +195,9 @@ class App extends React.Component {
   }
 
   handlePreferenceChange(k, v) {
-    (this.handleSetState(k, v));
+    // this.handleSetState(k, v);
+    this.setState({ [k]: v });
+    console.log('statetetet', this.state)
   }
 
   handleNewGroupPricePoint(newPricePoint) {
@@ -273,12 +265,11 @@ class App extends React.Component {
 
   handleSubmitPreferences() {
     const { user, image, dietaryRestriction } = this.state;
-    // name
-    // image
-    // dietary
+    const dietaryRestrictionArr = [dietaryRestriction];
+
     axios.post('/api/users', { userName: user })
-      .then(axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { restrictions: dietaryRestriction }))
-      .then(axios.post(`/api/users/${this.state.user}/image`, { image }))
+      .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
+      .then(() => axios.post(`/api/users/${user}/image`, { image }))
     // axios.post(`/api/users/${this.state.user}/userName`, {
     //   userStatus: this.state.status,
     // })
@@ -332,12 +323,11 @@ class App extends React.Component {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
       View = <Preferences
-              koala={userImages.koala}
-              oppossum={userImages.oppossum}
-              bilby={userImages.bilby}
-              kangaroo={userImages.kangaroo}
-              sugarGlider={userImages.sugarGlider}
-              userImages={userImages}
+              koala={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg'}
+              oppossum={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg'}
+              bilby={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg'}
+              kangaroo={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg'}
+              sugarGlider={'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg'}
               handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
               handleUserStatusInput={handleUserStatusInput}
               handleSetState={handleSetState}
@@ -359,7 +349,7 @@ class App extends React.Component {
     } else if (view === '/userSetting') {
       View = <UserSettings handleUserSettings={handleUserSettings} handleUserStatusInput={handleUserStatusInput} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
-      View = <Group user={user} userImages={userImages} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
+      View = <Group user={user} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === 'removeUserFromGroup') {
