@@ -181,14 +181,17 @@ class App extends React.Component {
 
   handleChooseOption(id) {
     // set state
-    console.log(id);
     this.setState({
       choice: id,
     });
-    console.log(id);
     const { groupName } = this.state;
     // make axios request to add choice to database
-    axios.post('/api/groupHistory', { id, groupName })
+    axios.post('/api/groupHistory', { id, groupName }).then(() => {
+      // render group view
+      this.setState({
+        view: 'group',
+      });
+    })
       .catch(() => {
         this.toggleDialoque();
       });
