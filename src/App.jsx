@@ -70,6 +70,7 @@ class App extends React.Component {
     this.handleGetOptions = this.handleGetOptions.bind(this);
     this.handleChooseOption = this.handleChooseOption.bind(this);
     this.getGroupMembers = this.getGroupMembers.bind(this);
+    this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
     this.getUsersGroups = this.getUsersGroups.bind(this);
     this.handleGroupSetState = this.handleGroupSetState.bind(this);
     this.randomizer = this.randomizer.bind(this);
@@ -218,6 +219,18 @@ class App extends React.Component {
       });
   }
 
+  getGroupPricePoint(group) {
+    axios.get(`/api/groups/${group}/pricePoint`)
+      .then((pricePoint) => {
+        this.setState({
+          pricePoint,
+        });
+      })
+      .catch(() => {
+        this.toggleDialog();
+      });
+  }
+
   randomizer() {
     const { members } = this.state;
     const memberIndex = Math.floor(Math.random() * (members.length));
@@ -346,7 +359,7 @@ class App extends React.Component {
       view, groups, group, members,
       options, groupName, pricePoint, open,
       chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
-      showWinner, user, userImages, dietaryRestriction, users, 
+      showWinner, user, userImages, dietaryRestriction, users,
     } = this.state;
     const {
       randomizer, getGroupMembers, handleGroupSetState, handleGetOptions,
