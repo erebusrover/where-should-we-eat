@@ -397,22 +397,25 @@ router.get('/choices', (req, res) => {
   // db query to get dietary restrictions, pricepoint?
   // const categories = getAllUserRestrictions(groupName);
   return getAllUserRestrictions(groupName).then(function (restrictions) {
-    return getUserLocation().then(function (location) {
-      const categories = restrictions[0].map((restriction) => {
-        return restriction.restriction;
-      });
-      const { lat, lng } = location.data.location;
-      const query = {
-        latitude: lat,
-        longitude: lng,
-        radius: 40000,
-        categories: categories[0],
-        price: 1,
-      };
-      return getRestaurants(query).then(function (response) {
-        const { businesses } = response.data;
-        res.status(200);
-        res.send(businesses);
+    return getGroupPricePoint(groupName).then(function(pricePoint) {
+      console.log(pricePoint);
+      return getUserLocation().then(function (location) {
+        const categories = restrictions[0].map((restriction) => {
+          return restriction.restriction;
+        });
+        const { lat, lng } = location.data.location;
+        const query = {
+          latitude: lat,
+          longitude: lng,
+          radius: 40000,
+          categories: categories[0],
+          price: 1,
+        };
+        return getRestaurants(query).then(function (response) {
+          const { businesses } = response.data;
+          res.status(200);
+          res.send(businesses);
+        });
       });
     });
   })
