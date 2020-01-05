@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 
 
 const OptionItem = (props) => {
@@ -16,7 +17,7 @@ const OptionItem = (props) => {
   return (
       <div>
        <h1>{name}</h1>
-       <button>We're eating here</button>
+       <Button>We're eating here</Button>
        <h2>{price}</h2>
        <h2>{rating}</h2>
        <h2>Open? {is_closed}</h2>
