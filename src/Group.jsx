@@ -18,7 +18,7 @@ const Group = (props) => {
             : <h2>Start Game To See Winner</h2>}
         </div>
         <div> {user === choser
-          ? <Button onClick={() => { handleGetOptions(); handleViewChange('options'); }}>Show Options</Button>
+          ? <Button onClick={() => { handleGetOptions(); }}>Show Options</Button>
           : <h2></h2>}
         </div>
 
