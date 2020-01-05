@@ -354,7 +354,7 @@ class App extends React.Component {
 
   render() {
     const {
-      view, groups, group, members, options, groupName, pricePoint, chooser, userStatus, userImage, showWinner, user, userImages, dietaryRestriction,
+      view, groups, group, members, options, groupName, pricePoint, chooser, chosen, userStatus, userImage, showWinner, user, userImages, dietaryRestriction,
     } = this.state;
     const {
       randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
@@ -383,17 +383,41 @@ class App extends React.Component {
               handleAddUserToGroup={handleAddUserToGroup}
       />;
     } else if (view === '/userSetting') {
-      View = <UserSettings handleUserSettings={handleUserSettings} handleUserStatusInput={handleUserStatusInput} handleUserNameInput={handleUserNameInput}/>;
+      View = <UserSettings 
+                handleUserSettings={handleUserSettings}
+                handleUserStatusInput={handleUserStatusInput}
+                handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
-      View = <Group user={user} userImages={userImages} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} chooser={chooser} showWinner={showWinner}/>;
+      View = <Group user={user}
+                userImages={userImages}
+                group={group} groupName={groupName}
+                groupMembers={members}
+                pricePoint={pricePoint}
+                handleGetOptions={handleGetOptions}
+                getGroupMembers={getGroupMembers}
+                handleViewChange={handleViewChange}
+                randomizer={randomizer}
+                chooser={chooser}
+                showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
-      View = <AddUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
+      View = <AddUserForm
+                handleNewGroupMember={handleNewGroupMember}
+                handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === 'removeUserFromGroup') {
-      View = <RemoveUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
+      View = <RemoveUserForm
+              handleNewGroupMember={handleNewGroupMember}
+              handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/options') {
-      View = <Options options={options} handlePass={handlePass} handleChooseOption={handleChooseOption}/>;
+      View = <Options
+              options={options}
+              handlePass={handlePass}
+              handleChooseOption={handleChooseOption}/>;
     } else {
-      View = <Home groups={groups} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
+      View = <Home
+              groups={groups}
+              getGroupMembers={getGroupMembers}
+              handleViewChange={handleViewChange}
+              handleGroupSetState={handleGroupSetState}/>;
     }
 
     return (
