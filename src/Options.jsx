@@ -11,6 +11,7 @@ const Options = (props) => {
           <div>{options.map((option) => (
                   <OptionItem
                     key={option.id}
+                    id={option.id}
                     name={option.name}
                     price={option.price}
                     rating={option.rating}
