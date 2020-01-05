@@ -13,6 +13,10 @@ const Options = (props) => {
                     key={option.id}
                     id={option.id}
                     name={option.name}
+                    address={option.location.address1}
+                    city={option.location.city}
+                    state={option.location.state}
+                    zipCode={option.location.zip_code}
                     price={option.price}
                     rating={option.rating}
                     image_url={option.image_url}
