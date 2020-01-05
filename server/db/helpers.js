@@ -1,7 +1,6 @@
 // database connection and helper functions
-// const mysql = require('mysql');
-// const util = require('util');
 const { pool } = require('./config.js');
+
 
 // const connection = mysql.createConnection(mysqlConfig);
 // Just like `connection.query`, but returns a promise!
@@ -14,9 +13,15 @@ const getUserStatus = async (userName) => {
 };
 // add new user to db
 
-const addNewUser = async (userName, googleId, userStatus) => {
-  const sql = 'INSERT into user (userName, google_id, userStatus) VALUES (?,?,?)';
-  return pool.query(sql, [userName, googleId, userStatus]);
+// const addNewUser = async (userName, googleId, userStatus) => {
+//   const sql = 'INSERT into user (userName, google_id, userStatus) VALUES (?,?,?)';
+//   return pool.query(sql, [userName, googleId, userStatus]);
+
+// add new user to db
+const addNewUser = async (userName, googleId) => {
+  const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
+  return pool.query(sql, [userName, googleId]);
+
 };
 
 // check db for user by Google ID
@@ -49,7 +54,7 @@ const updateUserImage = async (userName, newImage) => {
   return pool.query(sql, [newImage, userName]);
 };
 
-// BUG: multiple users with same restricion?
+// TODO: allow multiple users to have the same dietary restrictions
 // add dietary restrictions to dietaryRestrictions table
 const addUserDietaryRestrictions = async (userName, restrictions) => {
   // restrictions should be an array
@@ -84,13 +89,14 @@ const deleteUserFromGroup = async (userName, groupName) => {
                 AND groupp_id = (SELECT groupp_id FROM groupp WHERE groupName = ?)`;
   return pool.query(sql, [userName, groupName]);
 };
+
 // gets all users from database
 const getAllUsers = () => {
-  const sql = `SELECT * FROM user`
-  return query(sql)
+  const sql = 'SELECT * FROM user';
+  return pool.query(sql);
 };
 
-// delete user from user table
+// delete user from db
 const deleteUser = async (userName) => {
   const sql = 'DELETE FROM user WHERE userName = ?';
   return pool.query(sql, [userName]);
@@ -104,7 +110,7 @@ const addNewGroup = async (newGroup) => {
   return pool.query(sql, [groupName, pricePoint, pricePoint]);
 };
 
-// add users and group to join table
+// add user and group to join table
 const addUserToGroup = async (userName, groupName) => {
   const sql = `INSERT into user_group (user_id, groupp_id) VALUES 
                 ((SELECT user_id FROM user WHERE userName = ?), (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
@@ -119,7 +125,7 @@ const getAllGroupMembers = async (groupName) => {
   return pool.query(sql, [groupName]);
 };
 
-// get all groups for a given user
+// get all groups that a given user belongs to
 const getAllUserGroups = async (userName) => {
   const sql = `SELECT * FROM groupp WHERE groupp_id IN  
                 (SELECT groupp_id FROM user_group WHERE user_id IN 
@@ -127,7 +133,7 @@ const getAllUserGroups = async (userName) => {
   return pool.query(sql, [userName]);
 };
 
-// get all active groups for a given user
+// get all active groups that a given user belongs to
 const getAllActiveUserGroups = async (userName) => {
   const sql = `SELECT * FROM groupp WHERE active = true AND groupp_id IN  
                 (SELECT groupp_id FROM user_group WHERE user_id IN 
@@ -135,7 +141,7 @@ const getAllActiveUserGroups = async (userName) => {
   return pool.query(sql, [userName]);
 };
 
-// get all inactive groups for a given user
+// get all inactive groups that a given user belongs to
 const getAllInactiveUserGroups = async (userName) => {
   const sql = `SELECT * FROM groupp WHERE active = false AND groupp_id IN  
                 (SELECT groupp_id FROM user_group WHERE user_id IN 

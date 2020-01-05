@@ -1,9 +1,12 @@
 /**
  *
-    In order to use the Google Cloud SQL Proxy client on your machine,
+    In order to use the Google Cloud SQL Proxy client on your machine, follow the steps in the following doc:
+    (you should be able to skip step 4 --> for some more deets, check out the README.md)
+    https://cloud.google.com/sql/docs/mysql/connect-external-app#proxy
 
-    your public IP address must be added to the list of authorized networks on the Google Cloud Console!
-    DM Joanna to make this happen or if you have any issues.
+    If you have trouble connecting to the db, your public IP address may need to be added to the list of 
+    authorized networks on the Google Cloud Console.
+    DM Joanna to make this happen or if you have any other authorization issues.
 
     Docs:
     https://cloud.google.com/sql/docs/mysql/connect-admin-ip

@@ -52,7 +52,7 @@ const createPool = async () => {
   });
 };
 createPool().then(() => {
-  console.log('hey');
+  console.log('connected to cloud sql db');
 });
 
 
