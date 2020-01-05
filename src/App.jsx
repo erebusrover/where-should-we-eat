@@ -59,6 +59,7 @@ class App extends React.Component {
       categories: 'vegan',
       chooser: '',
       choice: '',
+      chosen: false,
       showWinner: false,
       userImages,
       open: false,
