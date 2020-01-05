@@ -367,21 +367,20 @@ class App extends React.Component {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
       View = <Preferences
-              userImages={userImages}
-              handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
-              handleUserStatusInput={handleUserStatusInput}
-              handleSetState={handleSetState}
-              handleUserNameInput={handleUserNameInput}/>;
+                userImages={userImages}
+                handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
+                handleUserStatusInput={handleUserStatusInput}
+                handleSetState={handleSetState}
+                handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/createGroup') {
       View = <CreateGroup
-              handleViewChange={handleViewChange}
-              handleNewGroupName={handleNewGroupName}
-              handlePreferenceChange={handlePreferenceChange}
-              handleSetState={handleSetState}
-              handleNewGroupPricePoint={handleNewGroupPricePoint}
-              handleNewGroupSubmit={handleNewGroupSubmit}
-              handleAddUserToGroup={handleAddUserToGroup}
-      />;
+                handleViewChange={handleViewChange}
+                handleNewGroupName={handleNewGroupName}
+                handlePreferenceChange={handlePreferenceChange}
+                handleSetState={handleSetState}
+                handleNewGroupPricePoint={handleNewGroupPricePoint}
+                handleNewGroupSubmit={handleNewGroupSubmit}
+                handleAddUserToGroup={handleAddUserToGroup}/>;
     } else if (view === '/userSetting') {
       View = <UserSettings 
                 handleUserSettings={handleUserSettings}
@@ -405,19 +404,19 @@ class App extends React.Component {
                 handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === 'removeUserFromGroup') {
       View = <RemoveUserForm
-              handleNewGroupMember={handleNewGroupMember}
-              handleAddUserToGroup={handleAddUserToGroup} />;
+                handleNewGroupMember={handleNewGroupMember}
+                handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/options') {
       View = <Options
-              options={options}
-              handlePass={handlePass}
-              handleChooseOption={handleChooseOption}/>;
+                options={options}
+                handlePass={handlePass}
+                handleChooseOption={handleChooseOption}/>;
     } else {
       View = <Home
-              groups={groups}
-              getGroupMembers={getGroupMembers}
-              handleViewChange={handleViewChange}
-              handleGroupSetState={handleGroupSetState}/>;
+                groups={groups}
+                getGroupMembers={getGroupMembers}
+                handleViewChange={handleViewChange}
+                handleGroupSetState={handleGroupSetState}/>;
     }
 
     return (
