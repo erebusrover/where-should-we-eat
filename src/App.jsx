@@ -95,6 +95,10 @@ class App extends React.Component {
     this.getGroupMembers(this.state.groupName);
   }
 
+  componentDidUpdate() {
+    this.getUsersGroups(this.state.user);
+  }
+
   toggleDialog() {
     // toggles error dialog box
     if (this.state.open === false) {
