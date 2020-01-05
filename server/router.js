@@ -25,6 +25,7 @@ const {
   getAllActiveUserGroups,
   getAllInactiveUserGroups,
   changeGroupName,
+  getGroupPricePoint,
   changeGroupPricePoint,
   addToGroupHistory,
   getGroupHistory,
