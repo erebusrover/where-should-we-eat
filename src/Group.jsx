@@ -1,6 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import GroupMember from './GroupMember.jsx';
 
 const Group = (props) => {
@@ -9,25 +11,27 @@ const Group = (props) => {
   } = props;
   return (
       <div>
-          <h1>{groupName}</h1>
-          <h2> PRICEPOINT $</h2>
-          <h2>{pricePoint}</h2>
-          <br />
-          <div> {showWinner === true
-            ? <h1>{chooser}</h1>
-            : <h2>Start Game To See Winner</h2>}
+        <h1>{groupName}</h1>
+        <h2> PRICEPOINT $</h2>
+        <h2>{pricePoint}</h2>
+        <br />
+        <div> {showWinner === true
+          ? <h1>{chooser}</h1>
+          : <h2>Start Game To See Winner</h2>}
         </div>
         <div> {user === chooser
           ? <Button onClick={() => { handleGetOptions(); }}>Show Options</Button>
           : <h2></h2>}
         </div>
-
-          <ul>
-    {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
-</ul>
-    <Button onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
-    <Button onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
-    <Button onClick={() => { randomizer(); }}>Start Game</Button>
+      <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
+        <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
+      </Dialog>
+        <ul>
+          {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
+        </ul>
+        <Button onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+        <Button onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
+        <Button onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
 
   );
