@@ -37,8 +37,13 @@ class App extends React.Component {
       newMember: '',
       options: [],
       categories: 'vegan',
-      choser: '',
-      choice: '',
+      chooser: '',
+      choiceId: '',
+      choiceName: '',
+      choiceLat: '',
+      choiceLng: '',
+      choiceAddress: '',
+      chosen: false,
       showWinner: false,
       open: false,
       login: false,
@@ -155,16 +160,22 @@ class App extends React.Component {
       });
   }
 
-  handleChooseOption(id) {
+  handleChooseOption(id, name, address, city, state, zipCode) {
     // set state
     this.setState({
-      choice: id,
+      choiceId: id,
+      choiceName: name,
+      choiceAddress: `${address} ${city} ${state} ${zipCode}`,
     });
     const { groupName } = this.state;
     // make axios request to add choice to database
     axios.post('/api/groupHistory', { id, groupName }).then(() => {
       // render group view
       this.handleViewChange('group');
+      this.setState({
+        chosen: true,
+        open: true,
+      });
     })
       .catch(() => {
         this.toggleDialoque();
@@ -200,7 +211,7 @@ class App extends React.Component {
   randomizer() {
     const { members } = this.state;
     const memberIndex = Math.floor(Math.random() * (members.length));
-    this.setState({ choser: members[memberIndex].userName, showWinner: true });
+    this.setState({ chooser: members[memberIndex].userName, showWinner: true });
   }
 
   handlePreferenceChange(k, v) {
@@ -253,7 +264,7 @@ class App extends React.Component {
 
   resetGameState() {
     this.setState({
-      choser: '',
+      chooser: '',
       showWinner: false,
     });
   }
@@ -305,29 +316,36 @@ class App extends React.Component {
     this.setState({ userStatus: e.target.value });
   }
 
-  handleDietaryRestrictionsSetState(value) {
-    // const { user, dietaryRestriction } = this.state;
-    // const restrictions = dietaryRestriction.split();
-    // axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
-    //   .then(() => {
-    //     this.setState({
-    //       dietaryRetriction: e,
-    //     });
-    //   })
-    //   .catch(() => {
-    //     this.toggleDialog();
-    //   });
+
+  handleDietaryRestrictionsSetState(e) {
+    const { user, dietaryRestriction } = this.state;
+    const restrictions = dietaryRestriction.split();
+    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
+      .then(() => {
+        this.setState({
+          dietaryRestriction: this.state.dietaryRestriction.push(e),
+        });
+      })
+      .catch(() => {
+        this.toggleDialog();
+      });
+
   }
 
   render() {
     const {
-      view, groups, group, members, options, groupName, pricePoint, choser, userStatus, userImage, showWinner, user, userImages, dietaryRestriction,
+      view, groups, group, members,
+      options, groupName, pricePoint, open,
+      chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
+      showWinner, user, userImages, dietaryRestriction,
     } = this.state;
     const {
-      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
-      handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange, handleLoginClick, toggleLoginDialog,
-      handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
-      handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
+      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions,
+      handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
+      handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
+      handleLoginClick, toggleLoginDialog, handleSignInWithGoogle, handleNewGroupName,
+      handleNewGroupPricePoint, handleNewGroupSubmit, handleUserSettings, handleUserNameInput,
+      handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
     } = this;
     let View;
     if (view === '/login') {
@@ -349,29 +367,82 @@ class App extends React.Component {
               handleSubmitPreferences={handleSubmitPreferences}
               handleViewChange={handleViewChange}
               handleUserNameInput={handleUserNameInput}/>;
+                userImages={userImages}
+                handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
+                handleUserStatusInput={handleUserStatusInput}
+                handleSetState={handleSetState}
+                handleUserNameInput={handleUserNameInput}/>;
+
     } else if (view === '/createGroup') {
       View = <CreateGroup
-              handleViewChange={handleViewChange}
-              handleNewGroupName={handleNewGroupName}
-              handlePreferenceChange={handlePreferenceChange}
-              handleSetState={handleSetState}
-              handleNewGroupPricePoint={handleNewGroupPricePoint}
-              handleNewGroupSubmit={handleNewGroupSubmit}
-              handleAddUserToGroup={handleAddUserToGroup}
-      />;
+                handleViewChange={handleViewChange}
+                handleNewGroupName={handleNewGroupName}
+                handlePreferenceChange={handlePreferenceChange}
+                handleSetState={handleSetState}
+                handleNewGroupPricePoint={handleNewGroupPricePoint}
+                handleNewGroupSubmit={handleNewGroupSubmit}
+                handleAddUserToGroup={handleAddUserToGroup}
+                koala={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg'}
+                oppossum={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg'}
+                bilby={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg'}
+                kangaroo={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg'}
+                sugarGlider={'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg'}
+                handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
+                handleUserStatusInput={handleUserStatusInput}
+                handleSignInWithGoogle={handleSignInWithGoogle}
+                handleSubmitPreferences={handleSubmitPreferences}
+                handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/home') {
-      View = <Home groups={groups} user={user} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
+      View = <Home
+                groups={groups}
+                user={user}
+                getGroupMembers={getGroupMembers}
+                handleViewChange={handleViewChange}
+                handleGroupSetState={handleGroupSetState}/>;
     } else if (view === '/userSetting') {
-      View = <UserSettings handleUserSettings={handleUserSettings} handleUserStatusInput={handleUserStatusInput} handleUserNameInput={handleUserNameInput}/>;
+      View = <UserSettings
+                handleUserSettings={handleUserSettings}
+                handleUserStatusInput={handleUserStatusInput}
+                handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
-      View = <Group user={user} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
+
+      View = <Group user={user}
+                userImages={userImages}
+                group={group} groupName={groupName}
+                groupMembers={members}
+                pricePoint={pricePoint}
+                handleGetOptions={handleGetOptions}
+                getGroupMembers={getGroupMembers}
+                handleViewChange={handleViewChange}
+                randomizer={randomizer}
+                chooser={chooser}
+                showWinner={showWinner}
+                open={open}
+                toggleDialog={toggleDialog}
+                choiceAddress={choiceAddress}
+                choiceName={choiceName}/>;
+
     } else if (view === '/addUserToGroup') {
-      View = <AddUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
+      View = <AddUserForm
+                handleNewGroupMember={handleNewGroupMember}
+                handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === 'removeUserFromGroup') {
-      View = <RemoveUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
+      View = <RemoveUserForm
+                handleNewGroupMember={handleNewGroupMember}
+                handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/options') {
-      View = <Options options={options} handlePass={handlePass} handleChooseOption={handleChooseOption}/>;
+      View = <Options
+                options={options}
+                handlePass={handlePass}
+                handleChooseOption={handleChooseOption}/>;
     } else {
+
+      View = <Home
+                groups={groups}
+                getGroupMembers={getGroupMembers}
+                handleViewChange={handleViewChange}
+                handleGroupSetState={handleGroupSetState}/>;
+
       View = <Title handleViewChange={handleViewChange} />;
     }
 
