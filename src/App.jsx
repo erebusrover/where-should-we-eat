@@ -185,14 +185,14 @@ class App extends React.Component {
     this.setState({
       choice: choice.id,
     });
-    const choiceId = choice.id;
+    const id = choice.id;
     const { groupName } = this.state;
     // make axios request to add choice to database
-    axios.post('/api/choices', { choiceId, groupName }).then(() => {
+    axios.post('/api/choices', { id, groupName }).then(() => {
       console.log('added');
     })
       .then(() => {
-        
+
       })
       .catch((error) => {
         console.log(error);
