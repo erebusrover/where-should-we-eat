@@ -148,10 +148,13 @@ class App extends React.Component {
       categories: catagories,
       price: pricePoint,
     })
-      .then((options) => this.setState({
-        options,
-      }))
-      .catch(() => {
+      .then((restaurants) => this.setState({
+        options: restaurants,
+      })).then(() => {
+        this.handleViewChange('options');
+      })
+      .catch((error) => {
+        console.log(error);
         this.toggleDialog();
       });
   }
@@ -240,10 +243,10 @@ class App extends React.Component {
               groups,
             };
           });
-        })
-          .catch(() => {
-            this.toggleDialog();
-          });
+        });
+      })
+      .catch(() => {
+        this.toggleDialog();
       });
   }
 
