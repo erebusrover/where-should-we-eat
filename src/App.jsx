@@ -180,6 +180,12 @@ class App extends React.Component {
   }
 
   handleChooseOption(choice) {
+    // set state 
+    console.log('clicked');
+    this.setState({
+      choice: choice.id,
+    }).then(() => {
+      const { choice, groupName } = this.state;
     // make axios request to add choice to database
     axios.post('/api/choices', {choice}).then(() => {
       console.log('added')
@@ -346,7 +352,7 @@ class App extends React.Component {
       view, groups, group, members, options, groupName, pricePoint, choser, userStatus, userImage, showWinner, user, userImages, dietaryRestriction,
     } = this.state;
     const {
-      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handlePreferenceChange, handleSubmitPreferences,
+      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange, handleLoginClick, toggleLoginDialog,
       handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
       handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
@@ -380,7 +386,7 @@ class App extends React.Component {
     } else if (view === 'removeUserFromGroup') {
       View = <RemoveUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/options') {
-      View = <Options options={options} handlePass={handlePass}/>;
+      View = <Options options={options} handlePass={handlePass} handleChooseOption={handleChooseOption}/>;
     } else {
       View = <Home groups={groups} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
     }
