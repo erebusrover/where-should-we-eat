@@ -192,10 +192,10 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
 // also adds whichever user created the group to the user_group join table
 router.post('/groups', (req, res) => {
   const { groupName, pricePoint, userName } = req.body;
-  const priceNumber = pricePoint.length;
+  // const priceNumber = pricePoint.length;
   const newGroup = {
     groupName,
-    pricePoint: priceNumber,
+    pricePoint,
   };
     // use db helper function to add new group to db
   addNewGroup(newGroup)
@@ -326,10 +326,10 @@ router.patch('/groups/:groupName/pricePoint', (req, res) => {
   // what if we wanted to include multiple price points
   // when is price point set, and by whom?
   const { newPricePoint } = req.body;
-  const priceNumber = newPricePoint.length;
+  // const priceNumber = newPricePoint.length;
   const group = {
     groupName,
-    newPricePoint: priceNumber,
+    newPricePoint,
   };
   changeGroupPricePoint(group)
     .then(() => {
