@@ -179,8 +179,13 @@ class App extends React.Component {
       });
   }
 
-  handleChooseOption() {
-
+  handleChooseOption(choice) {
+    // make axios request to add choice to database
+    axios.post('/api/choices', {choice}).then(() => {
+      console.log('added')
+    }).catch((error) => {
+      console.log(error);
+    })
   }
 
   handleSetState(k, v) {
