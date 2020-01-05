@@ -4,7 +4,7 @@ Where Should We Eat is built on NodeJS, Express, and ReactJS, and deployed on Go
 
 Below, you can find instructions on running the app on your local machine, how to access and manipulate the Google Cloud SQL database, and how to redeploy.
 
-If you're an Op Spark developer adding a feature to this project for Legacy, reach out to one of the Magnificent Marsupials for `.env` variables, the `app.yaml` file, API keys, and Google Cloud permissions.
+If you're an Op Spark developer adding a feature to this project for Legacy, reach out to one of the Magnificent Marsupials for `.env` variables, the `app.yaml` file, API keys, and Google Cloud permissions/ownership.
 
 If you have any questions that aren't answered here, the Google Cloud Documentation is pretty stellar.
 
@@ -27,9 +27,9 @@ In order to test or work with our router and database functions, you're going to
 
 ### Install Google Cloud SDK
 
-The Google Cloud SDK (software development kit) will allow you to redeploy a new version of this app, when you're ready, with the `gcloud app deploy` command.
+The Google Cloud SDK (software development kit) will grant you permissions to interact with the database, and redeploy a new version of this app when you're ready.
 
-Follow the steps in the [Google Documentation](https://cloud.google.com/sdk/docs/downloads-interactive) to download it onto your local machine.
+Follow the steps in the [Google Documentation](https://cloud.google.com/sdk/docs/quickstarts) to download and initialize it onto your local machine.
 
 ### Install Cloud SQL Proxy
 
@@ -41,7 +41,7 @@ Follow the commands in the [Google Docs](https://cloud.google.com/sql/docs/mysql
 
 Ask a Motivated Marsupial for the content of the `where-should-we--1577491661730-acd310b40639.json` file. Save a copy as a file with this exact name in your root directory.
 
-Copy this file's path and save that path as the value of the GOOGLE_APPLICATION_CREDENTIALS variable in `.env`.
+Copy this file's absolute path and save that path as the value of the GOOGLE_APPLICATION_CREDENTIALS variable in `.env`.
 
 Run the CONNECTION SHELL command from the `.env` file to create a connection to the Cloud SQL db. If prompted for a password, enter the DB_PASS from `.env`. Keep this terminal open while working with the database.
 
