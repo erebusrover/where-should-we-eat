@@ -57,7 +57,7 @@ class App extends React.Component {
       newMember: '',
       options: [],
       categories: 'vegan',
-      choser: '',
+      chooser: '',
       choice: '',
       showWinner: false,
       userImages,
@@ -224,7 +224,7 @@ class App extends React.Component {
   randomizer() {
     const { members } = this.state;
     const memberIndex = Math.floor(Math.random() * (members.length));
-    this.setState({ choser: members[memberIndex].userName, showWinner: true });
+    this.setState({ chooser: members[memberIndex].userName, showWinner: true });
   }
 
   handlePreferenceChange(k, v) {
@@ -287,7 +287,7 @@ class App extends React.Component {
 
   resetGameState() {
     this.setState({
-      choser: '',
+      chooser: '',
       showWinner: false,
     });
   }
@@ -350,7 +350,7 @@ class App extends React.Component {
 
   render() {
     const {
-      view, groups, group, members, options, groupName, pricePoint, choser, userStatus, userImage, showWinner, user, userImages, dietaryRestriction,
+      view, groups, group, members, options, groupName, pricePoint, chooser, userStatus, userImage, showWinner, user, userImages, dietaryRestriction,
     } = this.state;
     const {
       randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
@@ -381,7 +381,7 @@ class App extends React.Component {
     } else if (view === '/userSetting') {
       View = <UserSettings handleUserSettings={handleUserSettings} handleUserStatusInput={handleUserStatusInput} handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/group') {
-      View = <Group user={user} userImages={userImages} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} choser={choser} showWinner={showWinner}/>;
+      View = <Group user={user} userImages={userImages} group={group} groupName={groupName} groupMembers={members} pricePoint={pricePoint} handleGetOptions={handleGetOptions} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} randomizer={randomizer} chooser={chooser} showWinner={showWinner}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm handleNewGroupMember={handleNewGroupMember} handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === 'removeUserFromGroup') {
