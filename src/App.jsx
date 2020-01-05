@@ -19,7 +19,13 @@ import Options from './Options.jsx';
 import './App.css';
 import Title from './TitlePage.jsx';
 
-
+const userImages = {
+  oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
+  koala: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg',
+  kangaroo: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg',
+  bilby: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg',
+  sugarGlider: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg',
+};
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -47,6 +53,8 @@ class App extends React.Component {
       showWinner: false,
       open: false,
       login: false,
+      users: [],
+      userImages,
     };
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
@@ -96,6 +104,7 @@ class App extends React.Component {
     this.setState({ view: `/${view}` });
     this.getUsersGroups(this.state.user);
     this.getGroupMembers(this.state.groupName);
+    this.getAllUsers();
     console.log('state set');
   }
 
@@ -118,6 +127,9 @@ class App extends React.Component {
   getAllUsers() {
     // TODO finish this function
     axios.get('/api/users')
+    .then((response) => {
+      this.setState({users:response})
+    })
       .catch(() => {
         this.toggleDialog();
       });
@@ -336,7 +348,7 @@ class App extends React.Component {
       view, groups, group, members,
       options, groupName, pricePoint, open,
       chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
-      showWinner, user, userImages, dietaryRestriction,
+      showWinner, user, userImages, dietaryRestriction, users, 
     } = this.state;
     const {
       randomizer, getGroupMembers, handleGroupSetState, handleGetOptions,
@@ -365,7 +377,6 @@ class App extends React.Component {
               handleSubmitPreferences={handleSubmitPreferences}
               handleUserNameInput={handleUserNameInput}
               userImages={userImages}/>;
-
     } else if (view === '/createGroup') {
       View = <CreateGroup
                 handleViewChange={handleViewChange}
@@ -384,6 +395,7 @@ class App extends React.Component {
                 handleUserStatusInput={handleUserStatusInput}
                 handleSignInWithGoogle={handleSignInWithGoogle}
                 handleSubmitPreferences={handleSubmitPreferences}
+                users={users}
                 handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/home') {
       View = <Home
@@ -413,14 +425,19 @@ class App extends React.Component {
                 open={open}
                 toggleDialog={toggleDialog}
                 choiceAddress={choiceAddress}
+                users={users}
                 choiceName={choiceName}/>;
 
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm
+      users={users}
+                handleViewChange={handleViewChange}
                 handleNewGroupMember={handleNewGroupMember}
                 handleAddUserToGroup={handleAddUserToGroup} />;
-    } else if (view === 'removeUserFromGroup') {
+    } else if (view === '/removeUserFromGroup') {
       View = <RemoveUserForm
+      users={users}
+                handleViewChange={handleViewChange}
                 handleNewGroupMember={handleNewGroupMember}
                 handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/options') {
