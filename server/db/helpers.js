@@ -7,11 +7,16 @@ const { pool } = require('./config.js');
 // Just like `connection.query`, but returns a promise!
 // const query = util.promisify(pool.query).bind(pool);
 
+// get user status
+const getUserStatus = async (userName) => {
+  const sql = 'SELECT userStatus FROM user WHERE userName = ?'; 
+  return pool.query(sql, [userName]);
+};
 // add new user to db
 
-const addNewUser = async (userName, googleId) => {
-  const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
-  return pool.query(sql, [userName, googleId]);
+const addNewUser = async (userName, googleId, userStatus) => {
+  const sql = 'INSERT into user (userName, google_id, userStatus) VALUES (?,?,?)';
+  return pool.query(sql, [userName, googleId, userStatus]);
 };
 
 // check db for user by Google ID
@@ -207,4 +212,5 @@ module.exports = {
   toggleGroupStatus,
   getAllUsers,
   checkDb,
+  getUserStatus,
 };
