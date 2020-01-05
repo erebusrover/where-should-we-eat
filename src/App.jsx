@@ -188,9 +188,7 @@ class App extends React.Component {
     // make axios request to add choice to database
     axios.post('/api/groupHistory', { id, groupName }).then(() => {
       // render group view
-      this.setState({
-        view: 'group',
-      });
+      this.handleViewChange('group');
     })
       .catch(() => {
         this.toggleDialoque();
