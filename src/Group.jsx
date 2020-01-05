@@ -17,12 +17,12 @@ const Group = (props) => {
   return (
       <div>
         <h1>{groupName}</h1>
-        <h2> PRICEPOINT $</h2>
+        <h2>PRICEPOINT $</h2>
         <h2>{pricePoint}</h2>
         <br />
         <div> {showWinner === true
-          ? <h1>{chooser}</h1>
-          : <h2>Start Game To See Winner</h2>}
+          ? <h1>{chooser} is the lucky decision maker</h1>
+          : <h2>Start Game To Select Decision Maker</h2>}
         </div>
         <div> {user === chooser
           ? <Button onClick={() => { handleGetOptions(); }}>Show Options</Button>
