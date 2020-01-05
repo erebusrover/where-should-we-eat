@@ -371,23 +371,24 @@ class App extends React.Component {
                 handleSetState={handleSetState}
                 handleNewGroupPricePoint={handleNewGroupPricePoint}
                 handleNewGroupSubmit={handleNewGroupSubmit}
-                handleAddUserToGroup={handleAddUserToGroup}/>;
-
-              koala={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg'}
-              oppossum={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg'}
-              bilby={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg'}
-              kangaroo={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg'}
-              sugarGlider={'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg'}
-              handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
-              handleUserStatusInput={handleUserStatusInput}
-              handleSetState={handleSetState}
-              handleViewChange={handleViewChange}
-              handleSignInWithGoogle={handleSignInWithGoogle}
-              handlePreferenceChange={handlePreferenceChange}
-              handleSubmitPreferences={handleSubmitPreferences}
-              handleUserNameInput={handleUserNameInput}/>;
+                handleAddUserToGroup={handleAddUserToGroup}
+                koala={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg'}
+                oppossum={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg'}
+                bilby={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg'}
+                kangaroo={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg'}
+                sugarGlider={'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg'}
+                handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
+                handleUserStatusInput={handleUserStatusInput}
+                handleSignInWithGoogle={handleSignInWithGoogle}
+                handleSubmitPreferences={handleSubmitPreferences}
+                handleUserNameInput={handleUserNameInput}/>;
     } else if (view === '/home') {
-      View = <Home groups={groups} user={user} getGroupMembers={getGroupMembers} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState}/>;
+      View = <Home
+                groups={groups}
+                user={user}
+                getGroupMembers={getGroupMembers}
+                handleViewChange={handleViewChange}
+                handleGroupSetState={handleGroupSetState}/>;
     } else if (view === '/userSetting') {
       View = <UserSettings
                 handleUserSettings={handleUserSettings}
