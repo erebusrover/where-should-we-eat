@@ -58,7 +58,10 @@ class App extends React.Component {
       options: [],
       categories: 'vegan',
       chooser: '',
-      choice: '',
+      choiceId: '',
+      choiceName: '',
+      choiceLat: '',
+      choiceLng: '',
       chosen: false,
       showWinner: false,
       userImages,
@@ -180,10 +183,13 @@ class App extends React.Component {
       });
   }
 
-  handleChooseOption(id) {
+  handleChooseOption(id, name, lat, lng) {
     // set state
     this.setState({
-      choice: id,
+      choiceId: id,
+      choiceName: name,
+      choiceLat: lat,
+      choiceLng: lng,
     });
     const { groupName } = this.state;
     // make axios request to add choice to database
@@ -192,6 +198,7 @@ class App extends React.Component {
       this.handleViewChange('group');
       this.setState({
         chosen: true,
+        open: true,
       });
     })
       .catch(() => {
@@ -344,7 +351,7 @@ class App extends React.Component {
     axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
       .then(() => {
         this.setState({
-          dietartRetriction: this.state.dietaryRestriction.push(e),
+          dietaryRestriction: this.state.dietaryRestriction.push(e),
         });
       })
       .catch(() => {
@@ -354,13 +361,18 @@ class App extends React.Component {
 
   render() {
     const {
-      view, groups, group, members, options, groupName, pricePoint, chooser, chosen, userStatus, userImage, showWinner, user, userImages, dietaryRestriction,
+      view, groups, group, members,
+      options, groupName, pricePoint, open,
+      chooser, choiceId, choiceName, choiceLat, choiceLng, chosen, userStatus, userImage,
+      showWinner, user, userImages, dietaryRestriction,
     } = this.state;
     const {
-      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions, handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
-      handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange, handleLoginClick, toggleLoginDialog,
-      handleSignInWithGoogle, handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit,
-      handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
+      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions,
+      handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
+      handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
+      handleLoginClick, toggleLoginDialog, handleSignInWithGoogle, handleNewGroupName,
+      handleNewGroupPricePoint, handleNewGroupSubmit, handleUserSettings, handleUserNameInput,
+      handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
     } = this;
     let View;
     if (view === '/login') {
@@ -382,7 +394,7 @@ class App extends React.Component {
                 handleNewGroupSubmit={handleNewGroupSubmit}
                 handleAddUserToGroup={handleAddUserToGroup}/>;
     } else if (view === '/userSetting') {
-      View = <UserSettings 
+      View = <UserSettings
                 handleUserSettings={handleUserSettings}
                 handleUserStatusInput={handleUserStatusInput}
                 handleUserNameInput={handleUserNameInput}/>;
@@ -397,7 +409,12 @@ class App extends React.Component {
                 handleViewChange={handleViewChange}
                 randomizer={randomizer}
                 chooser={chooser}
-                showWinner={showWinner}/>;
+                showWinner={showWinner}
+                open={open}
+                toggleDialog={toggleDialog}
+                choiceLat={choiceLat}
+                choiceLng={choiceLng}
+                choiceName={choiceName}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm
                 handleNewGroupMember={handleNewGroupMember}

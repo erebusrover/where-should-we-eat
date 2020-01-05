@@ -19,7 +19,7 @@ const OptionItem = (props) => {
   return (
       <div>
        <h1>{name}</h1>
-       <Button onClick={ () => handleChooseOption(id) }>We're eating here</Button>
+       <Button onClick={ () => handleChooseOption(id, name, lat, lng) }>We're eating here</Button>
        <h2>Price level: {price}</h2>
        <h2>Rating: {rating}</h2>
        <h2>Open? {is_closed}</h2>

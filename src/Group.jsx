@@ -7,7 +7,10 @@ import GroupMember from './GroupMember.jsx';
 
 const Group = (props) => {
   const {
-    user, groupName, pricePoint, groupMembers, handleViewChange, userImages, handleGetOptions, randomizer, chooser, showWinner,
+    user, groupName, pricePoint, groupMembers,
+    handleViewChange, userImages, handleGetOptions, 
+    choiceName, choiceLat, choiceLng, randomizer, chooser, showWinner,
+    toggleDialog, open,
   } = props;
   return (
       <div>
@@ -23,8 +26,8 @@ const Group = (props) => {
           ? <Button onClick={() => { handleGetOptions(); }}>Show Options</Button>
           : <h2></h2>}
         </div>
-      <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
-        <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
+      <Dialog onBackdropClick={() => { toggleDialog(); }} open={open}>
+        <DialogTitle>{choiceName} has been chosen! Click here for directions.}</DialogTitle>
       </Dialog>
         <ul>
           {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
