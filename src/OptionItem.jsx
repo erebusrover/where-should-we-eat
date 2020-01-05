@@ -12,12 +12,13 @@ const OptionItem = (props) => {
     url,
     is_closed,
     lat,
-    lng
+    lng,
+    handleChooseOption,
   } = props;
   return (
       <div>
        <h1>{name}</h1>
-       <Button>We're eating here</Button>
+       <Button onClick={handleChooseOption}>We're eating here</Button>
        <h2>{price}</h2>
        <h2>{rating}</h2>
        <h2>Open? {is_closed}</h2>
