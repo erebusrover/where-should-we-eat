@@ -40,7 +40,7 @@ class App extends React.Component {
       groupName: 'supercoolpeople',
       pricePoint: '',
       members: [],
-      newMember: '',
+      tempMember: '',
       options: [],
       categories: 'vegan',
       chooser: '',
@@ -76,9 +76,9 @@ class App extends React.Component {
     this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
     this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
-    this.handleDietaryRestrictionsSetState = this.handleDietaryRestrictionsSetState.bind(this);
+    // this.handleDietaryRestrictionsSetState = this.handleDietaryRestrictionsSetState.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
-    this.toggleLoginDialog = this.toggleLoginDialog.bind(this);
+    // this.toggleLoginDialog = this.toggleLoginDialog.bind(this);
     this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
     this.handleRemoveUserFromGroup= this.handleRemoveUserFromGroup.bind(this);
   }
@@ -277,7 +277,7 @@ class App extends React.Component {
   }
 
   handleNewGroupMember(e) {
-    this.setState({ newMember: e.target.value });
+    this.setState({ tempMember: e.target.value });
   }
 
   handleUserNameInput(e) {
@@ -301,11 +301,14 @@ class App extends React.Component {
       });
   }
 
-  handleAddUserToGroup() {
+  handleAddUserToGroup(e) {
     // TODO combine this  function with handleNewGroupMember
-    const { newMember } = this.state;
+
+    // const { newMember } = this.state;
+    const { tempMember } = e.target.value;
     axios.post('/api/user_group', {
-      userName: newMember,
+      userName: tempMember,
+      groupName: this.state.groupName,
     })
       .catch(() => {
         this.toggleDialog('open');
@@ -329,7 +332,7 @@ class App extends React.Component {
       view, groups, group, members,
       options, groupName, pricePoint, open,
       chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
-      showWinner, user, userImages, dietaryRestriction, users,
+      showWinner, user, userImages, dietaryRestriction, users, tempMember
     } = this.state;
     const {
       randomizer, getGroupMembers, handleGroupSetState, handleGetOptions,
@@ -409,13 +412,13 @@ class App extends React.Component {
                 choiceName={choiceName}/>;
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm
-      users={users}
+      users={users} tempMember={tempMember}
                 handleViewChange={handleViewChange}
                 handleNewGroupMember={handleNewGroupMember}
                 handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/removeUserFromGroup') {
       View = <RemoveUserForm
-      users={users}
+      users={users} tempMember={tempMember}
                 handleViewChange={handleViewChange}
                 handleNewGroupMember={handleNewGroupMember}
                 handleAddUserToGroup={handleAddUserToGroup} />;

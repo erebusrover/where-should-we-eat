@@ -3,14 +3,16 @@ import Button from '@material-ui/core/Button';
 import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 
 const RemoveUserForm = (props) => {
-  const { handleNewGroupMember, handleViewChange, handleRemoveUserFromGroup, users, user } = props;
+  this.props.groupMember = 'none';
+  const { handleViewChange, handleRemoveUserFromGroup, users, user, tempMember } = props;
+ 
   return (
       <div>
        
           <h1>Remove Group Member </h1>
-          <FormControl style={{minWidth: 160}} variant="outlined">
+          <FormControl  margin={1} style={{minWidth: 200}} variant="outlined">
             <InputLabel>User</InputLabel>
-          <Select fullWidth='true'>  
+          <Select fullWidth='true'value={} > 
           {users.data.map((user)=>(<MenuItem value={user.userName}>{user.userName}</MenuItem>))}
           </Select>
           </FormControl>
