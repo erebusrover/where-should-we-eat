@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 
 
-
 const PurpleRadio = withStyles({
   root: {
     color: deepPurple[400],
@@ -21,11 +20,11 @@ const PurpleRadio = withStyles({
 
 // TODO allow user to pick more than one dietary restriction
 const Preferences = (props) => {
-  const { handlePreferenceChange, handleLoginClick, handleSubmitPreferences, handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, handleSetState, userImages, userImage, user, userStatus, dietaryRestrictions, } = props;
+  const { handlePreferenceChange, handleLoginClick, handleSubmitPreferences, handleUserSettings, handleUserNameInput, handleDietaryRestrictionsSetState, handleUserStatusInput, handleSetState, userImages, userImage, user, userStatus, dietaryRestrictions } = props;
   const onclick = () => {
-   handleSubmitPreferences();
-   handleLoginClick();
-  }
+  handleSubmitPreferences();
+  handleLoginClick();
+  };
   return (
     <div>
       <ul>
@@ -44,7 +43,7 @@ const Preferences = (props) => {
           <img className='userImages' src={userImages.sugarGlider} width="130" height="121" border="5"/>
           <FormControlLabel className='radio'value={userImages.sugarGlider} control={<PurpleRadio />} onClick={() => handlePreferenceChange('image', userImages.sugarGlider)} />
         </RadioGroup>
-        <h2> Select Dietary Restricitons</h2>
+        <h2> Select Dietary Restrictions</h2>
         <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
           <FormControlLabel color='#9900cc' className='radio'value="Vegan" control={<Checkbox color='default' />} label="Vegan" onClick={() => handleDietaryRestrictionsSetState()}/>
           <FormControlLabel className='radio'value="Vegitarian" control={<Checkbox color='default' />} label="Vegitarian"onClick={() => handleDietaryRestrictionsSetState()} />
@@ -54,9 +53,9 @@ const Preferences = (props) => {
           <FormControlLabel className='radio'value="None" control={<Checkbox color='default' />} label="None" onClick={() => handleDietaryRestrictionsSetState()}/>
         </RadioGroup>
       <h1>Status</h1>
-      <input id='status'type='text' onChange={handleUserStatusInput}/>
+      <input id='status' type='text' onChange={handleUserStatusInput}/>
       </ul>
-      <Button variant="contained" color="primary" onClick={()=> {onclick()}}>Submit & SignIn with Google</Button>
+      <Button variant="contained" color="primary" onClick={() => { onclick(); }}>Submit & SignIn with Google</Button>
     </div>
   );
 };
