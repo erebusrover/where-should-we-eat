@@ -322,9 +322,6 @@ router.patch('/groups/:groupName/groupName', (req, res) => {
 // PATCH /groups/:groupName/pricePoint to change group price point
 router.patch('/groups/:groupName/pricePoint', (req, res) => {
   const { groupName } = req.params;
-  // for now, price point must be single integer
-  // what if we wanted to include multiple price points
-  // when is price point set, and by whom?
   const { newPricePoint } = req.body;
   // const priceNumber = newPricePoint.length;
   const group = {
@@ -334,6 +331,20 @@ router.patch('/groups/:groupName/pricePoint', (req, res) => {
   changeGroupPricePoint(group)
     .then(() => {
       res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
+
+// GET /groups/:groupName/pricePoint to get group price point
+router.get('/groups/:groupName/pricePoint', (req, res) => {
+  const { groupName } = req.params;
+  // const priceNumber = newPricePoint.length;
+  getGroupPricePoint(groupName)
+    .then((response) => {
+      res.status(201);
+      res.send(response[0]);
     })
     .catch(() => {
       res.sendStatus(400);
