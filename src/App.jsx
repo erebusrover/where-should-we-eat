@@ -294,12 +294,12 @@ class App extends React.Component {
   }
 
   handleSubmitPreferences() {
-    axios.post(`/api/users/${this.state.user}/userName`, {
-      userStatus: this.state.status,
-    })
-      .catch(() => {
-        this.toggleDialog();
-      });
+    // axios.post(`/api/users/${this.state.user}/userName`, {
+    //   userStatus: this.state.status,
+    // })
+    //   .catch(() => {
+    //     this.toggleDialog();
+    //   });
   }
 
   handleAddUserToGroup() {
