@@ -28,7 +28,7 @@ class App extends React.Component {
       view: 'titlepage',
       user: 'x',
       userStatus: '',
-      groups: ['a', 'b'],
+      groups: [],
       dietaryRestriction: 'vegan',
       image: '',
       groupName: 'supercoolpeople',
@@ -74,15 +74,6 @@ class App extends React.Component {
     this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
   }
 
-  componentDidMount() {
-    // this.getUsersGroups(this.state.user);
-    this.getGroupMembers(this.state.groupName);
-  }
-
-  componentDidUpdate() {
-    // this.getUsersGroups(this.state.user);
-  }
-
   toggleDialog() {
     // toggles error dialog box
     if (this.state.open === false) {
@@ -104,6 +95,7 @@ class App extends React.Component {
     console.log(`${view} button clicked`);
     this.setState({ view: `/${view}` });
     this.getUsersGroups(this.state.user);
+    this.getGroupMembers(this.state.groupName);
     console.log('state set');
   }
 
@@ -264,6 +256,7 @@ class App extends React.Component {
       .then((groupList) => {
         this.setState({ groups: groupList })
           .catch(() => {
+            console.log(this.state)
             this.toggleDialog();
           });
       });
@@ -296,6 +289,7 @@ class App extends React.Component {
     const dietaryRestrictionArr = [dietaryRestriction];
 
     axios.post('/api/users', { userName: user })
+    .then(console.log('please wait'))
       .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
       .then(() => axios.post(`/api/users/${user}/image`, { image }))
     // axios.post(`/api/users/${this.state.user}/userName`, {
@@ -358,11 +352,27 @@ class App extends React.Component {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
     } else if (view === '/profile') {
       View = <Preferences
+              koala={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg'}
+              oppossum={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg'}
+              bilby={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg'}
+              kangaroo={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg'}
+              sugarGlider={'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg'}
+              handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
+              handleUserStatusInput={handleUserStatusInput}
+              handleSignInWithGoogle={handleSignInWithGoogle}
+              handleSetState={handleSetState}
+              handleViewChange={handleViewChange}
+              handleSignInWithGoogle={handleSignInWithGoogle}
+              handlePreferenceChange={handlePreferenceChange}
+              handleSubmitPreferences={handleSubmitPreferences}
+              handleViewChange={handleViewChange}
+              handleUserNameInput={handleUserNameInput}/>;
                 userImages={userImages}
                 handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
                 handleUserStatusInput={handleUserStatusInput}
                 handleSetState={handleSetState}
                 handleUserNameInput={handleUserNameInput}/>;
+
     } else if (view === '/createGroup') {
       View = <CreateGroup
                 handleViewChange={handleViewChange}
