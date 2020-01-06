@@ -29,7 +29,7 @@ const Group = (props) => {
           ? <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
           : <h2></h2>}
         </div>
-        <Dialog onBackdropClick={() => { toggleDialog('directionsPopup'); }} open={directionsPopup}>
+      <Dialog onBackdropClick={() => { toggleDialog('directionsPopup'); }} open={directionsPopup}>
           <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
           <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
         </Dialog>
