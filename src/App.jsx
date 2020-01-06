@@ -42,7 +42,7 @@ class App extends React.Component {
       groupName: 'supercoolpeople',
       pricePoint: '',
       members: [],
-      newMember: '',
+      tempMember: '',
       options: [],
       categories: 'vegan',
       chooser: '',
@@ -79,26 +79,17 @@ class App extends React.Component {
     this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
     this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
-    this.handleDietaryRestrictionsSetState = this.handleDietaryRestrictionsSetState.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
-    this.toggleLoginDialog = this.toggleLoginDialog.bind(this);
     this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
+    this.handleRemoveUserFromGroup= this.handleRemoveUserFromGroup.bind(this);
   }
 
-  toggleDialog() {
+  toggleDialog(type) {
     // toggles error dialog box
-    if (this.state.open === false) {
-      this.setState({ open: true });
+    if (this.state[type] === false) {
+      this.setState({ type: true });
     } else {
-      this.setState({ open: false });
-    }
-  }
-
-  toggleLoginDialog() {
-    if (this.state.login === false) {
-      this.setState({ login: true });
-    } else {
-      this.setState({ login: false });
+      this.setState({ type: false });
     }
   }
 
@@ -108,7 +99,6 @@ class App extends React.Component {
     this.getUsersGroups(this.state.user);
     this.getGroupMembers(this.state.groupName);
     this.getAllUsers();
-    console.log('state set');
   }
 
   handleLoginClick() {
@@ -123,18 +113,17 @@ class App extends React.Component {
     axios.get('/api/logout')
       .then(this.handleViewChange('/login'))
       .catch(() => {
-        this.toggleDialog();
+        this.toggleDialog('open');
       });
   }
 
   getAllUsers() {
-    // TODO finish this function
     axios.get('/api/users')
-    .then((response) => {
-      this.setState({users:response})
-    })
+      .then((response) => {
+        this.setState({ users: response });
+      })
       .catch(() => {
-        this.toggleDialog();
+        this.toggleDialog('open');
       });
   }
 
@@ -167,7 +156,7 @@ class App extends React.Component {
       })
       .catch((error) => {
         console.log(error);
-        this.toggleDialog();
+        this.toggleDialog('open');
       });
   }
 
@@ -189,7 +178,7 @@ class App extends React.Component {
       });
     })
       .catch(() => {
-        this.toggleDialoque();
+        this.toggleDialoque('open');
       });
   }
 
@@ -203,7 +192,7 @@ class App extends React.Component {
       k: v,
     }).then(this.handleSetState(k, v))
       .catch(() => {
-        this.toggleDialog();
+        this.toggleDialog('open');
       });
   }
 
@@ -215,7 +204,7 @@ class App extends React.Component {
         });
       })
       .catch(() => {
-        this.toggleDialog();
+        this.toggleDialog('open');
       });
   }
 
@@ -241,14 +230,13 @@ class App extends React.Component {
   handlePreferenceChange(k, v) {
     // this.handleSetState(k, v);
     this.setState({ [k]: v });
-    console.log('statetetet', this.state)
+    console.log('statetetet', this.state);
   }
 
   handleNewGroupPricePoint(newPricePoint) {
     this.setState({
       pricePoint: newPricePoint,
     });
-    console.log(this.state);
   }
 
   handleNewGroupSubmit() {
@@ -261,7 +249,7 @@ class App extends React.Component {
       userName: user,
     })
       .catch(() => {
-        this.toggleDialog();
+        this.toggleDialog('open');
       });
   }
 
@@ -278,10 +266,10 @@ class App extends React.Component {
   getUsersGroups(user) {
     axios.get(`/api/users/${user}/groups`)
       .then((groupList) => {
-        this.setState({ groups: groupList });
-      }).catch(() => {
-        console.log(this.state);
-        this.toggleDialog();
+        this.setState({ groups: groupList })
+          .catch(() => {
+            this.toggleDialog('open');
+          });
       });
   }
 
@@ -299,7 +287,7 @@ class App extends React.Component {
   }
 
   handleNewGroupMember(e) {
-    this.setState({ newMember: e.target.value });
+    this.setState({ tempMember: e.target.value });
   }
 
   handleUserNameInput(e) {
@@ -312,47 +300,38 @@ class App extends React.Component {
     const dietaryRestrictionArr = [dietaryRestriction];
 
     axios.post('/api/users', { userName: user })
-    .then(console.log('please wait'))
+      .then(console.log('please wait'))
       .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
       .then(() => axios.post(`/api/users/${user}/image`, { image }))
     // axios.post(`/api/users/${this.state.user}/userName`, {
     //   userStatus: this.state.status,
     // })
       .catch(() => {
-        this.toggleDialog();
+        this.toggleDialog('open');
       });
   }
 
-  handleAddUserToGroup() {
+  handleAddUserToGroup(e) {
     // TODO combine this  function with handleNewGroupMember
-    const { newMember } = this.state;
+    const { tempMember } = e.target.value;
     axios.post('/api/user_group', {
-      userName: newMember,
+      userName: tempMember,
+      groupName: this.state.groupName,
     })
       .catch(() => {
-        this.toggleDialog();
+        this.toggleDialog('open');
       });
+  }
+
+  handleRemoveUserFromGroup(userName) {
+    axios.delete(`/api/groups/${userName}`, {
+      userName,
+      groupName: this.state.groupName,
+    });
   }
 
   handleUserStatusInput(e) {
-    // TODO axios
     this.setState({ userStatus: e.target.value });
-  }
-
-
-  handleDietaryRestrictionsSetState(e) {
-    const { user, dietaryRestriction } = this.state;
-    const restrictions = dietaryRestriction.split();
-    axios.post(`/api/users/${this.state.user}/dietaryRestrictions`, { user, restrictions })
-      .then(() => {
-        this.setState({
-          dietaryRestriction: this.state.dietaryRestriction.push(e),
-        });
-      })
-      .catch(() => {
-        this.toggleDialog();
-      });
-
   }
 
   render() {
@@ -360,14 +339,14 @@ class App extends React.Component {
       view, groups, group, members,
       options, groupName, pricePoint, open,
       chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
-      showWinner, user, userImages, dietaryRestriction, users,
+      showWinner, user, userImages, dietaryRestriction, users, tempMember
     } = this.state;
     const {
       randomizer, getGroupMembers, getGroupPricePoint, handleGroupSetState, handleGetOptions,
       handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleLoginClick, toggleLoginDialog, handleSignInWithGoogle, handleNewGroupName,
-      handleNewGroupPricePoint, handleNewGroupSubmit, handleUserSettings, handleUserNameInput,
+      handleNewGroupPricePoint, handleRemoveUserFromGroup, handleNewGroupSubmit, handleUserSettings, handleUserNameInput,
       handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
     } = this;
     let View;
@@ -440,26 +419,24 @@ class App extends React.Component {
                 choiceAddress={choiceAddress}
                 users={users}
                 choiceName={choiceName}/>;
-
     } else if (view === '/addUserToGroup') {
       View = <AddUserForm
-      users={users}
+      users={users} tempMember={tempMember}
                 handleViewChange={handleViewChange}
                 handleNewGroupMember={handleNewGroupMember}
                 handleAddUserToGroup={handleAddUserToGroup} />;
     } else if (view === '/removeUserFromGroup') {
       View = <RemoveUserForm
-      users={users}
+      users={users} tempMember={tempMember}
                 handleViewChange={handleViewChange}
                 handleNewGroupMember={handleNewGroupMember}
-                handleAddUserToGroup={handleAddUserToGroup} />;
+                handleRemoveUserFromGroup={handleRemoveUserFromGroup} />;
     } else if (view === '/options') {
       View = <Options
                 options={options}
                 handlePass={handlePass}
                 handleChooseOption={handleChooseOption}/>;
     } else {
-
       View = <Home
                 groups={groups}
                 getGroupMembers={getGroupMembers}

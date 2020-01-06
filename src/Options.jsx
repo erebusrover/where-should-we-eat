@@ -19,7 +19,7 @@ const Options = (props) => {
                     zipCode={option.location.zip_code}
                     price={option.price}
                     rating={option.rating}
-                    image_url={option.image_url}
+                    imageUrl={option.image_url}
                     phone={option.display_phone}
                     is_closed={option.is_closed}
                     url={option.url}
@@ -28,7 +28,7 @@ const Options = (props) => {
                     className='option'
                     handleChooseOption={handleChooseOption}/>
           ))}</div>
-             <Button variant="contained" color="primary" onClick={() => { handlePass(); }}>Pass</Button>
+             <Button variant="contained" style={{ background: '#9900cc', color:'white' }} onClick={() => { handlePass(); }}>Pass</Button>
       </div>
 
   );

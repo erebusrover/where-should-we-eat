@@ -71,7 +71,7 @@ const Preferences = (props) => {
       <h1>Status</h1>
       <input id='status'type='text' onChange={handleUserStatusInput}/>
       </ul>
-      <Button variant="contained" color="primary" onClick={() => { onclick(); }}>Submit & SignIn with Google</Button>
+      <Button variant="contained" style={{ background: '#9900cc', color:'white' }} onClick={() => { onclick(); }}>Submit & SignIn with Google</Button>
     </div>
   );
 };
