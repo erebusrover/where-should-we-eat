@@ -64,6 +64,16 @@ const addUserDietaryRestrictions = async (userName, restrictions) =>
     return pool.query(sql, [userName, restriction, restriction]);
   }));
 
+// allow user to update their dietary restrictions
+// allow user to change their username
+const updateUserDietaryRestrictions = async (userName, restrictions) => {
+  Promise.all(restrictions.map((restriction) => {
+    const sql = `UPDATE dietaryRestrictions SET restriction = ?
+                  WHERE user_id = (SELECT user_id FROM user WHERE userName = ?)`;
+    return pool.query(sql, [restriction, userName]);
+  }));
+};
+
 // delete dietary restriction for a user
 // right now this is set up to just remove one restriction at a time
 const deleteUserDietaryRestriction = async (user) => {
@@ -219,6 +229,7 @@ module.exports = {
   updateUserImage,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
+  updateUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   deleteUserFromGroup,
   deleteUser,

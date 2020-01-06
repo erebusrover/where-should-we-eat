@@ -465,8 +465,9 @@ class App extends React.Component {
                 groups={groups}
                 getGroupMembers={getGroupMembers}
                 handleViewChange={handleViewChange}
-                userImage={userImage}
-                handleGroupSetState={handleGroupSetState}/>;
+                handleGroupSetState={handleGroupSetState}
+                userImage={userImage}/>;
+
 
       View = <Title handleViewChange={handleViewChange} />;
     }
