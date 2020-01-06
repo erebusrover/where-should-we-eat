@@ -55,6 +55,7 @@ class App extends React.Component {
       showWinner: false,
       open: false,
       login: false,
+      directionsPopup: false,
       users: [],
     };
     this.handleViewChange = this.handleViewChange.bind(this);
@@ -80,7 +81,7 @@ class App extends React.Component {
     this.toggleDialog = this.toggleDialog.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
-    this.handleRemoveUserFromGroup= this.handleRemoveUserFromGroup.bind(this);
+    this.handleRemoveUserFromGroup = this.handleRemoveUserFromGroup.bind(this);
   }
 
   toggleDialog(type) {
@@ -160,6 +161,7 @@ class App extends React.Component {
   }
 
   handleChooseOption(id, name, address, city, state, zipCode) {
+    console.log('hey');
     // set state
     this.setState({
       choiceId: id,
@@ -170,10 +172,11 @@ class App extends React.Component {
     // make axios request to add choice to database
     axios.post('/api/groupHistory', { id, groupName }).then(() => {
       // render group view
+      console.log('hey');
       this.handleViewChange('group');
       this.setState({
         chosen: true,
-        open: true,
+        directionsPopup: true,
       });
     })
       .catch(() => {
@@ -335,7 +338,7 @@ class App extends React.Component {
   render() {
     const {
       view, groups, group, members,
-      options, groupName, pricePoint, open,
+      options, groupName, pricePoint, open, directionsPopup,
       chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
       showWinner, user, userImages, dietaryRestriction, users, tempMember
     } = this.state;
@@ -412,7 +415,7 @@ class App extends React.Component {
                 randomizer={randomizer}
                 chooser={chooser}
                 showWinner={showWinner}
-                open={open}
+                directionsPopup={directionsPopup}
                 toggleDialog={toggleDialog}
                 choiceAddress={choiceAddress}
                 users={users}
