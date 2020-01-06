@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Link from '@material-ui/core/Link';
@@ -13,6 +13,7 @@ const Group = (props) => {
     choiceName, choiceAddress, randomizer, chooser, showWinner,
     toggleDialog, open,
   } = props;
+  console.log(groupMembers);
   const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination="${choiceName} ${choiceAddress}"`;
   return (
       <div>

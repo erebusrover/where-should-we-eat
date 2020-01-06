@@ -65,7 +65,7 @@ CREATE TABLE userImages(
     FOREIGN KEY (user_id)
         REFERENCES user(user_id)
         ON DELETE CASCADE,
-    image int NOT NULL
+    image varchar(200) NOT NULL
 );
 -- table to store the past choices of a group location_id should come from the api
 -- do we want to add the date visited or number of times visited in here?
@@ -74,5 +74,5 @@ CREATE TABLE groupHistory (
     FOREIGN KEY (groupp_id)
         REFERENCES groupp(groupp_id)
         ON DELETE CASCADE,
-    location_id varchar NOT NULL UNIQUE (50)
+    location_id varchar(200) NOT NULL UNIQUE
 );
