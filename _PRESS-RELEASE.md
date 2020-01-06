@@ -17,28 +17,42 @@ Once the project moves into development, the press release can be used as a touc
  -->
 
 ## Heading
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > What Should We Eat?
 
 ## Sub-Heading
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > What Should We Eat? is for anybody who has every had trouble deciding what to eat with friends.
 
 ## Summary
   > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
 
+  What Should We Eat is an app that helps friends have fun deciding together about what they should eat! It's a gamified app that encourages users to have fun choosing where to eat after they create a profile and join a group with their friends. After everyone joins, one person is chosen as the winner and decision maker, and as the rightful victor,chooses where the group dines!
+
 ## Problem
   > Describe the problem your product solves.
+
+  What should we eat is a new app that solves a huge problem! Have you ever gotten hungry while hanging out with a group of your friends only to spend the next hour or so arguing indecisively over where to eat?? We have!
 
 ## Solution
   > Describe how your product elegantly solves the problem.
 
+  What should we eat solves this timeless problem by creating a game in which to the victor go the spoils, bragging rights, and ability to choose where everyone gets to eat along with the contact info for the restaurant and a link to directions so that you don't get lost on the way while not letting your friends live down their shame until the next game!
+
 ## Quote from You
   > A quote from a spokesperson in your company.
+
+ "Don't waste any more time when you could be having a blast playing with your friends while tossing back tacos or chowing on cheeseburgers."
 
 ## How to Get Started
   > Describe how easy it is to get started.
 
+  It's easy to get started with the app! Just create a profile and join a group with your friends. After that, start the game and may the best player win!
+
 ## Customer Quote
   > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
 
+ "I love using What should we eat when I can't decide what to eat with my friends. It's   quick, intuitive, and fun. We never waste time arguing over where to eat anymore!"
+
 ## Closing and Call to Action
   > Wrap it up and give pointers where the reader should go next.
+
+  Life is too short to waste time deciding what to eat. Might as well make a game of it and have some fun! Go to https://where-should-we--1577491661730.appspot.com/ and start having with your friends today.
