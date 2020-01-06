@@ -5,6 +5,7 @@ import './App.css';
 
 const Home = (props) => {
   const {
+
     groups, handleViewChange, user, handleGroupSetState, userImage, getGroupMembers, getGroupPricePoint, userImages,
   } = props;
   return (
@@ -22,6 +23,7 @@ const Home = (props) => {
               handleGroupSetState={handleGroupSetState}
               getGroupPricePoint={getGroupPricePoint}
               getGroupMembers={getGroupMembers} />)}
+
     </div>
   );
 };
