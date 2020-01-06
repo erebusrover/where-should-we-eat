@@ -56,7 +56,6 @@ class App extends React.Component {
       open: false,
       login: false,
       users: [],
-      userImages,
     };
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
@@ -131,7 +130,7 @@ class App extends React.Component {
     // TODO finish this function
     axios.get('/api/users')
     .then((response) => {
-      this.setState({users:response})
+      this.setState({ users: response });
     })
       .catch(() => {
         this.toggleDialog();

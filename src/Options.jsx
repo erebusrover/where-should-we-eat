@@ -4,7 +4,6 @@ import OptionItem from './OptionItem.jsx';
 
 const Options = (props) => {
   const { options, handlePass, handleChooseOption} = props;
-  console.log(options);
   return (
       <div>
           <h2>{}</h2>

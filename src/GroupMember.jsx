@@ -4,9 +4,10 @@ import { Avatar } from '@material-ui/core';
 
 const GroupMember = (props) => {
   const { groupMember, userImages } = props;
+  console.log(groupMember);
   return (
       <div>
-        <h2><Avatar src={userImages.kangaroo}/>
+        <h2><Avatar src={groupMember.image}/>
           {groupMember.userName}</h2>
       </div>
 
