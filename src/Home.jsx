@@ -1,4 +1,5 @@
 import React from 'react';
+import { Avatar } from '@material-ui/core';
 import GroupItem from './GroupItem.jsx';
 import './App.css';
 
