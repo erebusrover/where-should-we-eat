@@ -10,7 +10,6 @@ const GroupMember = (props) => {
         <h2><Avatar src={groupMember.image}/>
           {groupMember.userName}</h2>
       </div>
-
   );
 };
 
