@@ -8,7 +8,7 @@ const OptionItem = (props) => {
   const {
     id, name, address, city, state,
     zipCode, price, rating, imageUrl,
-    phone, handleChooseOption,
+    phone, handleChooseOption, url
   } = props;
   return (
       <div>
@@ -19,7 +19,7 @@ const OptionItem = (props) => {
               src={imageUrl}
               img="/static/images/cards/contemplative-reptile.jpg"
             />
-            <img height="200" width="200" src={imageUrl} />
+            <img height="200" width="200" href={url} src={imageUrl} />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
               {name}
@@ -35,6 +35,11 @@ const OptionItem = (props) => {
           style={{ background: '#9900cc', color: 'white' }}
           onClick={ () => handleChooseOption(id, name, address, city, state, zipCode) }>
           We're eating here
+        </Button>
+      <Button
+        style={{ background: '#9900cc', color: 'white' }}
+        href={url} target="_blank" rel="noreferrer">
+        Learn more
         </Button>
       </div>
   );
