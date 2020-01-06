@@ -2,6 +2,7 @@
 /* eslint-disable prefer-arrow-callback */
 const { Router } = require('express');
 const passport = require('passport');
+const _ = require('lodash');
 
 // require DB helpers
 const {
@@ -20,11 +21,13 @@ const {
   addUserToGroup,
   deleteUserFromGroup,
   getAllGroupMembers,
+  getAllGroupMembersImages,
   getAllUserRestrictions,
   getAllUserGroups,
   getAllActiveUserGroups,
   getAllInactiveUserGroups,
   changeGroupName,
+  getGroupPricePoint,
   changeGroupPricePoint,
   addToGroupHistory,
   getGroupHistory,
@@ -191,6 +194,7 @@ router.delete('/users/:userName/dietaryRestrictions', (req, res) => {
 // also adds whichever user created the group to the user_group join table
 router.post('/groups', (req, res) => {
   const { groupName, pricePoint, userName } = req.body;
+  // const priceNumber = pricePoint.length;
   const newGroup = {
     groupName,
     pricePoint,
@@ -234,14 +238,28 @@ router.post('/user_group', (req, res) => {
     });
 });
 
-// get all members from a given group
+// get all members and avatars from a given group
 router.get('/groups/:groupName/users', (req, res) => {
   const { groupName } = req.params;
-  getAllGroupMembers(groupName)
-    .then((response) => {
+  return getAllGroupMembers(groupName).then(function (members) {
+    // get user images
+    return getAllGroupMembersImages(groupName).then(function (images) {
+      // const allMembersInfo = _.defaults(members[0], images[0]);
+      const allMembersInfo = members[0].map((member) => {
+        return images[0].map((image) => {
+          return _.defaults(member, image);
+        });
+      });
+      const response = [];
+      allMembersInfo.forEach((member) => {
+        response.push(member[0]);
+      });
+      return response;
+    }).then(function (response) {
       res.status(200);
-      res.send(response[0]);
-    })
+      res.send(response);
+    });
+  })
     .catch(() => {
       res.send(400);
     });
@@ -320,10 +338,8 @@ router.patch('/groups/:groupName/groupName', (req, res) => {
 // PATCH /groups/:groupName/pricePoint to change group price point
 router.patch('/groups/:groupName/pricePoint', (req, res) => {
   const { groupName } = req.params;
-  // for now, price point must be single integer
-  // what if we wanted to include multiple price points
-  // when is price point set, and by whom?
   const { newPricePoint } = req.body;
+  // const priceNumber = newPricePoint.length;
   const group = {
     groupName,
     newPricePoint,
@@ -331,6 +347,20 @@ router.patch('/groups/:groupName/pricePoint', (req, res) => {
   changeGroupPricePoint(group)
     .then(() => {
       res.sendStatus(201);
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
+
+// GET /groups/:groupName/pricePoint to get group price point
+router.get('/groups/:groupName/pricePoint', (req, res) => {
+  const { groupName } = req.params;
+  // const priceNumber = newPricePoint.length;
+  getGroupPricePoint(groupName)
+    .then((response) => {
+      res.status(201);
+      res.send(response[0]);
     })
     .catch(() => {
       res.sendStatus(400);
@@ -394,22 +424,25 @@ router.get('/choices', (req, res) => {
   // db query to get dietary restrictions, pricepoint?
   // const categories = getAllUserRestrictions(groupName);
   return getAllUserRestrictions(groupName).then(function (restrictions) {
-    return getUserLocation().then(function (location) {
-      const categories = restrictions[0].map((restriction) => {
-        return restriction.restriction;
-      });
-      const { lat, lng } = location.data.location;
-      const query = {
-        latitude: lat,
-        longitude: lng,
-        radius: 40000,
-        categories: categories[0],
-        price: 1,
-      };
-      return getRestaurants(query).then(function (response) {
-        const { businesses } = response.data;
-        res.status(200);
-        res.send(businesses);
+    return getGroupPricePoint(groupName).then(function(pricePoint) {
+      console.log(pricePoint);
+      return getUserLocation().then(function (location) {
+        const categories = restrictions[0].map((restriction) => {
+          return restriction.restriction;
+        });
+        const { lat, lng } = location.data.location;
+        const query = {
+          latitude: lat,
+          longitude: lng,
+          radius: 40000,
+          categories: categories[0],
+          price: 1,
+        };
+        return getRestaurants(query).then(function (response) {
+          const { businesses } = response.data;
+          res.status(200);
+          res.send(businesses);
+        });
       });
     });
   })

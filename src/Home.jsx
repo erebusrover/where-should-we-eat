@@ -4,14 +4,20 @@ import GroupItem from './GroupItem.jsx';
 
 const Home = (props) => {
   const {
-    groups, handleViewChange, user, handleGroupSetState, getGroupMembers, userImages,
+    groups, handleViewChange, user, handleGroupSetState, getGroupMembers, getGroupPricePoint, userImages,
   } = props;
   return (
-<div>
-{groups.data.map((group) => <GroupItem groupName={group.groupName} userImages={userImages} handleViewChange={handleViewChange} handleGroupSetState={handleGroupSetState} getGroupMembers={getGroupMembers} />)}
-<h1>hi {user}</h1>
-
-</div>
+    <div>
+      {groups.data.map((group) => 
+        <GroupItem 
+          groupName={group.groupName} 
+          userImages={userImages} 
+          handleViewChange={handleViewChange} 
+          handleGroupSetState={handleGroupSetState} 
+          getGroupPricePoint={getGroupPricePoint} 
+          getGroupMembers={getGroupMembers} />)}
+      <h1>hi {user}</h1>
+    </div>
   );
 };
 

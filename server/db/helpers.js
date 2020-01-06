@@ -123,6 +123,13 @@ const getAllGroupMembers = async (groupName) => {
   return pool.query(sql, [groupName]);
 };
 
+const getAllGroupMembersImages = async (groupName) => {
+  const sql = `SELECT image FROM userImages WHERE user_id IN 
+                (SELECT user_id FROM user_group WHERE groupp_id IN 
+                  (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
+  return pool.query(sql, [groupName]);
+};
+
 // get all dietary restrictions for users of a given group
 const getAllUserRestrictions = async (groupName) => {
   const sql = `SELECT restriction from dietaryRestrictions WHERE user_id IN
@@ -169,6 +176,12 @@ const changeGroupPricePoint = async (group) => {
   return pool.query(sql, [newPricePoint, groupName]);
 };
 
+// retrieve group pricepoint from db
+const getGroupPricePoint = async (groupName) => {
+  const sql = 'SELECT pricePoint FROM groupp where groupName = ?';
+  return pool.query(sql, [groupName]);
+};
+
 // toggle group's active state between true and false
 // (when a decision has been initiated or closed)
 const toggleGroupStatus = async (group) => {
@@ -212,11 +225,13 @@ module.exports = {
   addNewGroup,
   addUserToGroup,
   getAllGroupMembers,
+  getAllGroupMembersImages,
   getAllUserRestrictions,
   getAllUserGroups,
   getAllActiveUserGroups,
   getAllInactiveUserGroups,
   changeGroupName,
+  getGroupPricePoint,
   changeGroupPricePoint,
   deleteGroup,
   addToGroupHistory,
