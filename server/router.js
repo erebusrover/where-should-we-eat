@@ -32,6 +32,8 @@ const {
   changeGroupPricePoint,
   addToGroupHistory,
   getGroupHistory,
+  addChooserToGroup,
+  getChooserFromGroupTable,
   toggleGroupStatus,
   getAllUsers,
 } = require('./db/helpers');
@@ -482,6 +484,30 @@ router.patch('/groups:id/active', (req, res) => {
     .catch(() => {
       res.sendStatus(400);
     });
+});
+
+// GET /groups/chooser adds the randomly chosen user to the "choice" field in groupp
+router.get('/groups/:groupName/chooser', (req, res) => {
+  const { groupName } = req.params;
+  getChooserFromGroupTable(groupName).then((response) => {
+    res.status(200);
+    res.send(response[0]);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+});
+
+// POST /groups/chooser adds the randomly chosen user to the "choice" field in groupp
+router.post('/groups/:groupName/chooser', (req, res) => {
+  const { groupName } = req.params;
+  const { chooser } = req.body;
+  addChooserToGroup(groupName, chooser).then(() => {
+    res.sendStatus(201);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(400);
+  });
 });
 
 // GET / renders home page, with info about active groups and sleeping groups

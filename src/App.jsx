@@ -90,13 +90,19 @@ class App extends React.Component {
       this.setState({ [type]: false });
     }
   }
-  
-  handleViewChange(view) {
+
+
+  async handleViewChange(view) {
     console.log(`${view} button clicked`);
-    this.getUsersGroups(this.state.user);
-    this.getGroupMembers(this.state.groupName);
-    this.getAllUsers();
-    this.setState({ view: `/${view}` });
+    if (view !== 'profile') {
+      await this.getUsersGroups(this.state.user);
+      await this.getGroupMembers(this.state.groupName);
+      await this.getAllUsers();
+      await this.setState({ view: `/${view}` });
+    }
+    else {
+      this.setState({ view: '/profile' });
+    }
   }
 
   handleLoginClick() {
@@ -206,9 +212,15 @@ class App extends React.Component {
   }
 
   randomizer() {
-    const { members } = this.state;
+    const { members, groupName } = this.state;
     const memberIndex = Math.floor(Math.random() * (members.length));
-    this.setState({ chooser: members[memberIndex].userName, showWinner: true });
+    const theChosen = members[memberIndex].userName;
+    this.setState({ chooser: theChosen, showWinner: true });
+    axios.post((`/api/groups/${groupName}`)).then(() => {
+      console.log('hey');
+    }).catch(() => {
+      this.toggleDialog();
+    });
   }
 
   handlePreferenceChange(k, v) {
