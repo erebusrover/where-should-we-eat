@@ -15,6 +15,7 @@ const {
   updateUserImage,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
+  updateUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
   deleteGroup,
@@ -54,7 +55,7 @@ router.post('/users', (req, res) => {
 });
 
 
-// PATCH to /users/:userName/newUserName to update username
+// POST to /users/:userName/newUserName to add username
 router.post('/users/:userName/userName', (req, res) => {
   // get username from params and new username from body
   const { userName } = req.params;
@@ -144,6 +145,19 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
       res.sendStatus(201);
     })
     .catch(() => {
+      res.sendStatus(400);
+    });
+});
+
+router.patch('/users/:userName/dietaryRestrictions', (req, res) => {
+  const { restrictions } = req.body;
+  const { userName } = req.params;
+  updateUserDietaryRestrictions(userName, restrictions)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch((error) => {
+      console.log(error);
       res.sendStatus(400);
     });
 });
@@ -242,9 +256,12 @@ router.post('/user_group', (req, res) => {
 router.get('/groups/:groupName/users', (req, res) => {
   const { groupName } = req.params;
   return getAllGroupMembers(groupName).then(function (members) {
+    console.log(members);
+    console.log(groupName);
     // get user images
     return getAllGroupMembersImages(groupName).then(function (images) {
-      // const allMembersInfo = _.defaults(members[0], images[0]);
+      console.log(images[0]);
+      console.log(members[0]);
       const allMembersInfo = members[0].map((member) => {
         return images[0].map((image) => {
           return _.defaults(member, image);
