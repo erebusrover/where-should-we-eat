@@ -17,6 +17,14 @@ const PurpleRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
+/**
+ *
+ * The Preferences view is rendered after they click Create an Account on the Title page.
+ * After choosing their preferences (which are stored in the database), they are asked to authenticate
+ * with Google, which opens a new window. The original window will take them to their Home page.
+ *
+ */
+
 const Preferences = (props) => {
   const {
     handlePreferenceChange,
@@ -27,7 +35,6 @@ const Preferences = (props) => {
     handleUserNameInput,
     handleViewChange,
   } = props;
-
   const onclick = () => {
     handleSubmitPreferences('post');
     handleSignInWithGoogle();
@@ -54,7 +61,7 @@ const Preferences = (props) => {
         <h2> Select Dietary Restrictions</h2>
         <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
           <FormControlLabel color='#9900cc' className='radio'value="Vegan" control={<PurpleRadio color='default' />} label="Vegan" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegan')}/>
-          <FormControlLabel className='radio'value="Vegitarian" control={<PurpleRadio color='default' />} label="Vegitarian" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegitarian')} />
+          <FormControlLabel className='radio'value="Vegetarian" control={<PurpleRadio color='default' />} label="Vegetarian" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegetarian')} />
           <FormControlLabel className='radio'value="Kosher" control={<PurpleRadio color='default' />} label="Kosher" onClick={() => handlePreferenceChange('dietaryRestriction', 'Kosher')}/>
           <FormControlLabel className='radio'value="Gluten Free" control={<PurpleRadio color='default' />} label="Gluten Free" onClick={() => handlePreferenceChange('dietaryRestriction', 'Gluten Free')} />
           <FormControlLabel className='radio'value="Halal" control={<PurpleRadio color='default' />} label="Halal" onClick={() => handlePreferenceChange('dietaryRestriction', 'Halal')} />

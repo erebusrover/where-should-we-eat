@@ -1,6 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
+/**
+ * Not a currently active component.
+ */
+
 const RemoveUserForm = (props) => {
   const { handleViewChange, handleRemoveUserFromGroup, handleNewGroupMember, } = props;
   const clickFunction = () => {

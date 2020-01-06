@@ -6,6 +6,9 @@ import Radio from '@material-ui/core/Radio';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 
+/**
+ * This is rendered whn a user clicks on the Create Group button in the header.
+ */
 
 const PurpleRadio = withStyles({
   root: {

@@ -2,6 +2,10 @@ import React from 'react';
 
 import Button from '@material-ui/core/Button';
 
+/**
+ * Not a currently active component?
+ */
+
 const SignIn = (props) => {
   const { handleSignInWithGoogle } = props;
 

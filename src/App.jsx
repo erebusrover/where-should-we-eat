@@ -17,6 +17,9 @@ import './App.css';
 import Title from './TitlePage.jsx';
 import AltHeader from './AltHeader.jsx';
 
+/**
+ * these are the avatar options a user can select from when creting an account
+ */
 const userImages = {
   oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
   koala: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg',
@@ -56,30 +59,31 @@ class App extends React.Component {
       directionsPopup: false,
       users: [],
     };
-    this.handleViewChange = this.handleViewChange.bind(this);
-    this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
-    this.handleSignInWithGoogle = this.handleSignInWithGoogle.bind(this);
-    this.handleNewGroupName = this.handleNewGroupName.bind(this);
-    this.handleNewGroupPricePoint = this.handleNewGroupPricePoint.bind(this);
-    this.handleNewGroupSubmit = this.handleNewGroupSubmit.bind(this);
-    this.handleUserSettings = this.handleUserSettings.bind(this);
-    this.handleAddUserToGroup = this.handleAddUserToGroup.bind(this);
-    this.handleNewGroupMember = this.handleNewGroupMember.bind(this);
-    this.handleGetOptions = this.handleGetOptions.bind(this);
-    this.handleChooseOption = this.handleChooseOption.bind(this);
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
     this.getUsersGroups = this.getUsersGroups.bind(this);
+    this.handleAddUserToGroup = this.handleAddUserToGroup.bind(this);
+    this.handleCategoriesInput = this.handleCategoriesInput.bind(this);
+    this.handleChooseOption = this.handleChooseOption.bind(this);
+    this.handleGetOptions = this.handleGetOptions.bind(this);
     this.handleGroupSetState = this.handleGroupSetState.bind(this);
-    this.randomizer = this.randomizer.bind(this);
-    this.handleSetState = this.handleSetState.bind(this);
-    this.handleUserNameInput = this.handleUserNameInput.bind(this);
-    this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
-    this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
-    this.toggleDialog = this.toggleDialog.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
-    this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
+    this.handleNewGroupMember = this.handleNewGroupMember.bind(this);
+    this.handleNewGroupName = this.handleNewGroupName.bind(this);
+    this.handleNewGroupPricePoint = this.handleNewGroupPricePoint.bind(this);
+    this.handleNewGroupSubmit = this.handleNewGroupSubmit.bind(this);
+    this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
     this.handleRemoveUserFromGroup = this.handleRemoveUserFromGroup.bind(this);
+    this.handleSetState = this.handleSetState.bind(this);
+    this.handleSignInWithGoogle = this.handleSignInWithGoogle.bind(this);
+    this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
+    this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
+    this.handleUserNameInput = this.handleUserNameInput.bind(this);
+    this.handleUserSettings = this.handleUserSettings.bind(this);
+    this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
+    this.handleViewChange = this.handleViewChange.bind(this);
+    this.randomizer = this.randomizer.bind(this);
+    this.toggleDialog = this.toggleDialog.bind(this);
   }
 
   toggleDialog(type) {
@@ -91,21 +95,29 @@ class App extends React.Component {
     }
   }
 
-
+  /**
+   * `handleViewChange`is called when the user clickson a
+   * button that would logically tke them to a new "page".
+   * the <view> property in state is change, which dynamically
+   * renders one of the views that start on line 388.
+   */
   async handleViewChange(view) {
     console.log(`${view} button clicked`);
-    if (view === 'home'){
+    if (view === 'home') {
       await this.getUsersGroups(this.state.user);
       await this.setState({ view: `/${view}` });
     }
+    else if (view === 'createGroup') {
+      await this.setState({ view: `/${view}` });
+    }
     else if (view !== 'profile') {
-      await this.getUsersGroups(this.state.user);
+      this.getUsersGroups(this.state.user);
       await this.getGroupMembers(this.state.groupName);
       await this.getAllUsers();
       await this.setState({ view: `/${view}` });
     }
     else {
-      this.setState({ view: '/profile' });
+      await this.setState({ view: '/profile' });
     }
   }
 
@@ -135,10 +147,23 @@ class App extends React.Component {
       });
   }
 
+  handleCategoriesInput(e) {
+    const categories = e.target.value;
+    this.setState({ categories: categories });
+  }
+
   handleGetOptions() {
-    const { groupName } = this.state;
-    axios.get('/api/choices', { groupName })
+    const { groupName, categories } = this.state;
+    console.log(categories);
+    console.log(groupName);
+    axios.get(`/api/choices/${groupName}/${categories}`, {
+      params: {
+        groupName,
+        categories,
+      },
+    })
       .then((response) => {
+        console.log(response);
         const { data } = response;
         this.setState({
           options: data,
@@ -351,12 +376,18 @@ class App extends React.Component {
     } = this.state;
     const {
       randomizer, getGroupMembers, getGroupPricePoint, handleGroupSetState, handleGetOptions,
-      handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
+      handleChooseOption, handlePreferenceChange, handleSubmitPreferences, handleCategoriesInput,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleLoginClick, toggleLoginDialog, handleSignInWithGoogle, handleNewGroupName,
       handleNewGroupPricePoint, handleRemoveUserFromGroup, handleNewGroupSubmit, handleUserSettings, handleUserNameInput,
       handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
     } = this;
+    /**
+     * The following lines handle view changes.
+     * When a user clicks on a button that should logically bring them to a new section
+     * of the site, the state's property <view> is changed with the function `handleViewChange`
+     * , and different components are rendered accordingly.
+     */
     let View;
     if (view === '/login') {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;
@@ -427,6 +458,7 @@ class App extends React.Component {
                 groupMembers={members}
                 pricePoint={pricePoint}
                 handleGetOptions={handleGetOptions}
+                handleCategoriesInput={handleCategoriesInput}
                 getGroupMembers={getGroupMembers}
                 getGroupPricePoint={getGroupPricePoint}
                 handleViewChange={handleViewChange}
@@ -469,11 +501,9 @@ class App extends React.Component {
 
     return (
             <div>
-               <div> {user !== ''
-                 ? <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
-                 : <AltHeader/>
-          }
-        </div>
+               <div>
+                 <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
+              </div>
                 <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
                     <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
                 </Dialog>

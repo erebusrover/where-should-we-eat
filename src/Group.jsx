@@ -5,6 +5,21 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Link from '@material-ui/core/Link';
 import GroupMember from './GroupMember.jsx';
 
+/**
+ * This is the component that is rendered when a user clicks on one of their groups
+ * from their home page.
+ *
+ * A user can click Start Game to initiate a decision making 'game,'
+ * If the user is randomly chosen as the decision maker, they will be presented with an
+ * input form and a button, Show Options. They can optionally put something in the input form
+ * to add a parameter to the Yelp API query that will result from them clicking the Show Options button.
+ * Clicking the Show Options button renders the Options view/component, which will have a list of five
+ * restaurant choices for them to choose.
+ * 
+ * We were attempting to make this stateful in order
+ * to implement occasional rerendering of state based on changes to the database,
+ * but that is not a currently active feature.
+ */
 class Group extends React.Component {
   constructor(props) {
     super(props);
@@ -13,16 +28,12 @@ class Group extends React.Component {
     };
   }
 
-  componentDidMount() {
-    setInterval(5000, () => {
-
-    });
-
+  render() {
     const {
       user, groupName, pricePoint, groupMembers,
       handleViewChange, userImages, handleGetOptions,
       choiceName, choiceAddress, randomizer, chooser, showWinner,
-      toggleDialog, directionsPopup,
+      toggleDialog, directionsPopup, handleCategoriesInput,
     } = this.props;
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
     return (
@@ -37,7 +48,10 @@ class Group extends React.Component {
             </div>}
         </div>
         <div> {user === chooser
-          ? <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
+          ? <div>
+              <input id='categories' type='text' onChange={handleCategoriesInput} />
+              <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
+            </div>
           : <h2></h2>}
         </div>
       <Dialog onBackdropClick={() => { toggleDialog('directionsPopup'); }} open={directionsPopup}>
@@ -48,7 +62,6 @@ class Group extends React.Component {
           {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
         </ul>
         <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
-        <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
         <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
     );

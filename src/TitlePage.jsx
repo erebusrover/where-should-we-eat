@@ -1,6 +1,10 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 
+/**
+ * Rendered first. Prompts user to create an account.
+ */
+
 const Title = (props) => {
   const { handleViewChange } = props;
   return (<div>
