@@ -19,7 +19,6 @@ const getRestaurants = (query) => {
     Authorization: `Bearer ${API_KEY}`,
   };
   const url = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&limit=5&sort_by=rating&price=${price}`;
-  // const url = 'https://api.yelp.com/v3/businesses/search?latitude=29.985996800000002&longitude=-90.08414719999999&radius=40000&categories=italian&limit=5&sort_by=rating&price=1, 2& Authorization=BearerQOG7LMVSSI1h9KdCz3VJbbGbJkBe8Qref4Kf4hdOf20UZR8bAAWnHXUJEgRbS25zVg66TMUXgzB3KZVsWjhDX0NznR54MMSnonqXg75jA6Kz8j4mEE4hJBl125EHXnYx';
   return axios.get(url, { headers });
 };
 

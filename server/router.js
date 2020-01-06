@@ -437,12 +437,14 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-// GET /choices renders page with a few choices of where to eat, with a timer.
-// clicking on a given choice will ...render choices:id page for all users?
-router.get('/choices', (req, res) => {
-  const { groupName, categories } = req.body;
+// GET /choices renders page with a few choices of where to eat
+router.get('/choices/:groupName/:categories', (req, res) => {
+  const { groupName, categories } = req.params;
   console.log(req);
   console.log(groupName);
+  const userCats = [];
+  userCats.push(categories);
+  console.log(userCats);
   // db query to get dietary restrictions, pricepoint?
   // const categories = getAllUserRestrictions(groupName);
   return getAllUserRestrictions(groupName).then(function (restrictions) {
@@ -452,8 +454,9 @@ router.get('/choices', (req, res) => {
           return restriction.restriction;
         });
         restrCats.forEach((restr) => {
-          categories.push(restr);
+          userCats.push(restr);
         });
+        console.log(userCats);
         // const { lat, lng } = location.data.location;
         // this is hard coded due to geolocation issues --> getUserLocaton returns location of google server
         const query = {
