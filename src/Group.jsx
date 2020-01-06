@@ -11,10 +11,9 @@ const Group = (props) => {
     user, groupName, pricePoint, groupMembers,
     handleViewChange, userImages, handleGetOptions,
     choiceName, choiceAddress, randomizer, chooser, showWinner,
-    toggleDialog, open,
+    toggleDialog, directionsPopup,
   } = props;
-  console.log(groupMembers);
-  const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination="${choiceName} ${choiceAddress}"`;
+  const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
   return (
       <div>
         <h1>{groupName}</h1>
@@ -24,14 +23,13 @@ const Group = (props) => {
           ? <h1>{chooser} is the lucky Decision Maker</h1>
           : <div>
               <h2>Click Start Game to choose the Decision Maker</h2>
-              <Button onClick={() => { randomizer(); }}>Start Game</Button>
             </div>}
         </div>
         <div> {user === chooser
           ? <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
           : <h2></h2>}
         </div>
-        <Dialog onBackdropClick={() => { toggleDialog(); }} open={open}>
+      <Dialog onBackdropClick={() => { toggleDialog('directionsPopup'); }} open={directionsPopup}>
           <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
           <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
         </Dialog>

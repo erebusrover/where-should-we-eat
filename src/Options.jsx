@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import OptionItem from './OptionItem.jsx';
 
 const Options = (props) => {
-  const { options, handlePass, handleChooseOption} = props;
+  const { options, handlePass, handleChooseOption } = props;
   return (
       <div>
           <h2>{}</h2>
@@ -29,7 +29,6 @@ const Options = (props) => {
           ))}</div>
              <Button variant="contained" style={{ background: '#9900cc', color:'white' }} onClick={() => { handlePass(); }}>Pass</Button>
       </div>
-
   );
 };
 
