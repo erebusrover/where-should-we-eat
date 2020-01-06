@@ -25,7 +25,7 @@ const Group = (props) => {
           : <h2>Start Game To See Winner</h2>}
         </div>
         <div> {user === chooser
-          ? <Button onClick={() => { handleGetOptions(); }}>Show Options</Button>
+          ? <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
           : <h2></h2>}
         </div>
       <Dialog onBackdropClick={() => { toggleDialog(); }} open={open}>
@@ -35,9 +35,9 @@ const Group = (props) => {
         <ul>
           {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
         </ul>
-        <Button onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
-        <Button onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
-        <Button onClick={() => { randomizer(); }}>Start Game</Button>
+        <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+        <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
+        <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
   );
 };

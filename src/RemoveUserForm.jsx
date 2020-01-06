@@ -10,14 +10,14 @@ const RemoveUserForm = (props) => {
       <div>
        
           <h1>Remove Group Member </h1>
-          <FormControl  margin={1} style={{minWidth: 200}} variant="outlined">
+          <FormControl margin={1} style={{minWidth: 200}} variant="outlined">
             <InputLabel>User</InputLabel>
-          <Select fullWidth='true'value={} > 
+          <Select fullWidth='true' > 
           {users.data.map((user)=>(<MenuItem value={user.userName}>{user.userName}</MenuItem>))}
           </Select>
           </FormControl>
-          <Button onClick={() => { handleRemoveUserFromGroup(); }}>Remove Group Member</Button>
-          <Button onClick={() => {handleViewChange('group')}}>Return to Group</Button>
+          <Button  style={{ background: '#9900cc', color:'white' }} onClick={() => { handleRemoveUserFromGroup(); }}>Remove Group Member</Button>
+          <Button style={{ background: '#9900cc', color:'white' }} onClick={() => {handleViewChange('group')}}>Return to Group</Button>
       </div>
   );
 };

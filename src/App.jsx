@@ -76,9 +76,7 @@ class App extends React.Component {
     this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
     this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
-    // this.handleDietaryRestrictionsSetState = this.handleDietaryRestrictionsSetState.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
-    // this.toggleLoginDialog = this.toggleLoginDialog.bind(this);
     this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
     this.handleRemoveUserFromGroup= this.handleRemoveUserFromGroup.bind(this);
   }
@@ -303,8 +301,6 @@ class App extends React.Component {
 
   handleAddUserToGroup(e) {
     // TODO combine this  function with handleNewGroupMember
-
-    // const { newMember } = this.state;
     const { tempMember } = e.target.value;
     axios.post('/api/user_group', {
       userName: tempMember,
@@ -323,7 +319,6 @@ class App extends React.Component {
   }
 
   handleUserStatusInput(e) {
-    // TODO axios
     this.setState({ userStatus: e.target.value });
   }
 
@@ -421,7 +416,7 @@ class App extends React.Component {
       users={users} tempMember={tempMember}
                 handleViewChange={handleViewChange}
                 handleNewGroupMember={handleNewGroupMember}
-                handleAddUserToGroup={handleAddUserToGroup} />;
+                handleRemoveUserFromGroup={handleRemoveUserFromGroup} />;
     } else if (view === '/options') {
       View = <Options
                 options={options}

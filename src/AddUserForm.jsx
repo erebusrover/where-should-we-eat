@@ -15,8 +15,8 @@ const AddUserForm = (props) => {
           {users.data.map((user)=>(<MenuItem>{user.userName}</MenuItem>))}
           </Select>
           </FormControl>
-          <Button onClick={() => { handleAddUserToGroup(); }}>Add Group Member</Button>
-          <Button onClick={() => {handleViewChange('group'); }}>Return to Group</Button>
+          <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { handleAddUserToGroup(); }}>Add Group Member</Button>
+          <Button style={{ background: '#9900cc', color:'white' }} onClick={() => {handleViewChange('group'); }}>Return to Group</Button>
       </div>
   );
 };
