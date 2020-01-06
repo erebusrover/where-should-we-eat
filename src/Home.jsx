@@ -8,15 +8,17 @@ const Home = (props) => {
   } = props;
   return (
     <div>
-      {groups.data.map((group) => 
-        <GroupItem 
-          groupName={group.groupName} 
-          userImages={userImages} 
-          handleViewChange={handleViewChange} 
-          handleGroupSetState={handleGroupSetState} 
-          getGroupPricePoint={getGroupPricePoint} 
-          getGroupMembers={getGroupMembers} />)}
-      <h1>hi {user}</h1>
+      <h1>hi {user}!</h1>
+      <h2>your groups:</h2>
+        {groups.data.map((group) =>
+          <GroupItem
+            key={group.groupName}
+            groupName={group.groupName}
+            userImages={userImages}
+            handleViewChange={handleViewChange}
+            handleGroupSetState={handleGroupSetState}
+            getGroupPricePoint={getGroupPricePoint}
+            getGroupMembers={getGroupMembers} />)}
     </div>
   );
 };
