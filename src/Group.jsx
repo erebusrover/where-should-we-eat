@@ -17,27 +17,29 @@ const Group = (props) => {
   return (
       <div>
         <h1>{groupName}</h1>
-        <h2> PRICEPOINT $</h2>
-        <h2>{pricePoint}</h2>
+        <h2>Price point: {pricePoint}</h2>
         <br />
         <div> {showWinner === true
-          ? <h1>{chooser}</h1>
-          : <h2>Start Game To See Winner</h2>}
+          ? <h1>{chooser} is the lucky Decision Maker</h1>
+          : <div>
+              <h2>Click Start Game to choose the Decision Maker</h2>
+              <Button onClick={() => { randomizer(); }}>Start Game</Button>
+            </div>}
         </div>
         <div> {user === chooser
-          ? <Button onClick={() => { handleGetOptions(); }}>Show Options</Button>
+          ? <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
           : <h2></h2>}
         </div>
-      <Dialog onBackdropClick={() => { toggleDialog(); }} open={open}>
-        <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
-        <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
-      </Dialog>
+        <Dialog onBackdropClick={() => { toggleDialog(); }} open={open}>
+          <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
+          <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
+        </Dialog>
         <ul>
           {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
         </ul>
-        <Button onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
-        <Button onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
-        <Button onClick={() => { randomizer(); }}>Start Game</Button>
+        <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+        <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
+        <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
   );
 };

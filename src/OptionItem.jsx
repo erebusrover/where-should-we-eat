@@ -1,5 +1,7 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import {
+  Button, Card, CardActions, CardMedia, CardActionArea, Typography, CardContent,
+} from '@material-ui/core/';
 
 
 const OptionItem = (props) => {
@@ -12,7 +14,7 @@ const OptionItem = (props) => {
     zipCode,
     price,
     rating,
-    image_url,
+    imageUrl,
     phone,
     url,
     is_closed,
@@ -22,14 +24,30 @@ const OptionItem = (props) => {
   } = props;
   return (
       <div>
-       <h1>{name}</h1>
-       <Button onClick={ () => handleChooseOption(id, name, address, city, state, zipCode) }>We're eating here</Button>
-       <h2>Price level: {price}</h2>
-       <h2>Rating: {rating}</h2>
-       <h2>Open? {is_closed}</h2>
-       <h2>Phone: {phone}</h2>
-       <img src={image_url}/>
+<Card maxWidth="345">
+<CardActionArea>
+  <CardMedia height="140" width="100"
+    backgr
+    src={imageUrl}
+    img="/static/images/cards/contemplative-reptile.jpg"
+  />
+  <img height="200" width="200" src={imageUrl} />
+  <CardContent>
+    <Typography gutterBottom variant="h5" component="h2">
+     {name}
+    </Typography>
+    {rating} {price}
+    <Typography variant="body2" color="textSecondary" component="p">
+      {phone}
+    </Typography>
+  </CardContent>
+</CardActionArea>
+<CardActions>
+<Button style={{ background: '#9900cc', color:'white' }} onClick={ () => handleChooseOption(id, name, address, city, state, zipCode) }>We're eating here</Button>
+</CardActions>
+</Card>
       </div>
+
   );
 };
 

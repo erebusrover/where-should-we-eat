@@ -6,9 +6,9 @@ const GroupMember = (props) => {
   const { groupMember, userImages } = props;
   return (
       <div>
-        <Avatar src={userImages.kangaroo}/>
+        {/* <h2><Avatar src={userImages.kangaroo}/> */}
+        {/* // TODO to use avatar we need a get user image from database function  */}
           <h2>{groupMember.userName}</h2>
-          <h2>MemberStatus</h2>
       </div>
 
   );

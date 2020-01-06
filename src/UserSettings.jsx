@@ -27,7 +27,7 @@ const UserSettings = (props) => {
       <h1>Status</h1>
       <input type='text'/>
       </ul>
-      <Button variant="contained" color="primary">Submit</Button>
+      <Button variant="contained" style={{ background: '#9900cc', color:'white' }} >Submit</Button>
     </div>
 );
 };

@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 //! 13:00 https://www.youtube.com/watch?v=xm4LX5fJKZ8  moving these imports to the index file to get them out of the way
 
 const Header = (props) => {
-  const { handleViewChange, handleSignOutWithGoogle, handleSignInWithGoogle } = props;
+  const { handleViewChange, handleSignOutWithGoogle } = props;
   return (
   <AppBar style={{ background: '#9900cc' }} position="static">
   <Toolbar>
@@ -16,11 +16,12 @@ const Header = (props) => {
     <Typography variant="h6" className='two'>
       Where Should We Eat
     </Typography>
-    <Button color="inherit" value='home' onClick={() => { handleViewChange('home'); }}>Home</Button>
-    <Button color="inherit" value='login' onClick={() => { handleSignInWithGoogle(); }}>Login</Button>
-    <Button color="inherit" value='profile' onClick={() => { handleViewChange('profile'); }}>Profile</Button>
-    <Button color="inherit" value='profile' onClick={() => { handleViewChange('createGroup'); }}>Create Group</Button>
-    <Button color="inherit" value='login' onClick={() => { handleSignOutWithGoogle();}}>LOGOUT</Button>
+    <Button style={{ background: '#9900cc', color:'white' }} value='home' onClick={() => { handleViewChange('home'); }}>Home</Button>
+    {/* <Button color="inherit" value='login' onClick={() => { handleSignInWithGoogle(); }}>Login</Button> */}
+    {/* //TODO this could be an update profile button in another life */}
+    <Button style={{ background: '#9900cc', color:'white' }} value='profile' onClick={() => { handleViewChange('profile'); }}>Profile</Button>
+    <Button style={{ background: '#9900cc', color:'white' }} value='profile' onClick={() => { handleViewChange('createGroup'); }}>Create Group</Button>
+    <Button style={{ background: '#9900cc', color:'white' }} value='login' onClick={() => { handleSignOutWithGoogle(); }}>LOGOUT</Button>
   </Toolbar>
 </AppBar>
 
