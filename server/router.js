@@ -245,15 +245,19 @@ router.get('/groups/:groupName/users', (req, res) => {
     // get user images
     return getAllGroupMembersImages(groupName).then(function (images) {
       // const allMembersInfo = _.defaults(members[0], images[0]);
-      return members[0].map((member) => {
+      const allMembersInfo = members[0].map((member) => {
         return images[0].map((image) => {
           return _.defaults(member, image);
         });
-      }); 
-    }).then(function (allMembersInfo) {
-      console.log(allMembersInfo);
+      });
+      const response = [];
+      allMembersInfo.forEach((member) => {
+        response.push(member[0]);
+      });
+      return response;
+    }).then(function (response) {
       res.status(200);
-      res.send(allMembersInfo);
+      res.send(response);
     });
   })
     .catch(() => {
