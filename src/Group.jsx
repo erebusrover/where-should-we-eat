@@ -1,20 +1,31 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-// import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Link from '@material-ui/core/Link';
 import GroupMember from './GroupMember.jsx';
 
-const Group = (props) => {
-  const {
-    user, groupName, pricePoint, groupMembers,
-    handleViewChange, userImages, handleGetOptions,
-    choiceName, choiceAddress, randomizer, chooser, showWinner,
-    toggleDialog, directionsPopup,
-  } = props;
-  const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
-  return (
+class Group extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      winner: '',
+    };
+  }
+
+  componentDidMount() {
+    setInterval(5000, () => {
+
+    });
+
+    const {
+      user, groupName, pricePoint, groupMembers,
+      handleViewChange, userImages, handleGetOptions,
+      choiceName, choiceAddress, randomizer, chooser, showWinner,
+      toggleDialog, directionsPopup,
+    } = this.props;
+    const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
+    return (
       <div>
         <h1>{groupName}</h1>
         <h2>Price point: {pricePoint}</h2>
@@ -40,10 +51,8 @@ const Group = (props) => {
         <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
         <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
-  );
-};
-
-// history button
-// TODO toggle members list
+    );
+  }
+}
 
 export default Group;
