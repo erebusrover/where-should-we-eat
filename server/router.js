@@ -15,6 +15,7 @@ const {
   updateUserImage,
   addUserDietaryRestrictions,
   getUserDietaryRestrictions,
+  updateUserDietaryRestrictions,
   deleteUserDietaryRestriction,
   addNewGroup,
   deleteGroup,
@@ -54,7 +55,7 @@ router.post('/users', (req, res) => {
 });
 
 
-// PATCH to /users/:userName/newUserName to update username
+// POST to /users/:userName/newUserName to add username
 router.post('/users/:userName/userName', (req, res) => {
   // get username from params and new username from body
   const { userName } = req.params;
@@ -83,9 +84,13 @@ router.delete('/users/:userName', (req, res) => {
 // GET to /users/:username/status to get user status
 router.get('/users/:userName/status', (req, res) => {
   const { userName } = req.params;
-  getUserStatus(userName, newStatus)
-    .then(() => {
-      res.sendStatus(201);
+
+  getUserStatus(userName)
+  // TODO this is  probably why the user status is angry
+    .then((response) => {
+      res.status(200);
+      res.send(response[0]);
+
     })
     .catch(() => {
       res.sendStatus(400);
@@ -143,6 +148,19 @@ router.post('/users/:userName/dietaryRestrictions', (req, res) => {
       res.sendStatus(201);
     })
     .catch(() => {
+      res.sendStatus(400);
+    });
+});
+
+router.patch('/users/:userName/dietaryRestrictions', (req, res) => {
+  const { restrictions } = req.body;
+  const { userName } = req.params;
+  updateUserDietaryRestrictions(userName, restrictions)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch((error) => {
+      console.log(error);
       res.sendStatus(400);
     });
 });
@@ -241,9 +259,12 @@ router.post('/user_group', (req, res) => {
 router.get('/groups/:groupName/users', (req, res) => {
   const { groupName } = req.params;
   return getAllGroupMembers(groupName).then(function (members) {
+    console.log(members);
+    console.log(groupName);
     // get user images
     return getAllGroupMembersImages(groupName).then(function (images) {
-      // const allMembersInfo = _.defaults(members[0], images[0]);
+      console.log(images[0]);
+      console.log(members[0]);
       const allMembersInfo = members[0].map((member) => {
         return images[0].map((image) => {
           return _.defaults(member, image);
@@ -378,7 +399,8 @@ router.post('/groupHistory', (req, res) => {
     .then(() => {
       res.sendStatus(201);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       res.sendStatus(400);
     });
 });
@@ -399,13 +421,12 @@ router.get('/groupHistory', (req, res) => {
 // GET /login verify user login using Passport --> google auth?
 router.get('/login', passport.authenticate('google', {
   scope: ['profile'],
-}))
+}));
 
 // GET /redirect to reroute back to the app from the google consent screen
 router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
   const { userName } = res.req._passport.session.user[0][0];
-  res.send("YOU ARE NOW LOGGED IN TO WSWE");
-  
+  res.send('YOU ARE NOW LOGGED IN TO WSWE');
 });
 
 
@@ -423,7 +444,6 @@ router.get('/choices', (req, res) => {
   // const categories = getAllUserRestrictions(groupName);
   return getAllUserRestrictions(groupName).then(function (restrictions) {
     return getGroupPricePoint(groupName).then(function(pricePoint) {
-      console.log(pricePoint);
       return getUserLocation().then(function (location) {
         const categories = restrictions[0].map((restriction) => {
           return restriction.restriction;

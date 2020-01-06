@@ -42,7 +42,7 @@ class App extends React.Component {
       groupName: 'supercoolpeople',
       pricePoint: '',
       members: [],
-      tempMember: '',
+      newMember: '',
       options: [],
       categories: 'vegan',
       chooser: '',
@@ -55,6 +55,7 @@ class App extends React.Component {
       showWinner: false,
       open: false,
       login: false,
+      directionsPopup: false,
       users: [],
     };
     this.handleViewChange = this.handleViewChange.bind(this);
@@ -80,24 +81,24 @@ class App extends React.Component {
     this.toggleDialog = this.toggleDialog.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
-    this.handleRemoveUserFromGroup= this.handleRemoveUserFromGroup.bind(this);
+    this.handleRemoveUserFromGroup = this.handleRemoveUserFromGroup.bind(this);
   }
 
   toggleDialog(type) {
     // toggles error dialog box
     if (this.state[type] === false) {
-      this.setState({ type: true });
+      this.setState({ [type]: true });
     } else {
-      this.setState({ type: false });
+      this.setState({ [type]: false });
     }
   }
 
   handleViewChange(view) {
     console.log(`${view} button clicked`);
-    this.setState({ view: `/${view}` });
     this.getUsersGroups(this.state.user);
     this.getGroupMembers(this.state.groupName);
     this.getAllUsers();
+    this.setState({ view: `/${view}` });
   }
 
   handleLoginClick() {
@@ -118,9 +119,9 @@ class App extends React.Component {
 
   getAllUsers() {
     axios.get('/api/users')
-    .then((response) => {
-      this.setState({ users: response });
-    })
+      .then((response) => {
+        this.setState({ users: response });
+      })
       .catch(() => {
         this.toggleDialog('open');
       });
@@ -160,6 +161,7 @@ class App extends React.Component {
   }
 
   handleChooseOption(id, name, address, city, state, zipCode) {
+    console.log('hey');
     // set state
     this.setState({
       choiceId: id,
@@ -170,10 +172,11 @@ class App extends React.Component {
     // make axios request to add choice to database
     axios.post('/api/groupHistory', { id, groupName }).then(() => {
       // render group view
+      console.log('hey');
       this.handleViewChange('group');
       this.setState({
         chosen: true,
-        open: true,
+        directionsPopup: true,
       });
     })
       .catch(() => {
@@ -265,7 +268,7 @@ class App extends React.Component {
   getUsersGroups(user) {
     axios.get(`/api/users/${user}/groups`)
       .then((groupList) => {
-        this.setState({ groups: groupList })
+        this.setState({ groups: groupList });
       }).catch(() => {
         this.toggleDialog('open');
       });
@@ -285,7 +288,7 @@ class App extends React.Component {
   }
 
   handleNewGroupMember(e) {
-    this.setState({ tempMember: e.target.value });
+    this.setState({ newMember: e.target.value });
   }
 
   handleUserNameInput(e) {
@@ -293,27 +296,39 @@ class App extends React.Component {
     this.setState({ user });
   }
 
-  handleSubmitPreferences() {
+  handleSubmitPreferences(method) {
     const { user, image, dietaryRestriction } = this.state;
     const dietaryRestrictionArr = [dietaryRestriction];
-
-    axios.post('/api/users', { userName: user })
-      .then(console.log('please wait'))
-      .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
-      .then(() => axios.post(`/api/users/${user}/image`, { image }))
-    // axios.post(`/api/users/${this.state.user}/userName`, {
-    //   userStatus: this.state.status,
-    // })
-      .catch(() => {
-        this.toggleDialog('open');
-      });
+    if (method === 'post') {
+      axios.post('/api/users', { userName: user })
+        .then(console.log('please wait'))
+        .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
+        .then(() => axios.post(`/api/users/${user}/image`, { image }))
+        .then(() => {
+          axios.post(`/api/users/${this.state.user}/userName`, {
+            userStatus: '',
+          });
+        })
+        .catch(() => {
+          this.toggleDialog('open');
+        });
+    } else if (method === 'patch') {
+      axios.patch(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr })
+        .then(() => axios.patch(`/api/users/${user}/image`, { image }))
+        .then(() => {
+          axios.patch(`/api/users/${this.state.user}/userName`, {
+            userStatus: this.state.status,
+          });
+        })
+        .catch(() => {
+          this.toggleDialog('open');
+        });
+    }
   }
 
-  handleAddUserToGroup(e) {
-    // TODO combine this  function with handleNewGroupMember
-    const { tempMember } = e.target.value;
+  handleAddUserToGroup() {
     axios.post('/api/user_group', {
-      userName: tempMember,
+      userName: this.state.newMember,
       groupName: this.state.groupName,
     })
       .catch(() => {
@@ -322,8 +337,8 @@ class App extends React.Component {
   }
 
   handleRemoveUserFromGroup(userName) {
-    axios.delete(`/api/groups/${userName}`, {
-      userName,
+    axios.delete(`/api/groups/${this.state.newMember}`, {
+      userName: this.state.newMember,
       groupName: this.state.groupName,
     });
   }
@@ -335,9 +350,9 @@ class App extends React.Component {
   render() {
     const {
       view, groups, group, members,
-      options, groupName, pricePoint, open,
+      options, groupName, pricePoint, open, directionsPopup,
       chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
-      showWinner, user, userImages, dietaryRestriction, users, tempMember
+      showWinner, user, userImages, dietaryRestriction, users, tempMember,
     } = this.state;
     const {
       randomizer, getGroupMembers, getGroupPricePoint, handleGroupSetState, handleGetOptions,
@@ -396,9 +411,20 @@ class App extends React.Component {
                 handleGroupSetState={handleGroupSetState}/>;
     } else if (view === '/userSetting') {
       View = <UserSettings
-                handleUserSettings={handleUserSettings}
+                koala={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg'}
+                oppossum={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg'}
+                bilby={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg'}
+                kangaroo={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg'}
+                sugarGlider={'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg'}
+                handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
                 handleUserStatusInput={handleUserStatusInput}
-                handleUserNameInput={handleUserNameInput}/>;
+                handleSignInWithGoogle={handleSignInWithGoogle}
+                handleSetState={handleSetState}
+                handleViewChange={handleViewChange}
+                handlePreferenceChange={handlePreferenceChange}
+                handleSubmitPreferences={handleSubmitPreferences}
+                handleUserNameInput={handleUserNameInput}
+                userImages={userImages}/>;
     } else if (view === '/group') {
       View = <Group user={user}
                 userImages={userImages}
@@ -412,7 +438,7 @@ class App extends React.Component {
                 randomizer={randomizer}
                 chooser={chooser}
                 showWinner={showWinner}
-                open={open}
+                directionsPopup={directionsPopup}
                 toggleDialog={toggleDialog}
                 choiceAddress={choiceAddress}
                 users={users}
@@ -439,7 +465,9 @@ class App extends React.Component {
                 groups={groups}
                 getGroupMembers={getGroupMembers}
                 handleViewChange={handleViewChange}
-                handleGroupSetState={handleGroupSetState}/>;
+                handleGroupSetState={handleGroupSetState}
+                userImage={userImage}/>;
+
 
       View = <Title handleViewChange={handleViewChange} />;
     }

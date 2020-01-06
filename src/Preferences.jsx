@@ -35,7 +35,7 @@ const Preferences = (props) => {
     userImages,
   } = props;
   const onclick = () => {
-    handleSubmitPreferences();
+    handleSubmitPreferences('post');
     handleSignInWithGoogle();
     handleViewChange('home');
   };
@@ -66,8 +66,6 @@ const Preferences = (props) => {
           <FormControlLabel className='radio'value="Halal" control={<PurpleRadio color='default' />} label="Halal" onClick={() => handlePreferenceChange('dietaryRestriction', 'Halal')} />
           <FormControlLabel className='radio'value="None" control={<PurpleRadio color='default' />} label="None" onClick={() => handlePreferenceChange('dietaryRestriction', 'None')}/>
         </RadioGroup>
-      <h1>Status</h1>
-      <input id='status' type='text' onChange={handleUserStatusInput}/>
       </ul>
       <Button variant="contained" style={{ background: '#9900cc', color:'white' }} onClick={() => { onclick(); }}>Submit & SignIn with Google</Button>
     </div>
