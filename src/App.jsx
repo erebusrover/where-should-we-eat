@@ -1,10 +1,7 @@
 // temp state for username and permstate on submit
 import React from 'react';
 import axios from 'axios';
-import { Avatar } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import RemoveUserForm from './RemoveUserForm.jsx';
 import Preferences from './Preferences.jsx';
@@ -18,6 +15,7 @@ import AddUserForm from './AddUserForm.jsx';
 import Options from './Options.jsx';
 import './App.css';
 import Title from './TitlePage.jsx';
+import AltHeader from './AltHeader.jsx';
 
 const userImages = {
   oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
@@ -33,18 +31,18 @@ class App extends React.Component {
     this.state = {
 
       view: 'titlepage',
-      user: 'x',
+      user: '',
       userStatus: '',
       groups: [],
       userImages,
-      dietaryRestriction: 'vegan',
+      dietaryRestriction: '',
       image: '',
-      groupName: 'supercoolpeople',
+      groupName: '',
       pricePoint: '',
       members: [],
       newMember: '',
       options: [],
-      categories: 'vegan',
+      categories: '',
       chooser: '',
       choiceId: '',
       choiceName: '',
@@ -92,7 +90,7 @@ class App extends React.Component {
       this.setState({ [type]: false });
     }
   }
-
+  
   handleViewChange(view) {
     console.log(`${view} button clicked`);
     this.getUsersGroups(this.state.user);
@@ -125,22 +123,6 @@ class App extends React.Component {
       .catch(() => {
         this.toggleDialog('open');
       });
-  }
-
-  hideToDo() {
-    const hide = this;
-    // wrapping to do in function so I can hide them and they do not stress me out
-    // TODO axios.patch/groups:id/active toggles group active
-    // TODO axios.get /choices  gives options of places to eat
-    // TODO update group name .patch('/groups/:groupName/groupName'
-    // TODO update group pricepoint '/groups/:groupName/pricePoint'
-    // TODO get and post group history
-    // TODO delete user from group .delete('/groups/:userName'
-    // TODO create button to reset dietary restrictions axios.delete(/users/:usesrName/dietaryRestriction)
-    // TODO delete group axios.delete('/groups)
-    // TODO get all active groups .get('/groups/:userName/groups/active'
-    // TODO get all inactive groups '/groups/:userName/groups/inactive'
-    // TODO create button and write funciton to delete useraccount from db axios.delete(/users/:userName)
   }
 
   handleGetOptions() {
@@ -230,9 +212,7 @@ class App extends React.Component {
   }
 
   handlePreferenceChange(k, v) {
-    // this.handleSetState(k, v);
     this.setState({ [k]: v });
-    console.log('statetetet', this.state);
   }
 
   handleNewGroupPricePoint(newPricePoint) {
@@ -281,11 +261,11 @@ class App extends React.Component {
     });
   }
 
-  handlePass() {
-    // this.setState()
-    this.handleViewChange('group');
-    // TODO need data to figure this out
-  }
+  // handlePass() {
+  //   // this.setState()
+  //   this.handleViewChange('group');
+    
+  // }
 
   handleNewGroupMember(e) {
     this.setState({ newMember: e.target.value });
@@ -301,7 +281,6 @@ class App extends React.Component {
     const dietaryRestrictionArr = [dietaryRestriction];
     if (method === 'post') {
       axios.post('/api/users', { userName: user })
-        .then(console.log('please wait'))
         .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
         .then(() => axios.post(`/api/users/${user}/image`, { image }))
         .then(() => {
@@ -474,9 +453,11 @@ class App extends React.Component {
 
     return (
             <div>
-               {/* <MuiThemeProvider muiTheme={muiTheme}></MuiThemeProvider> */}
-                <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
-                {/* <Avatar src={userImages.kangaroo}/> */}
+               <div> {user !== ''
+                 ? <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
+                 : <AltHeader/>
+          }
+        </div>
                 <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
                     <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
                 </Dialog>
