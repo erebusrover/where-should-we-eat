@@ -27,7 +27,6 @@ const Options = (props) => {
                     className='option'
                     handleChooseOption={handleChooseOption}/>
           ))}</div>
-             <Button variant="contained" style={{ background: '#9900cc', color:'white' }} onClick={() => { handlePass(); }}>Pass</Button>
       </div>
   );
 };
