@@ -169,6 +169,12 @@ const changeGroupPricePoint = async (group) => {
   return pool.query(sql, [newPricePoint, groupName]);
 };
 
+// retrieve group pricepoint from db
+const getGroupPricePoint = async (groupName) => {
+  const sql = 'SELECT pricePoint FROM groupp where groupName = ?';
+  return pool.query(sql, [groupName]);
+};
+
 // toggle group's active state between true and false
 // (when a decision has been initiated or closed)
 const toggleGroupStatus = async (group) => {
@@ -217,6 +223,7 @@ module.exports = {
   getAllActiveUserGroups,
   getAllInactiveUserGroups,
   changeGroupName,
+  getGroupPricePoint,
   changeGroupPricePoint,
   deleteGroup,
   addToGroupHistory,

@@ -26,6 +26,7 @@ const userImages = {
   bilby: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg',
   sugarGlider: 'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg',
 };
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -35,6 +36,7 @@ class App extends React.Component {
       user: 'x',
       userStatus: '',
       groups: [],
+      userImages,
       dietaryRestriction: 'vegan',
       image: '',
       groupName: 'supercoolpeople',
@@ -68,6 +70,7 @@ class App extends React.Component {
     this.handleGetOptions = this.handleGetOptions.bind(this);
     this.handleChooseOption = this.handleChooseOption.bind(this);
     this.getGroupMembers = this.getGroupMembers.bind(this);
+    this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
     this.getUsersGroups = this.getUsersGroups.bind(this);
     this.handleGroupSetState = this.handleGroupSetState.bind(this);
     this.randomizer = this.randomizer.bind(this);
@@ -141,12 +144,8 @@ class App extends React.Component {
   }
 
   handleGetOptions() {
-    const { categories, pricePoint } = this.state;
-    axios.get('/api/choices', {
-      radius: 40000,
-      categories,
-      price: pricePoint,
-    })
+    const { groupName } = this.state;
+    axios.get('/api/choices', { groupName })
       .then((response) => {
         const { data } = response;
         this.setState({
@@ -206,6 +205,19 @@ class App extends React.Component {
       })
       .catch(() => {
         this.toggleDialog('open');
+      });
+  }
+
+  getGroupPricePoint(group) {
+    axios.get(`/api/groups/${group}/pricePoint`)
+      .then((response) => {
+        const { pricePoint } = response.data[0];
+        this.setState({
+          pricePoint,
+        });
+      })
+      .catch(() => {
+        this.toggleDialog();
       });
   }
 
@@ -330,7 +342,7 @@ class App extends React.Component {
       showWinner, user, userImages, dietaryRestriction, users, tempMember
     } = this.state;
     const {
-      randomizer, getGroupMembers, handleGroupSetState, handleGetOptions,
+      randomizer, getGroupMembers, getGroupPricePoint, handleGroupSetState, handleGetOptions,
       handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleLoginClick, toggleLoginDialog, handleSignInWithGoogle, handleNewGroupName,
@@ -381,6 +393,7 @@ class App extends React.Component {
                 groups={groups}
                 user={user}
                 getGroupMembers={getGroupMembers}
+                getGroupPricePoint={getGroupPricePoint}
                 handleViewChange={handleViewChange}
                 handleGroupSetState={handleGroupSetState}/>;
     } else if (view === '/userSetting') {
@@ -396,6 +409,7 @@ class App extends React.Component {
                 pricePoint={pricePoint}
                 handleGetOptions={handleGetOptions}
                 getGroupMembers={getGroupMembers}
+                getGroupPricePoint={getGroupPricePoint}
                 handleViewChange={handleViewChange}
                 randomizer={randomizer}
                 chooser={chooser}
