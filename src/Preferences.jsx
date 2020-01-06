@@ -17,23 +17,17 @@ const PurpleRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-// TODO allow user to pick more than one dietary restriction
 const Preferences = (props) => {
   const {
-    handlePreferenceChange, handleLoginClick,
+    handlePreferenceChange,
     koala, bilby, kangaroo, sugarGlider,
     oppossum,
     handleSignInWithGoogle,
     handleSubmitPreferences,
     handleUserNameInput,
-    handleUserStatusInput,
     handleViewChange,
-    handleSetState,
-    user,
-    userStatus,
-    dietaryRestrictions,
-    userImages,
   } = props;
+
   const onclick = () => {
     handleSubmitPreferences('post');
     handleSignInWithGoogle();
@@ -67,7 +61,7 @@ const Preferences = (props) => {
           <FormControlLabel className='radio'value="None" control={<PurpleRadio color='default' />} label="None" onClick={() => handlePreferenceChange('dietaryRestriction', 'None')}/>
         </RadioGroup>
       </ul>
-      <Button variant="contained" style={{ background: '#9900cc', color:'white' }} onClick={() => { onclick(); }}>Submit & SignIn with Google</Button>
+      <Button variant="contained" style={{ background: '#9900cc', color: 'white' }} onClick={() => { onclick(); }}>Submit & SignIn with Google</Button>
     </div>
   );
 };

@@ -8,7 +8,7 @@ const OptionItem = (props) => {
   const {
     id, name, address, city, state,
     zipCode, price, rating, imageUrl,
-    phone, url, is_closed, handleChooseOption,
+    phone, handleChooseOption,
   } = props;
   return (
       <div>
@@ -32,7 +32,7 @@ const OptionItem = (props) => {
           </CardActionArea>
         </Card>
         <Button
-          style={{ background: '#9900cc', color:'white' }}
+          style={{ background: '#9900cc', color: 'white' }}
           onClick={ () => handleChooseOption(id, name, address, city, state, zipCode) }>
           We're eating here
         </Button>

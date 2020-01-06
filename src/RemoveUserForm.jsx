@@ -1,9 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 
 const RemoveUserForm = (props) => {
-  const { handleViewChange, handleRemoveUserFromGroup, handleNewGroupMember, users, user, tempMember } = props;
+  const { handleViewChange, handleRemoveUserFromGroup, handleNewGroupMember, } = props;
   const clickFunction = () => {
     handleRemoveUserFromGroup();
     handleViewChange('group');

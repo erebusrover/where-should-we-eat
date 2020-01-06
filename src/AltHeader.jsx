@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 
 
 const AltHeader = (props) => {
-  const { handleViewChange, handleSignOutWithGoogle } = props;
   return (
   <AppBar style={{ background: '#9900cc' }} position="static">
   <Toolbar>

@@ -15,12 +15,13 @@ const PurpleRadio = withStyles({
     },
   },
   checked: {},
-})((props) => <Radio color="default" {...props} />); 
+})((props) => <Radio color="default" {...props} />);
 
 const CreateGroup = (props) => {
-
-  const { handleNewGroupName, handleNewGroupPricePoint, handleViewChange, handleNewGroupSubmit } = props;
-    const clickFunction = async () => {
+  const {
+    handleNewGroupName, handleNewGroupPricePoint, handleViewChange, handleNewGroupSubmit,
+  } = props;
+  const clickFunction = async () => {
     await handleNewGroupSubmit();
     await handleViewChange('home');
   };
@@ -28,7 +29,6 @@ const CreateGroup = (props) => {
       <div>
           <br />
           <form>
-
           <h1>Group Name</h1>
           <input type='text' onChange={handleNewGroupName}></input>
           </form>
