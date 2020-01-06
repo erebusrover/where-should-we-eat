@@ -56,30 +56,31 @@ class App extends React.Component {
       directionsPopup: false,
       users: [],
     };
-    this.handleViewChange = this.handleViewChange.bind(this);
-    this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
-    this.handleSignInWithGoogle = this.handleSignInWithGoogle.bind(this);
-    this.handleNewGroupName = this.handleNewGroupName.bind(this);
-    this.handleNewGroupPricePoint = this.handleNewGroupPricePoint.bind(this);
-    this.handleNewGroupSubmit = this.handleNewGroupSubmit.bind(this);
-    this.handleUserSettings = this.handleUserSettings.bind(this);
-    this.handleAddUserToGroup = this.handleAddUserToGroup.bind(this);
-    this.handleNewGroupMember = this.handleNewGroupMember.bind(this);
-    this.handleGetOptions = this.handleGetOptions.bind(this);
-    this.handleChooseOption = this.handleChooseOption.bind(this);
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
     this.getUsersGroups = this.getUsersGroups.bind(this);
+    this.handleAddUserToGroup = this.handleAddUserToGroup.bind(this);
+    this.handleCategoriesInput = this.handleCategoriesInput.bind(this);
+    this.handleChooseOption = this.handleChooseOption.bind(this);
+    this.handleGetOptions = this.handleGetOptions.bind(this);
     this.handleGroupSetState = this.handleGroupSetState.bind(this);
-    this.randomizer = this.randomizer.bind(this);
-    this.handleSetState = this.handleSetState.bind(this);
-    this.handleUserNameInput = this.handleUserNameInput.bind(this);
-    this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
-    this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
-    this.toggleDialog = this.toggleDialog.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
-    this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
+    this.handleNewGroupMember = this.handleNewGroupMember.bind(this);
+    this.handleNewGroupName = this.handleNewGroupName.bind(this);
+    this.handleNewGroupPricePoint = this.handleNewGroupPricePoint.bind(this);
+    this.handleNewGroupSubmit = this.handleNewGroupSubmit.bind(this);
+    this.handlePreferenceChange = this.handlePreferenceChange.bind(this);
     this.handleRemoveUserFromGroup = this.handleRemoveUserFromGroup.bind(this);
+    this.handleSetState = this.handleSetState.bind(this);
+    this.handleSignInWithGoogle = this.handleSignInWithGoogle.bind(this);
+    this.handleSignOutWithGoogle = this.handleSignOutWithGoogle.bind(this);
+    this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
+    this.handleUserNameInput = this.handleUserNameInput.bind(this);
+    this.handleUserSettings = this.handleUserSettings.bind(this);
+    this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
+    this.handleViewChange = this.handleViewChange.bind(this);
+    this.randomizer = this.randomizer.bind(this);
+    this.toggleDialog = this.toggleDialog.bind(this);
   }
 
   toggleDialog(type) {
@@ -139,8 +140,8 @@ class App extends React.Component {
   }
 
   handleGetOptions() {
-    const { groupName } = this.state;
-    axios.get('/api/choices', { groupName })
+    const { groupName, categories } = this.state;
+    axios.get('/api/choices', { groupName, categories })
       .then((response) => {
         const { data } = response;
         this.setState({
@@ -295,6 +296,12 @@ class App extends React.Component {
     this.setState({ user });
   }
 
+  handleCategoriesInput(e) {
+    const categories = e.target.value;
+    console.log(categories);
+    this.setState({ categories: [categories] });
+  }
+
   handleSubmitPreferences(method) {
     const { user, image, dietaryRestriction } = this.state;
     const dietaryRestrictionArr = [dietaryRestriction];
@@ -354,7 +361,7 @@ class App extends React.Component {
     } = this.state;
     const {
       randomizer, getGroupMembers, getGroupPricePoint, handleGroupSetState, handleGetOptions,
-      handleChooseOption, handlePreferenceChange, handleSubmitPreferences,
+      handleChooseOption, handlePreferenceChange, handleSubmitPreferences, handleCategoriesInput,
       handleNewGroupMember, handleSetState, handleAddUserToGroup, handleViewChange,
       handleLoginClick, toggleLoginDialog, handleSignInWithGoogle, handleNewGroupName,
       handleNewGroupPricePoint, handleRemoveUserFromGroup, handleNewGroupSubmit, handleUserSettings, handleUserNameInput,
@@ -430,6 +437,7 @@ class App extends React.Component {
                 groupMembers={members}
                 pricePoint={pricePoint}
                 handleGetOptions={handleGetOptions}
+                handleCategoriesInput={handleCategoriesInput}
                 getGroupMembers={getGroupMembers}
                 getGroupPricePoint={getGroupPricePoint}
                 handleViewChange={handleViewChange}

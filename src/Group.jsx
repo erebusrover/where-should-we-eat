@@ -22,7 +22,7 @@ class Group extends React.Component {
       user, groupName, pricePoint, groupMembers,
       handleViewChange, userImages, handleGetOptions,
       choiceName, choiceAddress, randomizer, chooser, showWinner,
-      toggleDialog, directionsPopup,
+      toggleDialog, directionsPopup, handleCategoriesInput,
     } = this.props;
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
     return (
@@ -37,7 +37,10 @@ class Group extends React.Component {
             </div>}
         </div>
         <div> {user === chooser
-          ? <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
+          ? <div>
+              <input id='categories' type='text' onChange={handleCategoriesInput} />
+              <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
+            </div>
           : <h2></h2>}
         </div>
       <Dialog onBackdropClick={() => { toggleDialog('directionsPopup'); }} open={directionsPopup}>
