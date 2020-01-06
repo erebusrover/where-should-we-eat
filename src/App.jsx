@@ -102,13 +102,13 @@ class App extends React.Component {
       await this.setState({ view: `/${view}` });
     }
     else if (view !== 'profile') {
-      await this.getUsersGroups(this.state.user);
+      this.getUsersGroups(this.state.user);
       await this.getGroupMembers(this.state.groupName);
       await this.getAllUsers();
       await this.setState({ view: `/${view}` });
     }
     else {
-      this.setState({ view: '/profile' });
+      await this.setState({ view: '/profile' });
     }
   }
 

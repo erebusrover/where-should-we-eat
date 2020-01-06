@@ -7,7 +7,7 @@ const GroupItem = (props) => {
   } = props;
   const clickFunction = async () => {
     handleGroupSetState(groupName);
-    await getGroupMembers(groupName);
+    // await getGroupMembers(groupName);
     await getGroupPricePoint(groupName);
     await handleViewChange('group');
   };
@@ -15,7 +15,6 @@ const GroupItem = (props) => {
       <div onClick={() => { clickFunction(); }}>
           <h2>{groupName}</h2>
       </div>
-
   );
 };
 

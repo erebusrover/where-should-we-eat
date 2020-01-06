@@ -5,6 +5,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Link from '@material-ui/core/Link';
 import GroupMember from './GroupMember.jsx';
 
+/**
+ * we were attempting to make this stateful in order
+ * to implement occasional rerendering of state based on changes to hte database
+ */
 class Group extends React.Component {
   constructor(props) {
     super(props);
@@ -13,11 +17,7 @@ class Group extends React.Component {
     };
   }
 
-  componentDidMount() {
-    setInterval(5000, () => {
-
-    });
-
+  render() {
     const {
       user, groupName, pricePoint, groupMembers,
       handleViewChange, userImages, handleGetOptions,
