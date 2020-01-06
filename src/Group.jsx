@@ -14,7 +14,7 @@ const Group = (props) => {
     toggleDialog, open,
   } = props;
   console.log(groupMembers);
-  const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination="${choiceName} ${choiceAddress}"`;
+  const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
   return (
       <div>
         <h1>{groupName}</h1>
