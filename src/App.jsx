@@ -87,9 +87,9 @@ class App extends React.Component {
   toggleDialog(type) {
     // toggles error dialog box
     if (this.state[type] === false) {
-      this.setState({ type: true });
+      this.setState({ [type]: true });
     } else {
-      this.setState({ type: false });
+      this.setState({ [type]: false });
     }
   }
 
