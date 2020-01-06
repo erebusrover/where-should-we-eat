@@ -83,10 +83,11 @@ router.delete('/users/:userName', (req, res) => {
 // GET to /users/:username/status to get user status
 router.get('/users/:userName/status', (req, res) => {
   const { userName } = req.params;
-  getUserStatus(userName, newStatus)
-  //TODO this is  probably why the user status is angry
-    .then(() => {
-      res.sendStatus(201);
+  getUserStatus(userName)
+  // TODO this is  probably why the user status is angry
+    .then((response) => {
+      res.status(200);
+      res.send(response[0]);
     })
     .catch(() => {
       res.sendStatus(400);
@@ -401,13 +402,12 @@ router.get('/groupHistory', (req, res) => {
 // GET /login verify user login using Passport --> google auth?
 router.get('/login', passport.authenticate('google', {
   scope: ['profile'],
-}))
+}));
 
 // GET /redirect to reroute back to the app from the google consent screen
 router.get('/login/redirect', passport.authenticate('google'), (req, res) => {
   const { userName } = res.req._passport.session.user[0][0];
-  res.send("YOU ARE NOW LOGGED IN TO WSWE");
-  
+  res.send('YOU ARE NOW LOGGED IN TO WSWE');
 });
 
 
@@ -424,7 +424,7 @@ router.get('/choices', (req, res) => {
   // db query to get dietary restrictions, pricepoint?
   // const categories = getAllUserRestrictions(groupName);
   return getAllUserRestrictions(groupName).then(function (restrictions) {
-    return getGroupPricePoint(groupName).then(function(pricePoint) {
+    return getGroupPricePoint(groupName).then(function (pricePoint) {
       console.log(pricePoint);
       return getUserLocation().then(function (location) {
         const categories = restrictions[0].map((restriction) => {

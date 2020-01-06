@@ -34,13 +34,12 @@ const CreateGroup = (props) => {
           </form>
              <h3> Select a Price </h3>
         <RadioGroup aria-label="dietary restriction" name="dietary restriction">
-          <FormControlLabel value="$" control={<PurpleRadio />} label="$" onClick={() => handleNewGroupPricePoint( '$')} />
-          <FormControlLabel value="$$" control={<PurpleRadio />} label="$$" onClick={() => handleNewGroupPricePoint( '$$')}  />
-          <FormControlLabel value="$$$" control={<PurpleRadio />} label="$$$" onClick={() => handleNewGroupPricePoint( '$$$')} />
-          <FormControlLabel value="$$$$" control={<PurpleRadio />} label="$$$$" onClick={() => handleNewGroupPricePoint( '$$$$')} />
+          <FormControlLabel value="$" control={<PurpleRadio />} label="$" onClick={() => handleNewGroupPricePoint('$')} />
+          <FormControlLabel value="$$" control={<PurpleRadio />} label="$$" onClick={() => handleNewGroupPricePoint('$$')} />
+          <FormControlLabel value="$$$" control={<PurpleRadio />} label="$$$" onClick={() => handleNewGroupPricePoint('$$$')} />
+          <FormControlLabel value="$$$$" control={<PurpleRadio />} label="$$$$" onClick={() => handleNewGroupPricePoint('$$$$')} />
         </RadioGroup>
         <Button variant="outlined" style={{ background: '#9900cc', color: 'white' }} value='profile' onClick={() => clickFunction()}>Submit</Button>
-        {/* //TODO user needs feedback on submit */}
       </div>
 
   );
