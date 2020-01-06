@@ -18,7 +18,12 @@ const PurpleRadio = withStyles({
 })((props) => <Radio color="default" {...props} />); 
 
 const CreateGroup = (props) => {
-  const { handleNewGroupName, handleNewGroupPricePoint, handleNewGroupSubmit } = props;
+
+  const { handleNewGroupName, handleNewGroupPricePoint, handleViewChange, handleNewGroupSubmit } = props;
+    const clickFunction = async () => {
+    await handleNewGroupSubmit();
+    await handleViewChange('home');
+  };
   return (
       <div>
           <br />
@@ -34,7 +39,7 @@ const CreateGroup = (props) => {
           <FormControlLabel value="$$$" control={<PurpleRadio />} label="$$$" onClick={() => handleNewGroupPricePoint( '$$$')} />
           <FormControlLabel value="$$$$" control={<PurpleRadio />} label="$$$$" onClick={() => handleNewGroupPricePoint( '$$$$')} />
         </RadioGroup>
-        <Button variant="outlined" style={{ background: '#9900cc', color:'white' }} value='profile' onClick={() => handleNewGroupSubmit()}>Submit</Button>
+        <Button variant="outlined" style={{ background: '#9900cc', color: 'white' }} value='profile' onClick={() => clickFunction()}>Submit</Button>
         {/* //TODO user needs feedback on submit */}
       </div>
 
