@@ -2,6 +2,7 @@
 /* eslint-disable prefer-arrow-callback */
 const { Router } = require('express');
 const passport = require('passport');
+const _ = require('lodash');
 
 // require DB helpers
 const {
@@ -20,6 +21,7 @@ const {
   addUserToGroup,
   deleteUserFromGroup,
   getAllGroupMembers,
+  getAllGroupMembersImages,
   getAllUserRestrictions,
   getAllUserGroups,
   getAllActiveUserGroups,
@@ -236,14 +238,24 @@ router.post('/user_group', (req, res) => {
     });
 });
 
-// get all members from a given group
+// get all members and avatars from a given group
 router.get('/groups/:groupName/users', (req, res) => {
   const { groupName } = req.params;
-  getAllGroupMembers(groupName)
-    .then((response) => {
+  return getAllGroupMembers(groupName).then(function (members) {
+    // get user images
+    return getAllGroupMembersImages(groupName).then(function (images) {
+      // const allMembersInfo = _.defaults(members[0], images[0]);
+      return members[0].map((member) => {
+        return images[0].map((image) => {
+          return _.defaults(member, image);
+        });
+      }); 
+    }).then(function (allMembersInfo) {
+      console.log(allMembersInfo);
       res.status(200);
-      res.send(response[0]);
-    })
+      res.send(allMembersInfo);
+    });
+  })
     .catch(() => {
       res.send(400);
     });
