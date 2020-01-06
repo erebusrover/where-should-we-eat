@@ -35,9 +35,9 @@ const Group = (props) => {
         <ul>
           {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
         </ul>
-        <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
-        <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
-        <Button style={{ background: '#9900cc', color:'white' }} onClick={() => { randomizer(); }}>Start Game</Button>
+        <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+        <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('removeUserFromGroup'); }}>Remove Group Member</Button>
+        <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { randomizer(); }}>Start Game</Button>
       </div>
   );
 };

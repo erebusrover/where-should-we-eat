@@ -19,9 +19,9 @@ const Header = (props) => {
     <Button style={{ background: '#9900cc', color:'white' }} value='home' onClick={() => { handleViewChange('home'); }}>Home</Button>
     {/* <Button color="inherit" value='login' onClick={() => { handleSignInWithGoogle(); }}>Login</Button> */}
     {/* //TODO this could be an update profile button in another life */}
-    <Button style={{ background: '#9900cc', color:'white' }} value='profile' onClick={() => { handleViewChange('profile'); }}>Profile</Button>
-    <Button style={{ background: '#9900cc', color:'white' }} value='profile' onClick={() => { handleViewChange('createGroup'); }}>Create Group</Button>
-    <Button style={{ background: '#9900cc', color:'white' }} value='login' onClick={() => { handleSignOutWithGoogle(); }}>LOGOUT</Button>
+    <Button style={{ background: '#9900cc', color: 'white' }} value='profile' onClick={() => { handleViewChange('profile'); }}>Profile</Button>
+    <Button style={{ background: '#9900cc', color: 'white' }} value='profile' onClick={() => { handleViewChange('createGroup'); }}>Create Group</Button>
+    <Button style={{ background: '#9900cc', color: 'white' }} value='login' onClick={() => { handleSignOutWithGoogle(); }}>LOGOUT</Button>
   </Toolbar>
 </AppBar>
 
