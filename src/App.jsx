@@ -94,8 +94,11 @@ class App extends React.Component {
 
   async handleViewChange(view) {
     console.log(`${view} button clicked`);
-    if (view === 'home'){
+    if (view === 'home') {
       await this.getUsersGroups(this.state.user);
+      await this.setState({ view: `/${view}` });
+    }
+    else if (view === 'createGroup') {
       await this.setState({ view: `/${view}` });
     }
     else if (view !== 'profile') {
@@ -469,11 +472,9 @@ class App extends React.Component {
 
     return (
             <div>
-               <div> {user !== ''
-                 ? <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
-                 : <AltHeader/>
-          }
-        </div>
+               <div>
+                 <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
+              </div>
                 <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
                     <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
                 </Dialog>
