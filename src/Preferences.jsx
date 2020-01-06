@@ -7,8 +7,6 @@ import { Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 
-// this is a change to proove to github that I am changing something because
-// it seems to thing I have done no work today
 const PurpleRadio = withStyles({
   root: {
     color: deepPurple[400],
@@ -59,7 +57,7 @@ const Preferences = (props) => {
           <img className='userImages' src={sugarGlider} width="130" height="121" border="5"/>
           <FormControlLabel className='radio'value={sugarGlider} control={<PurpleRadio />} onClick={() => handlePreferenceChange('image', 'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg')} />
         </RadioGroup>
-        <h2> Select Dietary Restricitons</h2>
+        <h2> Select Dietary Restrictions</h2>
         <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
           <FormControlLabel color='#9900cc' className='radio'value="Vegan" control={<PurpleRadio color='default' />} label="Vegan" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegan')}/>
           <FormControlLabel className='radio'value="Vegitarian" control={<PurpleRadio color='default' />} label="Vegitarian" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegitarian')} />

@@ -8,7 +8,7 @@ const { pool } = require('./config.js');
 
 // get user status
 const getUserStatus = async (userName) => {
-  const sql = 'SELECT userStatus FROM user WHERE userName = ?';
+  const sql = 'SELECT userStatus FROM user WHERE userName = ?'; 
   return pool.query(sql, [userName]);
 };
 // add new user to db
@@ -21,6 +21,7 @@ const getUserStatus = async (userName) => {
 const addNewUser = async (userName, googleId) => {
   const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
   return pool.query(sql, [userName, googleId]);
+
 };
 
 // check db for user by Google ID
@@ -55,14 +56,15 @@ const updateUserImage = async (userName, newImage) => {
 
 // TODO: allow multiple users to have the same dietary restrictions
 // add dietary restrictions to dietaryRestrictions table
-const addUserDietaryRestrictions = async (userName, restrictions) =>
+const addUserDietaryRestrictions = async (userName, restrictions) => {
   // restrictions should be an array
   // for each dietary restriction, add it to table with id of user
-  Promise.all(restrictions.map((restriction) => {
+  return Promise.all(restrictions.map((restriction) => {
     const sql = `INSERT into dietaryRestrictions (user_id, restriction) 
                   VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)`;
     return pool.query(sql, [userName, restriction, restriction]);
   }));
+};
 
 // allow user to update their dietary restrictions
 // allow user to change their username

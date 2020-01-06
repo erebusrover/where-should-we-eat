@@ -84,11 +84,13 @@ router.delete('/users/:userName', (req, res) => {
 // GET to /users/:username/status to get user status
 router.get('/users/:userName/status', (req, res) => {
   const { userName } = req.params;
+
   getUserStatus(userName)
   // TODO this is  probably why the user status is angry
     .then((response) => {
       res.status(200);
       res.send(response[0]);
+
     })
     .catch(() => {
       res.sendStatus(400);
