@@ -33,18 +33,18 @@ class App extends React.Component {
     this.state = {
 
       view: 'titlepage',
-      user: 'x',
+      user: '',
       userStatus: '',
       groups: [],
       userImages,
-      dietaryRestriction: 'vegan',
+      dietaryRestriction: '',
       image: '',
-      groupName: 'supercoolpeople',
+      groupName: '',
       pricePoint: '',
       members: [],
       newMember: '',
       options: [],
-      categories: 'vegan',
+      categories: '',
       chooser: '',
       choiceId: '',
       choiceName: '',
@@ -93,12 +93,17 @@ class App extends React.Component {
     }
   }
 
-  handleViewChange(view) {
+  async handleViewChange(view) {
     console.log(`${view} button clicked`);
-    this.getUsersGroups(this.state.user);
-    this.getGroupMembers(this.state.groupName);
-    this.getAllUsers();
-    this.setState({ view: `/${view}` });
+    if (view !== 'profile') {
+      await this.getUsersGroups(this.state.user);
+      await this.getGroupMembers(this.state.groupName);
+      await this.getAllUsers();
+      await this.setState({ view: `/${view}` });
+    }
+    else {
+      this.setState({ view: '/profile' });
+    }
   }
 
   handleLoginClick() {
@@ -125,22 +130,6 @@ class App extends React.Component {
       .catch(() => {
         this.toggleDialog('open');
       });
-  }
-
-  hideToDo() {
-    const hide = this;
-    // wrapping to do in function so I can hide them and they do not stress me out
-    // TODO axios.patch/groups:id/active toggles group active
-    // TODO axios.get /choices  gives options of places to eat
-    // TODO update group name .patch('/groups/:groupName/groupName'
-    // TODO update group pricepoint '/groups/:groupName/pricePoint'
-    // TODO get and post group history
-    // TODO delete user from group .delete('/groups/:userName'
-    // TODO create button to reset dietary restrictions axios.delete(/users/:usesrName/dietaryRestriction)
-    // TODO delete group axios.delete('/groups)
-    // TODO get all active groups .get('/groups/:userName/groups/active'
-    // TODO get all inactive groups '/groups/:userName/groups/inactive'
-    // TODO create button and write funciton to delete useraccount from db axios.delete(/users/:userName)
   }
 
   handleGetOptions() {
@@ -224,9 +213,15 @@ class App extends React.Component {
   }
 
   randomizer() {
-    const { members } = this.state;
+    const { members, groupName } = this.state;
     const memberIndex = Math.floor(Math.random() * (members.length));
-    this.setState({ chooser: members[memberIndex].userName, showWinner: true });
+    const theChosen = members[memberIndex].userName;
+    this.setState({ chooser: theChosen, showWinner: true });
+    axios.post((`/api/groups/${groupName}`)).then(() => {
+      console.log('hey');
+    }).catch(() => {
+      this.toggleDialog();
+    });
   }
 
   handlePreferenceChange(k, v) {
