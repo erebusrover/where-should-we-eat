@@ -17,6 +17,14 @@ const PurpleRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
+/**
+ *
+ * The Preferences view is rendered after they click Create an Account on the Title page.
+ * After choosing their preferences (which are stored in the database), they are asked to authenticate
+ * with Google, which opens a new window. The original window will take them to their Home page.
+ *
+ */
+
 const Preferences = (props) => {
   const {
     handlePreferenceChange,
@@ -27,7 +35,6 @@ const Preferences = (props) => {
     handleUserNameInput,
     handleViewChange,
   } = props;
-
   const onclick = () => {
     handleSubmitPreferences('post');
     handleSignInWithGoogle();

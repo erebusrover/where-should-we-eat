@@ -17,6 +17,9 @@ import './App.css';
 import Title from './TitlePage.jsx';
 import AltHeader from './AltHeader.jsx';
 
+/**
+ * these are the avatar options a user can select from when creting an account
+ */
 const userImages = {
   oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
   koala: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg',
@@ -92,7 +95,12 @@ class App extends React.Component {
     }
   }
 
-
+  /**
+   * `handleViewChange`is called when the user clickson a
+   * button that would logically tke them to a new "page".
+   * the <view> property in state is change, which dynamically
+   * renders one of the views that start on line 388.
+   */
   async handleViewChange(view) {
     console.log(`${view} button clicked`);
     if (view === 'home') {
@@ -374,6 +382,12 @@ class App extends React.Component {
       handleNewGroupPricePoint, handleRemoveUserFromGroup, handleNewGroupSubmit, handleUserSettings, handleUserNameInput,
       handleDietaryRestrictionsSetState, handleUserStatusInput, toggleDialog, handlePass, handleSignOutWithGoogle,
     } = this;
+    /**
+     * The following lines handle view changes.
+     * When a user clicks on a button that should logically bring them to a new section
+     * of the site, the state's property <view> is changed with the function `handleViewChange`
+     * , and different components are rendered accordingly.
+     */
     let View;
     if (view === '/login') {
       View = <SignIn handleSignInWithGoogle={handleSignInWithGoogle}/>;

@@ -1,5 +1,10 @@
 import React from 'react';
 
+/**
+ * GroupItems are rendered on the user's Home page to list
+ * each Group a user belongs to.
+ * Clicking on a group name will render the Group page for that Group.
+ */
 
 const GroupItem = (props) => {
   const {

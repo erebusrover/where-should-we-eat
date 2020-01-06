@@ -6,6 +6,10 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 
+/**
+ * Not a currently active component?
+ */
+
 const PurpleRadio = withStyles({
   // this makes the radio buttons purple
   root: {

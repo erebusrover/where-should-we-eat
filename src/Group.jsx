@@ -6,8 +6,19 @@ import Link from '@material-ui/core/Link';
 import GroupMember from './GroupMember.jsx';
 
 /**
- * we were attempting to make this stateful in order
- * to implement occasional rerendering of state based on changes to hte database
+ * This is the component that is rendered when a user clicks on one of their groups
+ * from their home page.
+ *
+ * A user can click Start Game to initiate a decision making 'game,'
+ * If the user is randomly chosen as the decision maker, they will be presented with an
+ * input form and a button, Show Options. They can optionally put something in the input form
+ * to add a parameter to the Yelp API query that will result from them clicking the Show Options button.
+ * Clicking the Show Options button renders the Options view/component, which will have a list of five
+ * restaurant choices for them to choose.
+ * 
+ * We were attempting to make this stateful in order
+ * to implement occasional rerendering of state based on changes to the database,
+ * but that is not a currently active feature.
  */
 class Group extends React.Component {
   constructor(props) {

@@ -2,6 +2,13 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import OptionItem from './OptionItem.jsx';
 
+/**
+ * Renders five options from a Yelp API call for
+ * places to eat based on the given parameters (either dietary restrictions from the database
+ * or a user string in the Input form in the Group component).
+ *
+ */
+
 const Options = (props) => {
   const { options, handlePass, handleChooseOption } = props;
   return (

@@ -1,6 +1,11 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
+/**
+ * 
+ * This is rendered when a user clicks 'Add Group Member' from the Group page
+ */
+
 const AddUserForm = (props) => {
   const {
    handleViewChange, handleNewGroupMember, handleAddUserToGroup,

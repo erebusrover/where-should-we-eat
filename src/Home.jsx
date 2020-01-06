@@ -3,12 +3,21 @@ import { Avatar } from '@material-ui/core';
 import GroupItem from './GroupItem.jsx';
 import './App.css';
 
+/**
+ * 
+ * The Home component is properly rendered after a user creates an account and clicks on Home.
+ * It lists their Groups.
+ */
+
 const Home = (props) => {
   const {
     groups, handleViewChange, user, handleGroupSetState, userImage, getGroupMembers, getGroupPricePoint, userImages,
   } = props;
   return (
     <div>
+      <div>
+        Home
+      </div>
       <div>
       <h1>hi {user}!</h1>
       <Avatar src={userImage} />
