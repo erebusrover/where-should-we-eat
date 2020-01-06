@@ -441,6 +441,8 @@ router.get('/logout', (req, res) => {
 // clicking on a given choice will ...render choices:id page for all users?
 router.get('/choices', (req, res) => {
   const { groupName, categories } = req.body;
+  console.log(req);
+  console.log(groupName);
   // db query to get dietary restrictions, pricepoint?
   // const categories = getAllUserRestrictions(groupName);
   return getAllUserRestrictions(groupName).then(function (restrictions) {
@@ -452,7 +454,6 @@ router.get('/choices', (req, res) => {
         restrCats.forEach((restr) => {
           categories.push(restr);
         });
-        console.log(categories);
         // const { lat, lng } = location.data.location;
         // this is hard coded due to geolocation issues --> getUserLocaton returns location of google server
         const query = {

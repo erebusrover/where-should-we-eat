@@ -139,10 +139,18 @@ class App extends React.Component {
       });
   }
 
+  handleCategoriesInput(e) {
+    const categories = e.target.value;
+    this.setState({ categories: [categories] });
+  }
+
   handleGetOptions() {
     const { groupName, categories } = this.state;
+    console.log(categories);
+    console.log(groupName);
     axios.get('/api/choices', { groupName, categories })
       .then((response) => {
+        console.log(response);
         const { data } = response;
         this.setState({
           options: data,
@@ -294,12 +302,6 @@ class App extends React.Component {
   handleUserNameInput(e) {
     const user = e.target.value;
     this.setState({ user });
-  }
-
-  handleCategoriesInput(e) {
-    const categories = e.target.value;
-    console.log(categories);
-    this.setState({ categories: [categories] });
   }
 
   handleSubmitPreferences(method) {
