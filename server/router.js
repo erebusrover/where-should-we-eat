@@ -61,7 +61,6 @@ router.post('/users', (req, res) => {
 router.post('/users/:userName/userName', (req, res) => {
   // get username from params and new username from body
   const { userName } = req.params;
-  const { userStatus } = req.body;
   addNewUser(userName)
     .then(() => {
       res.sendStatus(201);
@@ -447,13 +446,14 @@ router.get('/choices', (req, res) => {
   return getAllUserRestrictions(groupName).then(function (restrictions) {
     return getGroupPricePoint(groupName).then(function(pricePoint) {
       return getUserLocation().then(function (location) {
+        console.log(location);
         const categories = restrictions[0].map((restriction) => {
           return restriction.restriction;
         });
         const { lat, lng } = location.data.location;
         const query = {
-          latitude: lat,
-          longitude: lng,
+          latitude: 29.947890,
+          longitude: -90.128670,
           radius: 40000,
           categories: categories[0],
           price: 1,
