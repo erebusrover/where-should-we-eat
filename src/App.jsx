@@ -94,7 +94,11 @@ class App extends React.Component {
 
   async handleViewChange(view) {
     console.log(`${view} button clicked`);
-    if (view !== 'profile') {
+    if (view === 'home'){
+      await this.getUsersGroups(this.state.user);
+      await this.setState({ view: `/${view}` });
+    }
+    else if (view !== 'profile') {
       await this.getUsersGroups(this.state.user);
       await this.getGroupMembers(this.state.groupName);
       await this.getAllUsers();
