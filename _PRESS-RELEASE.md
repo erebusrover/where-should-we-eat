@@ -22,15 +22,15 @@ Once the project moves into development, the press release can be used as a touc
 
 ## Summary
 
-  Where Should We Eat is an app that helps friends have fun deciding together about where they should eat! It's a gamified app that encourages users to have fun choosing where to eat after they create a profile and join a group with their friends. After everyone joins, one person is chosen as the winner and decision maker, and as the rightful victor, chooses where the group dines!
+Where Should We Eat is an app that helps friends have fun deciding together about where they should eat! It's a gamified app that encourages users to have fun choosing where to eat after they create a profile and join a group with their friends. After everyone joins, one person is chosen as the winner and decision maker, and as the rightful victor, chooses where the group dines!
 
 ## Problem
 
-  Where Should We Eat is a new app that solves a huge problem! Have you ever gotten hungry while hanging out with a group of your friends only to spend the next hour or so arguing indecisively over where to eat?? We have!
+Where Should We Eat is a new app that solves a huge problem! Have you ever gotten hungry while hanging out with a group of your friends only to spend the next hour or so arguing indecisively over where to eat?? We have!
 
 ## Solution
 
-  Where Should We Eat solves this timeless problem by creating a game in which to the victor go the spoils, bragging rights, and ability to choose where everyone gets to eat along with the contact info for the restaurant and a link to directions so that you don't get lost on the way while not letting your friends live down their shame until the next game!
+Where Should We Eat solves this timeless problem by creating a game in which to the victor go the spoils, bragging rights, and ability to choose where everyone gets to eat along with the contact info for the restaurant and a link to directions so that you don't get lost on the way while not letting your friends live down their shame until the next game!
 
 ## Quote from You
 
@@ -42,7 +42,8 @@ Once the project moves into development, the press release can be used as a touc
 
 ## Customer Quote
 
- "I love using What should we eat when I can't decide what to eat with my friends. It's quick, intuitive, and fun. We never waste time arguing over where to eat anymore!"
+ "I love using Where Should We Eat when I can't decide what to eat with my friends. It's quick, intuitive, and fun. We never waste time arguing over where to eat anymore!"
+
 
 ## Closing and Call to Action
 
