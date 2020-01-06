@@ -1,13 +1,15 @@
 import React from 'react';
 import GroupItem from './GroupItem.jsx';
+import './App.css';
 
 const Home = (props) => {
   const {
-    groups, handleViewChange, user, handleGroupSetState, getGroupMembers, getGroupPricePoint, userImages,
+    groups, handleViewChange, user, handleGroupSetState, userImage, getGroupMembers, getGroupPricePoint, userImages,
   } = props;
   return (
     <div>
       <h1>hi {user}!</h1>
+      <Avatar src={userImage} />
       <h2>your groups:</h2>
         {groups.data.map((group) =>
             <GroupItem
@@ -19,7 +21,6 @@ const Home = (props) => {
               handleGroupSetState={handleGroupSetState}
               getGroupPricePoint={getGroupPricePoint}
               getGroupMembers={getGroupMembers} />)}
-
     </div>
   );
 };

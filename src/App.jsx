@@ -340,7 +340,7 @@ class App extends React.Component {
       view, groups, group, members,
       options, groupName, pricePoint, open, directionsPopup,
       chooser, choiceId, choiceName, choiceAddress, chosen, userStatus, userImage,
-      showWinner, user, userImages, dietaryRestriction, users, tempMember
+      showWinner, user, userImages, dietaryRestriction, users, tempMember,
     } = this.state;
     const {
       randomizer, getGroupMembers, getGroupPricePoint, handleGroupSetState, handleGetOptions,
@@ -442,7 +442,8 @@ class App extends React.Component {
                 groups={groups}
                 getGroupMembers={getGroupMembers}
                 handleViewChange={handleViewChange}
-                handleGroupSetState={handleGroupSetState}/>;
+                handleGroupSetState={handleGroupSetState}
+                userImage={userImage}/>;
 
       View = <Title handleViewChange={handleViewChange} />;
     }
