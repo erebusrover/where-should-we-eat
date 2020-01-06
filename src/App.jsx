@@ -265,7 +265,7 @@ class App extends React.Component {
   getUsersGroups(user) {
     axios.get(`/api/users/${user}/groups`)
       .then((groupList) => {
-        this.setState({ groups: groupList })
+        this.setState({ groups: groupList });
       }).catch(() => {
         this.toggleDialog('open');
       });
