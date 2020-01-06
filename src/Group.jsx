@@ -24,7 +24,6 @@ const Group = (props) => {
           ? <h1>{chooser} is the lucky Decision Maker</h1>
           : <div>
               <h2>Click Start Game to choose the Decision Maker</h2>
-              <Button onClick={() => { randomizer(); }}>Start Game</Button>
             </div>}
         </div>
         <div> {user === chooser
