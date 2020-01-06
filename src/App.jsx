@@ -1,10 +1,7 @@
 // temp state for username and permstate on submit
 import React from 'react';
 import axios from 'axios';
-import { Avatar } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import RemoveUserForm from './RemoveUserForm.jsx';
 import Preferences from './Preferences.jsx';
@@ -18,6 +15,7 @@ import AddUserForm from './AddUserForm.jsx';
 import Options from './Options.jsx';
 import './App.css';
 import Title from './TitlePage.jsx';
+import AltHeader from './AltHeader.jsx';
 
 const userImages = {
   oppossum: 'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg',
@@ -92,6 +90,7 @@ class App extends React.Component {
       this.setState({ [type]: false });
     }
   }
+
 
   async handleViewChange(view) {
     console.log(`${view} button clicked`);
@@ -225,9 +224,7 @@ class App extends React.Component {
   }
 
   handlePreferenceChange(k, v) {
-    // this.handleSetState(k, v);
     this.setState({ [k]: v });
-    console.log('statetetet', this.state);
   }
 
   handleNewGroupPricePoint(newPricePoint) {
@@ -276,11 +273,11 @@ class App extends React.Component {
     });
   }
 
-  handlePass() {
-    // this.setState()
-    this.handleViewChange('group');
-    // TODO need data to figure this out
-  }
+  // handlePass() {
+  //   // this.setState()
+  //   this.handleViewChange('group');
+    
+  // }
 
   handleNewGroupMember(e) {
     this.setState({ newMember: e.target.value });
@@ -296,7 +293,6 @@ class App extends React.Component {
     const dietaryRestrictionArr = [dietaryRestriction];
     if (method === 'post') {
       axios.post('/api/users', { userName: user })
-        .then(console.log('please wait'))
         .then(() => axios.post(`/api/users/${user}/dietaryRestrictions`, { restrictions: dietaryRestrictionArr }))
         .then(() => axios.post(`/api/users/${user}/image`, { image }))
         .then(() => {
@@ -469,9 +465,11 @@ class App extends React.Component {
 
     return (
             <div>
-               {/* <MuiThemeProvider muiTheme={muiTheme}></MuiThemeProvider> */}
-                <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
-                {/* <Avatar src={userImages.kangaroo}/> */}
+               <div> {user !== ''
+                 ? <Header handleViewChange={handleViewChange} handleSignInWithGoogle={handleLoginClick} handleSignOutWithGoogle={handleSignOutWithGoogle} />
+                 : <AltHeader/>
+          }
+        </div>
                 <Dialog onBackdropClick={() => { toggleDialog(); }} open={this.state.open}>
                     <DialogTitle>Sorry {user} an error has occurred</DialogTitle>
                 </Dialog>

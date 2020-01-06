@@ -3,13 +3,11 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
-import { Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 
-// this is a change to proove to github that I am changing something because
-// it seems to thing I have done no work today
 const PurpleRadio = withStyles({
+  // this makes the radio buttons purple
   root: {
     color: deepPurple[400],
     '&$checked': {
@@ -22,19 +20,11 @@ const PurpleRadio = withStyles({
 // TODO allow user to pick more than one dietary restriction
 const UserSettings= (props) => {
   const {
-    handlePreferenceChange, handleLoginClick,
+    handlePreferenceChange,
     koala, bilby, kangaroo, sugarGlider,
     oppossum,
-    handleSignInWithGoogle,
     handleSubmitPreferences,
-    handleUserNameInput,
-    handleUserStatusInput,
     handleViewChange,
-    handleSetState,
-    user,
-    userStatus,
-    dietaryRestrictions,
-    userImages,
   } = props;
   const onclick = () => {
     handleSubmitPreferences('patch');
@@ -43,8 +33,8 @@ const UserSettings= (props) => {
   return (
     <div>
       <ul>
-      <h1>Status</h1>
-      <input id='status'type='text' onChange={handleUserStatusInput}/>
+      {/* <h1>Status</h1>
+      <input id='status'type='text' onChange={handleUserStatusInput}/> */}
         <h1>Select a User Image </h1>
         <RadioGroup row="true" aria-label="image" name="image">
           <img className='userImages' src={oppossum} width="130" height="121" border="5"/>
