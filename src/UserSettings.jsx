@@ -51,7 +51,7 @@ const UserSettings= (props) => {
         <h2> Select Dietary Restricitons</h2>
         <RadioGroup defaultValue='none' aria-label="dietary restriction" name="dietary restriction">
           <FormControlLabel color='#9900cc' className='radio'value="Vegan" control={<PurpleRadio color='default' />} label="Vegan" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegan')}/>
-          <FormControlLabel className='radio'value="Vegitarian" control={<PurpleRadio color='default' />} label="Vegitarian" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegitarian')} />
+          <FormControlLabel className='radio'value="Vegetarian" control={<PurpleRadio color='default' />} label="Vegetarian" onClick={() => handlePreferenceChange('dietaryRestriction', 'Vegetarian')} />
           <FormControlLabel className='radio'value="Kosher" control={<PurpleRadio color='default' />} label="Kosher" onClick={() => handlePreferenceChange('dietaryRestriction', 'Kosher')}/>
           <FormControlLabel className='radio'value="Gluten Free" control={<PurpleRadio color='default' />} label="Gluten Free" onClick={() => handlePreferenceChange('dietaryRestriction', 'Gluten Free')} />
           <FormControlLabel className='radio'value="Halal" control={<PurpleRadio color='default' />} label="Halal" onClick={() => handlePreferenceChange('dietaryRestriction', 'Halal')} />
