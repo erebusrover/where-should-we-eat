@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 
 const AddUserForm = (props) => {
   const {
-    group, groupMembers, handleViewChange, handleNewGroupMember, handleAddUserToGroup,
+   handleViewChange, handleNewGroupMember, handleAddUserToGroup,
   } = props;
   const clickFunction = () => {
     handleAddUserToGroup();

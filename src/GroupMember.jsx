@@ -3,7 +3,7 @@ import { Avatar } from '@material-ui/core';
 
 
 const GroupMember = (props) => {
-  const { groupMember, userImages } = props;
+  const { groupMember } = props;
   console.log(groupMember);
   return (
       <div>
