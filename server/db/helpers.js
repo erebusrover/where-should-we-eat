@@ -225,6 +225,12 @@ const getGroupHistory = async (groupName) => {
 const addChooserToGroup = async (groupName, chooser) => {
   const sql = 'UPDATE groupp SET choice = ? WHERE groupName = ?';
   return pool.query(sql, [chooser, groupName]);
+};
+
+// get chooser from groupp table
+const getChooserFromGroupTable = async (groupName) => {
+  const sql = 'SELECT choice FROM groupp WHERE groupName = ?';
+  return pool.query(sql, [groupName]);
 }
 
 module.exports = {
@@ -254,6 +260,7 @@ module.exports = {
   addToGroupHistory,
   getGroupHistory,
   addChooserToGroup,
+  getChooserFromGroupTable,
   toggleGroupStatus,
   getAllUsers,
   checkDb,
