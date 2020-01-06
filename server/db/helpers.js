@@ -117,7 +117,14 @@ const addUserToGroup = async (userName, groupName) => {
 
 // get all members from a given group
 const getAllGroupMembers = async (groupName) => {
-  const sql = `SELECT * FROM user WHERE user_id IN 
+  const sql = `SELECT image FROM userImages WHERE user_id IN 
+                (SELECT user_id FROM user_group WHERE groupp_id IN 
+                  (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
+  return pool.query(sql, [groupName]);
+};
+
+const getAllGroupMembersImages = async (groupName) => {
+  const sql = `SELECT * FROM userImages WHERE user_id IN 
                 (SELECT user_id FROM user_group WHERE groupp_id IN 
                   (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
   return pool.query(sql, [groupName]);
@@ -218,6 +225,7 @@ module.exports = {
   addNewGroup,
   addUserToGroup,
   getAllGroupMembers,
+  getAllGroupMembersImages,
   getAllUserRestrictions,
   getAllUserGroups,
   getAllActiveUserGroups,
