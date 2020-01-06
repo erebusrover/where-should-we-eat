@@ -271,7 +271,6 @@ router.get('/users/:userName/groups', (req, res) => {
   getAllUserGroups(userName)
     .then((response) => {
       res.status(200);
-      console.log(response[0]);
       res.send(response[0]);
     })
     .catch((err) => {
@@ -380,7 +379,8 @@ router.post('/groupHistory', (req, res) => {
     .then(() => {
       res.sendStatus(201);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       res.sendStatus(400);
     });
 });
@@ -425,7 +425,6 @@ router.get('/choices', (req, res) => {
   // const categories = getAllUserRestrictions(groupName);
   return getAllUserRestrictions(groupName).then(function (restrictions) {
     return getGroupPricePoint(groupName).then(function(pricePoint) {
-      console.log(pricePoint);
       return getUserLocation().then(function (location) {
         const categories = restrictions[0].map((restriction) => {
           return restriction.restriction;
