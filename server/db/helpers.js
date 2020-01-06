@@ -69,7 +69,7 @@ const addUserDietaryRestrictions = async (userName, restrictions) =>
 const updateUserDietaryRestrictions = async (userName, restrictions) => {
   Promise.all(restrictions.map((restriction) => {
     const sql = `UPDATE dietaryRestrictions SET restriction = ?
-                  WHERE used_id = (SELECT user_id FROM user WHERE userName = ?)`;
+                  WHERE user_id = (SELECT user_id FROM user WHERE userName = ?)`;
     return pool.query(sql, [restriction, userName]);
   }));
 };
