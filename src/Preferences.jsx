@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import { Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
+import { TextField } from '@material-ui/core';
 
 const PurpleRadio = withStyles({
   root: {
@@ -48,7 +49,7 @@ const Preferences = props => {
     <div>
       <ul>
         <h1>Pick A User Name</h1>
-        <input id="userName" type="text" onChange={handleUserNameInput} />
+        <TextField id="outlined-basic" label="User Name" variant="outlined" onChange={handleUserNameInput} />
         <h1>Select a User Image </h1>
         <RadioGroup row="true" aria-label="image" name="image">
           <img
