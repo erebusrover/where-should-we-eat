@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { API_KEY } = require('./keys').yelp;
+// const { API_KEY } = require('./keys').yelp;
 
 // write function for yelp api calls here
 const getRestaurants = (query) => {
@@ -16,7 +16,7 @@ const getRestaurants = (query) => {
 
   // provide api key
   const headers = {
-    Authorization: `Bearer ${API_KEY}`,
+    Authorization: 'Bearer xyOUPpjrO0BLAXR0sTbmQA',
   };
   const url = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&limit=5&sort_by=rating&price=${price}`;
   return axios.get(url, { headers });
@@ -59,8 +59,6 @@ module.exports.getRestaurants = getRestaurants;
 // }).catch(() => {
 //   console.log('there was an error');
 // });
-
-
 
 
 // search params:

@@ -36,8 +36,8 @@ const Preferences = (props) => {
     handleViewChange,
   } = props;
   const onclick = () => {
-    handleSubmitPreferences('post');
-    handleSignInWithGoogle();
+    // handleSubmitPreferences('post');
+    // handleSignInWithGoogle();
     handleViewChange('home');
   };
   return (

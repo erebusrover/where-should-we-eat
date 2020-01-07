@@ -16,10 +16,9 @@ const Header = (props) => {
     <Typography variant="h6" className='two'>
       Where Should We Eat
     </Typography>
-    <Button style={{ background: '#9900cc', color:'white' }} value='home' onClick={() => { handleViewChange('home'); }}>Home</Button>
-    {/* <Button color="inherit" value='login' onClick={() => { handleSignInWithGoogle(); }}>Login</Button> */}
-    {/* //TODO this could be an update profile button in another life */}
-    <Button style={{ background: '#9900cc', color: 'white' }} value='profile' onClick={() => { handleViewChange('userSetting'); }}>Profile</Button>
+    <Button style={{ background: '#9900cc', color: 'white' }} value='home' onClick={() => { handleViewChange('home'); }}>Home</Button>
+    {/* <Button color="inherit" value='login' onClick={
+      () => { handleSignInWithGoogle(); }}>Login</Button> */}
     <Button style={{ background: '#9900cc', color: 'white' }} value='profile' onClick={() => { handleViewChange('createGroup'); }}>Create Group</Button>
     <Button style={{ background: '#9900cc', color: 'white' }} value='login' onClick={() => { handleSignOutWithGoogle(); }}>LOGOUT</Button>
   </Toolbar>

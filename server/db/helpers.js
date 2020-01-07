@@ -1,14 +1,13 @@
 // database connection and helper functions
 const { pool } = require('./config.js');
 
-
 // const connection = mysql.createConnection(mysqlConfig);
 // Just like `connection.query`, but returns a promise!
 // const query = util.promisify(pool.query).bind(pool);
 
 // get user status
 const getUserStatus = async (userName) => {
-  const sql = 'SELECT userStatus FROM user WHERE userName = ?'; 
+  const sql = 'SELECT userStatus FROM user WHERE userName = ?';
   return pool.query(sql, [userName]);
 };
 // add new user to db
@@ -18,17 +17,16 @@ const getUserStatus = async (userName) => {
 //   return pool.query(sql, [userName, googleId, userStatus]);
 
 // add new user to db
-const addNewUser = async (userName, googleId) => {
-  const sql = 'INSERT into user (userName, google_id) VALUES (?,?)';
-  return pool.query(sql, [userName, googleId]);
-
+const addNewUser = async (userName) => {
+  const sql = 'INSERT into user (userName) VALUES (?)';
+  return pool.query(sql, [userName]);
 };
 
 // check db for user by Google ID
-const checkDb = async (googleId) => {
-  const sql = 'SELECT * FROM user WHERE google_id = ?';
-  return pool.query(sql, [googleId]);
-};
+// const checkDb = async (googleId) => {
+//   const sql = 'SELECT * FROM user WHERE google_id = ?';
+//   return pool.query(sql, [googleId]);
+// };
 
 // allow user to change their username
 const updateUserName = async (userName, newUserName) => {
@@ -56,29 +54,31 @@ const updateUserImage = async (userName, newImage) => {
 
 // TODO: allow multiple users to have the same dietary restrictions
 // add dietary restrictions to dietaryRestrictions table
-const addUserDietaryRestrictions = async (userName, restrictions) => {
+const addUserDietaryRestrictions = async (userName, restrictions) =>
   // restrictions should be an array
   // for each dietary restriction, add it to table with id of user
-  return Promise.all(restrictions.map((restriction) => {
-    const sql = `INSERT into dietaryRestrictions (user_id, restriction) 
+  Promise.all(
+    restrictions.map(restriction => {
+      const sql = `INSERT into dietaryRestrictions (user_id, restriction) 
                   VALUES ((SELECT user_id FROM user WHERE userName = ?), ?)`;
-    return pool.query(sql, [userName, restriction, restriction]);
-  }));
-};
-
+      return pool.query(sql, [userName, restriction, restriction]);
+    }),
+  );
 // allow user to update their dietary restrictions
 // allow user to change their username
 const updateUserDietaryRestrictions = async (userName, restrictions) => {
-  Promise.all(restrictions.map((restriction) => {
-    const sql = `UPDATE dietaryRestrictions SET restriction = ?
+  Promise.all(
+    restrictions.map(restriction => {
+      const sql = `UPDATE dietaryRestrictions SET restriction = ?
                   WHERE user_id = (SELECT user_id FROM user WHERE userName = ?)`;
-    return pool.query(sql, [restriction, userName]);
-  }));
+      return pool.query(sql, [restriction, userName]);
+    }),
+  );
 };
 
 // delete dietary restriction for a user
 // right now this is set up to just remove one restriction at a time
-const deleteUserDietaryRestriction = async (user) => {
+const deleteUserDietaryRestriction = async user => {
   const { userName, restriction } = user;
   const sql = `DELETE FROM dietaryRestrictions WHERE restriction = ? 
   AND user_id = (SELECT user_id FROM user WHERE userName = ?)`;
@@ -86,7 +86,7 @@ const deleteUserDietaryRestriction = async (user) => {
 };
 
 // get user dietary restrictions
-const getUserDietaryRestrictions = async (userName) => {
+const getUserDietaryRestrictions = async userName => {
   const sql = `SELECT restriction FROM dietaryRestrictions 
                   WHERE (SELECT user_id FROM user WHERE userName = ?)`;
   return pool.query(sql, [userName]);
@@ -107,13 +107,13 @@ const getAllUsers = () => {
 };
 
 // delete user from db
-const deleteUser = async (userName) => {
+const deleteUser = async userName => {
   const sql = 'DELETE FROM user WHERE userName = ?';
   return pool.query(sql, [userName]);
 };
 
 // add new group to db
-const addNewGroup = async (newGroup) => {
+const addNewGroup = async newGroup => {
   const { groupName, pricePoint } = newGroup;
   const sql = `INSERT into groupp (groupName, active, pricePoint) VALUES(?, true, ?)
                 ON DUPLICATE KEY UPDATE pricePoint = ?`;
@@ -128,14 +128,14 @@ const addUserToGroup = async (userName, groupName) => {
 };
 
 // get all members from a given group
-const getAllGroupMembers = async (groupName) => {
+const getAllGroupMembers = async groupName => {
   const sql = `SELECT * FROM user WHERE user_id IN 
                 (SELECT user_id FROM user_group WHERE groupp_id IN 
                   (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
   return pool.query(sql, [groupName]);
 };
 
-const getAllGroupMembersImages = async (groupName) => {
+const getAllGroupMembersImages = async groupName => {
   const sql = `SELECT image FROM userImages WHERE user_id IN 
                 (SELECT user_id FROM user_group WHERE groupp_id IN 
                   (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
@@ -143,7 +143,7 @@ const getAllGroupMembersImages = async (groupName) => {
 };
 
 // get all dietary restrictions for users of a given group
-const getAllUserRestrictions = async (groupName) => {
+const getAllUserRestrictions = async groupName => {
   const sql = `SELECT restriction from dietaryRestrictions WHERE user_id IN
                 (SELECT user_id FROM user_group WHERE groupp_id IN 
                   (SELECT groupp_id FROM groupp WHERE groupName = ?))`;
@@ -151,7 +151,7 @@ const getAllUserRestrictions = async (groupName) => {
 };
 
 // get all groups that a given user belongs to
-const getAllUserGroups = async (userName) => {
+const getAllUserGroups = async userName => {
   const sql = `SELECT * FROM groupp WHERE groupp_id IN  
                 (SELECT groupp_id FROM user_group WHERE user_id IN 
                   (SELECT user_id FROM user WHERE userName = ?))`;
@@ -159,7 +159,7 @@ const getAllUserGroups = async (userName) => {
 };
 
 // get all active groups that a given user belongs to
-const getAllActiveUserGroups = async (userName) => {
+const getAllActiveUserGroups = async userName => {
   const sql = `SELECT * FROM groupp WHERE active = true AND groupp_id IN  
                 (SELECT groupp_id FROM user_group WHERE user_id IN 
                   (SELECT user_id FROM user WHERE userName = ?))`;
@@ -167,7 +167,7 @@ const getAllActiveUserGroups = async (userName) => {
 };
 
 // get all inactive groups that a given user belongs to
-const getAllInactiveUserGroups = async (userName) => {
+const getAllInactiveUserGroups = async userName => {
   const sql = `SELECT * FROM groupp WHERE active = false AND groupp_id IN  
                 (SELECT groupp_id FROM user_group WHERE user_id IN 
                   (SELECT user_id FROM user WHERE userName = ?))`;
@@ -175,41 +175,41 @@ const getAllInactiveUserGroups = async (userName) => {
 };
 
 // allow users to change group name
-const changeGroupName = async (group) => {
+const changeGroupName = async group => {
   const { groupName, newName } = group;
   const sql = 'UPDATE groupp SET groupName = ? WHERE groupName = ?';
   return pool.query(sql, [newName, groupName]);
 };
 
 // allow users to change group price point
-const changeGroupPricePoint = async (group) => {
+const changeGroupPricePoint = async group => {
   const { groupName, newPricePoint } = group;
   const sql = 'UPDATE groupp SET pricePoint = ? WHERE groupName = ?';
   return pool.query(sql, [newPricePoint, groupName]);
 };
 
 // retrieve group pricepoint from db
-const getGroupPricePoint = async (groupName) => {
+const getGroupPricePoint = async groupName => {
   const sql = 'SELECT pricePoint FROM groupp where groupName = ?';
   return pool.query(sql, [groupName]);
 };
 
 // toggle group's active state between true and false
 // (when a decision has been initiated or closed)
-const toggleGroupStatus = async (group) => {
+const toggleGroupStatus = async group => {
   const { id, status } = group;
   const sql = 'UPDATE groupp SET active=? WHERE id=?';
   return pool.query(sql, [status, id]);
 };
 
 // delete a group from groupp table
-const deleteGroup = async (groupName) => {
+const deleteGroup = async groupName => {
   const sql = 'DELETE FROM groupp WHERE groupName = ?';
   return pool.query(sql, [groupName]);
 };
 
 // add chosen location to grouphistory table
-const addToGroupHistory = async (group) => {
+const addToGroupHistory = async group => {
   const { groupName, id } = group;
   const sql = `INSERT into groupHistory (groupp_id, location_id) VALUES 
                 ((SELECT groupp_id FROM groupp WHERE groupName = ?), ?)`;
@@ -217,7 +217,7 @@ const addToGroupHistory = async (group) => {
 };
 
 // get group location history
-const getGroupHistory = async (groupName) => {
+const getGroupHistory = async groupName => {
   const sql = `SELECT location_id FROM groupHistory WHERE 
                 (SELECT groupp_id FROM groupp WHERE groupName = ?) = groupp_id`;
   return pool.query(sql, [groupName]);
@@ -230,10 +230,10 @@ const addChooserToGroup = async (groupName, chooser) => {
 };
 
 // get chooser from groupp table
-const getChooserFromGroupTable = async (groupName) => {
+const getChooserFromGroupTable = async groupName => {
   const sql = 'SELECT choice FROM groupp WHERE groupName = ?';
   return pool.query(sql, [groupName]);
-}
+};
 
 module.exports = {
   addNewUser,
@@ -265,6 +265,6 @@ module.exports = {
   getChooserFromGroupTable,
   toggleGroupStatus,
   getAllUsers,
-  checkDb,
+  // checkDb,
   getUserStatus,
 };

@@ -22,7 +22,7 @@ const PurpleRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 // TODO allow user to pick more than one dietary restriction
-const UserSettings= (props) => {
+const UserSettings = (props) => {
   const {
     handlePreferenceChange,
     koala, bilby, kangaroo, sugarGlider,
@@ -62,7 +62,7 @@ const UserSettings= (props) => {
           <FormControlLabel className='radio'value="None" control={<PurpleRadio color='default' />} label="None" onClick={() => handlePreferenceChange('dietaryRestriction', 'None')}/>
         </RadioGroup>
       </ul>
-      <Button variant="contained" style={{ background: '#9900cc', color:'white' }} onClick={() => { onclick(); }}>Submit </Button>
+      <Button variant="contained" style={{ background: '#9900cc', color: 'white' }} onClick={() => { onclick(); }}>Submit </Button>
     </div>
   );
 };
