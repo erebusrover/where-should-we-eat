@@ -5,6 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
+import { TextField } from '@material-ui/core';
 
 /**
  * This is rendered whn a user clicks on the Create Group button in the header.
