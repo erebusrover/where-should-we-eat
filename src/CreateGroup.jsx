@@ -29,13 +29,12 @@ const CreateGroup = (props) => {
     await handleViewChange('home');
   };
   return (
-      <div>
-          <br />
-          <form>
-          <h1>Group Name</h1>
-          <input type='text' onChange={handleNewGroupName}></input>
-          </form>
-             <h3> Select a Price </h3>
+    <div>
+      <br />
+      <form>
+        <h1>Group Name</h1>
+        <TextField id="outlined-basic" label="Group Name" variant="outlined" onChange={handleNewGroupName} />
+        <h3> Select a Price </h3>
         <RadioGroup aria-label="dietary restriction" name="dietary restriction">
           <FormControlLabel value="$" control={<PurpleRadio />} label="$" onClick={() => handleNewGroupPricePoint('$')} />
           <FormControlLabel value="$$" control={<PurpleRadio />} label="$$" onClick={() => handleNewGroupPricePoint('$$')} />
@@ -45,7 +44,7 @@ const CreateGroup = (props) => {
         <Button variant="outlined" style={{ background: '#9900cc', color: 'white' }} value='profile' onClick={() => clickFunction()}>Submit</Button>
       </div>
 
-  );
-};
-
-export default CreateGroup;
+      );
+    };
+    
+    export default CreateGroup;
