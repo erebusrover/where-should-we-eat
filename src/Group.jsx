@@ -4,6 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Link from '@material-ui/core/Link';
 import GroupMember from './GroupMember.jsx';
+import { TextField } from '@material-ui/core';
 
 /**
  * This is the component that is rendered when a user clicks on one of their groups
@@ -44,17 +45,19 @@ class Group extends React.Component {
         <div> {showWinner === true
           ? <h1>{chooser} is the lucky Decision Maker</h1>
           : <div>
-              <h2>Click Start Game to choose the Decision Maker</h2>
-            </div>}
+            <h2>Click Start Game to choose the Decision Maker</h2>
+          </div>}
         </div>
         <div> {user === chooser
           ? <div>
-              <input id='categories' type='text' onChange={handleCategoriesInput} />
-              <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
-            </div>
+            <TextField id="outlined-basic" label="Choice" variant="outlined" onChange={handleCategoriesInput} />
+
+            {/* <input id='categories' type='text' onChange={handleCategoriesInput} /> */}
+            <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleGetOptions(); }}>Show Options</Button>
+          </div>
           : <h2></h2>}
         </div>
-      <Dialog onBackdropClick={() => { toggleDialog('directionsPopup'); }} open={directionsPopup}>
+        <Dialog onBackdropClick={() => { toggleDialog('directionsPopup'); }} open={directionsPopup}>
           <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
           <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
         </Dialog>
