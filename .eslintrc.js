@@ -1,27 +1,49 @@
-module.exports = {
-  env: {
-    browser: true,
-    es6: true,
-    node: true,
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
   },
-  extends: [
-    'airbnb-base',
-    'plugin:react/recommended'
-  ],
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
+  "extends": "airbnb",
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly",
+    "angular": true
   },
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    ecmaVersion: 2018,
-    sourceType: 'module',
+    "ecmaVersion": 2018
   },
-  plugins: [
-    'react',
+  "plugins": [
+    "react"
   ],
-  rules: {
-  },
-};
+  "rules": {
+    "import/extensions": [
+      "error",
+      {
+        "jsx": "always",
+        "json": "always"
+      }
+    ],
+    "react/jsx-one-expression-per-line": 0,
+    "space-before-function-paren": [
+      "error",
+      "never"
+    ],
+    "react/button-has-type": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "no-console": 0,
+    "no-debugger": 1,
+    "no-useless-constructor": 0,
+    "class-methods-use-this": 0,
+    "react/prefer-stateless-function": 0,
+    "arrow-parens": 0,
+    "arrow-body-style": 0,
+    "no-underscore-dangle": 0,
+    "consistent-return": 0,
+    "react/prop-types": 0
+  }
+}
