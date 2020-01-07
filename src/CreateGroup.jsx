@@ -35,17 +35,18 @@ const CreateGroup = (props) => {
       <form>
         <h1>Group Name</h1>
         <TextField id="outlined-basic" label="Group Name" variant="outlined" onChange={handleNewGroupName} />
-        <h3> Select a Price </h3>
-        <RadioGroup aria-label="dietary restriction" name="dietary restriction">
-          <FormControlLabel value="$" control={<PurpleRadio />} label="$" onClick={() => handleNewGroupPricePoint('$')} />
-          <FormControlLabel value="$$" control={<PurpleRadio />} label="$$" onClick={() => handleNewGroupPricePoint('$$')} />
-          <FormControlLabel value="$$$" control={<PurpleRadio />} label="$$$" onClick={() => handleNewGroupPricePoint('$$$')} />
-          <FormControlLabel value="$$$$" control={<PurpleRadio />} label="$$$$" onClick={() => handleNewGroupPricePoint('$$$$')} />
-        </RadioGroup>
-        <Button variant="outlined" style={{ background: '#9900cc', color: 'white' }} value='profile' onClick={() => clickFunction()}>Submit</Button>
-      </div>
+      </form>
+      <h3> Select a Price </h3>
+      <RadioGroup aria-label="dietary restriction" name="dietary restriction">
+        <FormControlLabel value="$" control={<PurpleRadio />} label="$" onClick={() => handleNewGroupPricePoint('$')} />
+        <FormControlLabel value="$$" control={<PurpleRadio />} label="$$" onClick={() => handleNewGroupPricePoint('$$')} />
+        <FormControlLabel value="$$$" control={<PurpleRadio />} label="$$$" onClick={() => handleNewGroupPricePoint('$$$')} />
+        <FormControlLabel value="$$$$" control={<PurpleRadio />} label="$$$$" onClick={() => handleNewGroupPricePoint('$$$$')} />
+      </RadioGroup>
+      <Button variant="outlined" style={{ background: '#9900cc', color: 'white' }} value='profile' onClick={() => clickFunction()}>Submit</Button>
+    </div>
 
-      );
-    };
-    
-    export default CreateGroup;
+  );
+};
+
+export default CreateGroup;
