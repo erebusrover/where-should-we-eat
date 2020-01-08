@@ -8,6 +8,9 @@ import {
 } from '@material-ui/core';
 import GroupMember from './GroupMember.jsx';
 import { TextField } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 /**
  * This is the component that is rendered when a user clicks on one of their groups
@@ -34,10 +37,11 @@ class Group extends React.Component {
 
   render() {
     const {
+      history,
       user,
       groupName,
       pricePoint,
-      groupMembers,
+      members,
       handleViewChange,
       userImages,
       handleGetOptions,
@@ -46,6 +50,7 @@ class Group extends React.Component {
       randomizer,
       chooser,
       showWinner,
+      vetoRandomizer,
       veto,
       showVeto,
       toggleDialog,
@@ -111,7 +116,7 @@ class Group extends React.Component {
           </Link>
         </Dialog>
         <ul>
-          {groupMembers.map(groupMember => (
+          {members.map(groupMember => (
             <GroupMember userImages={userImages} groupMember={groupMember} />
           ))}
         </ul>
@@ -132,9 +137,26 @@ class Group extends React.Component {
         >
           Start Game
         </Button>
+        <br />
+        <Button
+          style={{ background: '#9900cc', color: 'white' }}
+          onClick={() => {
+            vetoRandomizer();
+          }}
+        >
+          Allow Vetoer
+        </Button>
+        <div className={useStyles.root}>
+          <Grid container spacing={3}>
+            <Grid item xs={6} sm={6}>
+              <Paper className={useStyles.paper}>History: {history}</Paper>
+            </Grid>
+          </Grid>
+        </div>
       </Container>
     );
   }
 }
 
 export default Group;
+
