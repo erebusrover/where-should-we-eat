@@ -66,6 +66,7 @@ class App extends React.Component {
       login: false,
       directionsPopup: false,
       users: [],
+      history: 'PizzaHut',
     };
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
@@ -93,6 +94,7 @@ class App extends React.Component {
     this.randomizer = this.randomizer.bind(this);
     this.vetoRandomizer = this.vetoRandomizer.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
+    this.getHistory = this.getHistory.bind(this);
   }
 
   toggleDialog(type) {
@@ -183,7 +185,7 @@ class App extends React.Component {
         this.toggleDialog('open');
       });
   }
-
+  //*********options history  */
   handleChooseOption(id, name, address, city, state, zipCode) {
     console.log('hey');
     // set state
@@ -208,6 +210,22 @@ class App extends React.Component {
         this.toggleDialoque('open');
       });
   }
+
+  getHistory() {
+    console.log("we're clicking to get history");
+    axios.get('/groupHistory')
+      .then((response) => {
+        console.log("successfully  got group history", response);
+        this.setState({
+          //may have to change this? See what response is responce.blablala
+          // places: response.location_id
+        })
+      })
+      .catch((error) => {
+        console.log("error getting group history", error)
+      })
+  }
+
 
   handleSetState(k, v) {
     this.setState([k, v]);
@@ -412,6 +430,7 @@ class App extends React.Component {
 
   render() {
     const {
+      history,
       view,
       groups,
       group,
@@ -438,6 +457,7 @@ class App extends React.Component {
       tempMember,
     } = this.state;
     const {
+      getHistory,
       randomizer,
       vetoRandomizer,
       getGroupMembers,
@@ -547,6 +567,7 @@ class App extends React.Component {
           getGroupPricePoint={getGroupPricePoint}
           handleViewChange={handleViewChange}
           handleGroupSetState={handleGroupSetState}
+          getHistory={getHistory}
         />
       );
       // } else if (view === '/userSetting') {
@@ -590,6 +611,8 @@ class App extends React.Component {
           choiceAddress={choiceAddress}
           users={users}
           choiceName={choiceName}
+          history={history}
+
         />
       );
     } else if (view === '/addUserToGroup') {
@@ -600,6 +623,7 @@ class App extends React.Component {
           handleViewChange={handleViewChange}
           handleNewGroupMember={handleNewGroupMember}
           handleAddUserToGroup={handleAddUserToGroup}
+          getHistory={getHistory}
         />
       );
     } else if (view === '/removeUserFromGroup') {
@@ -628,6 +652,8 @@ class App extends React.Component {
           handleViewChange={handleViewChange}
           handleGroupSetState={handleGroupSetState}
           userImage={userImage}
+          getHistory={getHistory}
+
         />
       );
 
