@@ -401,11 +401,11 @@ router.get('/groups/:groupName/pricePoint', (req, res) => {
 // whenever a choice is made
 // how are we storing the locations in this table? by name? id?
 router.post('/groupHistory', (req, res) => {
-  const { groupName, id, name } = req.body;
+  const { groupName, locId, name } = req.body;
   // debugger;
   const group = {
     groupName,
-    id,
+    locId,
     name
   };
   addToGroupHistory(group)
