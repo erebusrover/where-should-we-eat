@@ -261,9 +261,9 @@ class Group extends React.Component {
                     </h3>{' '}
                     <Button
                       style={{ background: '#FF0000', color: 'white' }}
-                      onClick={() => {
-                        vetoChoice();
-                      }}
+                      // onClick={() => {
+                      //   vetoChoice();
+                      // }}
                     >
                       {' '}
                       Veto
