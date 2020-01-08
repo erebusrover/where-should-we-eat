@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogTitle,
   Link,
+  Input
 } from '@material-ui/core';
 import GroupMember from './GroupMember.jsx';
 import { TextField } from '@material-ui/core';
@@ -54,49 +55,52 @@ class Group extends React.Component {
     } = this.props;
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
     return (
-      <Container maxWidth="sm">
-        <h1>{groupName}</h1>
-        <h2>Price point: {pricePoint}</h2>
+      <Container>
+        <h2 style={{ color: '#d454ff'}}>{groupName}</h2>
+        <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
         <br />
         <div>
           {' '}
           {showWinner === true ? (
             <div>
-              <h1>{chooser} is the lucky Decision Maker!</h1>
+              <h3>{chooser} is the lucky decision maker</h3>
               <br />
-              <h1>
-                {veto} may veto {chooser}'s decision!
-              </h1>
-            </div>
-          ) : (
-            <div>
-              <h2>click 'start game' to generate the group's decision maker</h2>
-              <h2>click 'allow vetoer' to generate a random vetoer</h2>
-            </div>
-          )}
-        </div>
         <div>
           {' '}
-          {user === chooser ? (
+          {chooser ? (
             <div>
-              <input
+              <Input
                 id="categories"
                 type="text"
                 onChange={handleCategoriesInput}
-              />
+              />{' '}
               <Button
                 style={{ background: '#9900cc', color: 'white' }}
                 onClick={() => {
                   handleGetOptions();
                 }}
-              >
-                Show Options
+              >{' '}
+                show options
               </Button>
             </div>
           ) : (
             <h2></h2>
           )}
         </div>
+              <h3>
+                {veto} may veto {chooser}'s decision
+                {/* veto options go here */}
+              </h3>
+            </div>
+          ) : (
+            <div>
+              <h3>click 'start game' to generate the group's decision maker</h3>
+              <h3>click 'allow vetoer' to generate a random vetoer</h3>
+            </div>
+          )}
+        </div>
+        <div></div>
+        <br />
         <Dialog
           onBackdropClick={() => {
             toggleDialog('directionsPopup');
@@ -107,31 +111,49 @@ class Group extends React.Component {
             {chooser} chose {choiceName}.
           </DialogTitle>
           <Link href={mapsUrl} target="_blank" rel="noreferrer">
-            Click here for directions.
+            click here for directions
           </Link>
         </Dialog>
+        <div>
         <ul>
           {groupMembers.map(groupMember => (
             <GroupMember userImages={userImages} groupMember={groupMember} />
           ))}
         </ul>
-        <Button
-          style={{ background: '#9900cc', color: 'white' }}
-          onClick={() => {
-            handleViewChange('addUserToGroup');
-          }}
-        >
-          Add Group Member
-        </Button>
+        </div>
         <br />
+        <div>
         <Button
           style={{ background: '#9900cc', color: 'white' }}
           onClick={() => {
             randomizer();
           }}
         >
-          Start Game
-        </Button>
+          start game
+        </Button>{'  '}
+        </div>
+        <br />
+        <div>
+        <Button
+          style={{ background: '#9900cc', color: 'white' }}
+          onClick={() => {
+            randomizer();
+          }}
+        >
+          allow vetoer
+        </Button>{'  '}
+        </div>
+        <br /> 
+        <div>
+        <Button
+            style={{ background: '#d454ff', color: 'white' }}
+          onClick={() => {
+            handleViewChange('addUserToGroup');
+          }}
+        >
+          add group member
+        </Button>{' '}
+        </div>
       </Container>
     );
   }
