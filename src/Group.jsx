@@ -5,6 +5,23 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Link from '@material-ui/core/Link';
 import GroupMember from './GroupMember.jsx';
 import { TextField } from '@material-ui/core';
+// import { compose, spacing, palette } from '@material-ui/system';
+// import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+}));
+
 
 /**
  * This is the component that is rendered when a user clicks on one of their groups
@@ -29,12 +46,15 @@ class Group extends React.Component {
     };
   }
 
+
+
   render() {
+    //  const classes = useStyles(); 
     const {
       user, groupName, pricePoint, groupMembers,
       handleViewChange, userImages, handleGetOptions,
       choiceName, choiceAddress, randomizer, chooser, showWinner,
-      toggleDialog, directionsPopup, handleCategoriesInput,
+      toggleDialog, directionsPopup, handleCategoriesInput, history
     } = this.props;
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
     return (
@@ -65,8 +85,17 @@ class Group extends React.Component {
           {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
         </ul>
         <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+        {/* add padding/margin here between buttons */}
         <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { randomizer(); }}>Start Game</Button>
-      </div>
+        {/* <Box color="black" bgcolor="palevioletred" width={"25%"} height={"25%"} p={1} >{History}</Box> */}
+        <div className={useStyles.root}>
+          <Grid container spacing={3}>
+            <Grid item xs={6} sm={6}>
+              <Paper className={useStyles.paper}>History: {history}</Paper>
+            </Grid>
+          </Grid>
+        </div>
+      </div >
     );
   }
 }
