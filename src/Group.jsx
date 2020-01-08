@@ -37,7 +37,7 @@ class Group extends React.Component {
       user,
       groupName,
       pricePoint,
-      groupMembers,
+      members,
       handleViewChange,
       userImages,
       handleGetOptions,
@@ -46,6 +46,7 @@ class Group extends React.Component {
       randomizer,
       chooser,
       showWinner,
+      vetoRandomizer,
       veto,
       showVeto,
       toggleDialog,
@@ -111,7 +112,7 @@ class Group extends React.Component {
           </Link>
         </Dialog>
         <ul>
-          {groupMembers.map(groupMember => (
+          {members.map(groupMember => (
             <GroupMember userImages={userImages} groupMember={groupMember} />
           ))}
         </ul>
@@ -131,6 +132,15 @@ class Group extends React.Component {
           }}
         >
           Start Game
+        </Button>
+        <br />
+        <Button
+          style={{ background: '#9900cc', color: 'white' }}
+          onClick={() => {
+            vetoRandomizer();
+          }}
+        >
+          Allow Vetoer
         </Button>
       </Container>
     );
