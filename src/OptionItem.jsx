@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  Button, Card, CardActions, CardMedia, CardActionArea, Typography, CardContent,
+  Button, Card, CardActions, CardMedia, CardActionArea, Typography, CardContent, Link
 } from '@material-ui/core/';
+import YelpInfo from './OptionsYelpInfo.jsx';
 
 /**
  *
@@ -35,23 +36,16 @@ const OptionItem = (props) => {
               <Typography gutterBottom variant="h5" component="h2">
               {name}
               </Typography>
-              {rating} {price}
-              <Typography variant="body2" color="textSecondary" component="p">
-                {phone}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
         <Button
           style={{ background: '#9900cc', color: 'white' }}
           onClick={ () => handleChooseOption(id, name, address, city, state, zipCode) }>
           We're eating here
         </Button>
-      <Button
-        style={{ background: '#9900cc', color: 'white' }}
-        href={url} target="_blank" rel="noreferrer">
-        Learn more
-        </Button>
+        {/* component here to display the card details  */}
+        <YelpInfo info={props}/>
+            </CardContent>
+          </CardActionArea>
+        </Card>
       </div>
   );
 };

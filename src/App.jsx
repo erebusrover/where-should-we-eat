@@ -3,6 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { Container } from '@material-ui/core';
 import RemoveUserForm from './RemoveUserForm.jsx';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
@@ -57,7 +58,9 @@ class App extends React.Component {
       choiceLng: '',
       choiceAddress: '',
       chosen: false,
+      veto: '',
       showWinner: false,
+      showVeto: false,
       open: false,
       login: false,
       directionsPopup: false,
@@ -159,8 +162,6 @@ class App extends React.Component {
 
   handleGetOptions() {
     const { groupName, categories } = this.state;
-    console.log(categories);
-    console.log(groupName);
     axios
       .get(`/api/choices/${groupName}/${categories}`, {
         params: {
@@ -169,7 +170,6 @@ class App extends React.Component {
         },
       })
       .then(response => {
-        console.log(response);
         const { data } = response;
         this.setState({
           options: data,
@@ -179,7 +179,7 @@ class App extends React.Component {
         this.handleViewChange('options');
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
         this.toggleDialog('open');
       });
   }
@@ -198,7 +198,6 @@ class App extends React.Component {
       .post('/api/groupHistory', { id, groupName })
       .then(() => {
         // render group view
-        console.log('hey');
         this.handleViewChange('group');
         this.setState({
           chosen: true,
@@ -228,7 +227,6 @@ class App extends React.Component {
 
   handleSetState(k, v) {
     this.setState([k, v]);
-    console.log('here', this.state);
   }
 
   handleUserSettings(k, v) {
@@ -273,13 +271,20 @@ class App extends React.Component {
     const { members, groupName } = this.state;
     const memberIndex = Math.floor(Math.random() * members.length);
     const theChosen = members[memberIndex].userName;
+    console.log(members);
     this.setState({ chooser: theChosen, showWinner: true });
+
+    const vetoIndex = Math.floor(Math.random() * members.length);
+    const vetoCaster = members[vetoIndex].userName;
+    this.setState({ veto: vetoCaster, showVeto: true });
+
     axios
       .post(`/api/groups/${groupName}`)
       .then(() => {
         console.log('hey');
       })
-      .catch(() => {
+      .catch(err => {
+        console.error(err);
         this.toggleDialog();
       });
   }
@@ -422,6 +427,7 @@ class App extends React.Component {
       open,
       directionsPopup,
       chooser,
+      veto,
       choiceId,
       choiceName,
       choiceAddress,
@@ -429,6 +435,7 @@ class App extends React.Component {
       userStatus,
       userImage,
       showWinner,
+      showVeto,
       user,
       userImages,
       dietaryRestriction,
@@ -580,7 +587,9 @@ class App extends React.Component {
           handleViewChange={handleViewChange}
           randomizer={randomizer}
           chooser={chooser}
+          veto={veto}
           showWinner={showWinner}
+          showVeto={showVeto}
           directionsPopup={directionsPopup}
           toggleDialog={toggleDialog}
           choiceAddress={choiceAddress}
@@ -636,7 +645,7 @@ class App extends React.Component {
     }
 
     return (
-      <div>
+      <Container>
         <div>
           <Header
             handleViewChange={handleViewChange}
@@ -661,7 +670,7 @@ class App extends React.Component {
           <DialogTitle>Welcome {user} You have signed in</DialogTitle>
         </Dialog>
         {View}
-      </div>
+      </Container>
     );
   }
 }
