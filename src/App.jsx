@@ -66,7 +66,7 @@ class App extends React.Component {
       login: false,
       directionsPopup: false,
       users: [],
-      history: 'PizzaHut',
+      history: ['PizzaHut', 'Little Korea', 'Tacos and Beer'],
     };
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
@@ -213,13 +213,14 @@ class App extends React.Component {
 
   getHistory() {
     console.log("we're clicking to get history");
-    axios.get('/groupHistory')
+    axios.get('/api/groupHistory')
       .then((response) => {
         console.log("successfully  got group history", response);
-        this.setState({
-          //may have to change this? See what response is responce.blablala
-          // places: response.location_id
-        })
+        // this.setState({
+        //   history: 
+        //   //may have to change this? See what response is responce.blablala
+        //   // places: response.location_id
+        // })
       })
       .catch((error) => {
         console.log("error getting group history", error)
@@ -612,6 +613,7 @@ class App extends React.Component {
           users={users}
           choiceName={choiceName}
           history={history}
+          getHistory={getHistory}
 
         />
       );
