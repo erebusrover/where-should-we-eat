@@ -48,10 +48,16 @@ const useStyles = makeStyles(theme => ({
 class Group extends React.Component {
   constructor(props) {
     super(props);
+    const {
+      choiceName, directionsPopup, choiceId
+    } = this.props;
     this.state = {
       winner: '',
       history: [],
       loading: true,
+      choiceName,
+      choiceId,
+      directionsPopup,
     };
     this.getHistory = this.getHistory.bind(this);
   }
@@ -79,7 +85,7 @@ class Group extends React.Component {
 
 
   render() {
-    const {
+    let {
       user,
       groupName,
       pricePoint,
@@ -96,11 +102,10 @@ class Group extends React.Component {
       veto,
       showVeto,
       toggleDialog,
-      directionsPopup,
       handleCategoriesInput,
+      confirm,
     } = this.props;
-
-    let { history, loading } = this.state;
+    let { history, loading, directionsPopup, choiceId } = this.state;
     history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
     console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
@@ -115,6 +120,13 @@ class Group extends React.Component {
           {showWinner === true ? (
             <div>
               <h3>{chooser} is the lucky decision maker</h3>
+              {directionsPopup && (
+                <div>
+                <div>{chooser} chose {choiceName.toLowerCase()}</div>
+                <Link href={mapsUrl} target="_blank" rel="noreferrer">click here for directions</Link>{' '}
+                <Button style={{ background: '#d454ff', color: 'white' }} onClick={() => confirm(choiceId, groupName, choiceName)}>confirm</Button>
+                </div>
+              )}
               <br />
               <div>
                 {' '}
@@ -146,9 +158,13 @@ class Group extends React.Component {
                     </h3>{' '}
                     <Button
                       style={{ background: '#FF0000', color: 'white' }}
-                      // onClick={() => {
-                      //   vetoChoice();
-                      // }}
+                      onClick={() => {
+                        this.setState({
+                          directionsPopup: false,
+                        }, () => {
+                          vetoRandomizer();
+                        })
+                      }}
                     >
                       {' '}
                       Veto
@@ -164,22 +180,7 @@ class Group extends React.Component {
             </div>
           )}
         </div>
-        <div></div>
         <br />
-        <Dialog
-          onBackdropClick={() => {
-            toggleDialog('directionsPopup');
-            this.getHistory();
-          }}
-          open={directionsPopup}
-        >
-          <DialogTitle>
-            {chooser} chose {choiceName}.
-          </DialogTitle>
-          <Link href={mapsUrl} target="_blank" rel="noreferrer">
-            click here for directions
-          </Link>
-        </Dialog>
         <div>
           <ul>
             {members.map(groupMember => (
