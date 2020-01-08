@@ -70,7 +70,8 @@ class Group extends React.Component {
             </div>
           ) : (
             <div>
-              <h2>Click Start Game to choose the Decision Maker</h2>
+              <h2>click 'start game' to generate the group's decision maker</h2>
+              <h2>click 'allow vetoer' to generate a random vetoer</h2>
             </div>
           )}
         </div>
@@ -96,9 +97,18 @@ class Group extends React.Component {
             <h2></h2>
           )}
         </div>
-        <Dialog onBackdropClick={() => { toggleDialog('directionsPopup'); }} open={directionsPopup}>
-          <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
-          <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
+        <Dialog
+          onBackdropClick={() => {
+            toggleDialog('directionsPopup');
+          }}
+          open={directionsPopup}
+        >
+          <DialogTitle>
+            {chooser} chose {choiceName}.
+          </DialogTitle>
+          <Link href={mapsUrl} target="_blank" rel="noreferrer">
+            Click here for directions.
+          </Link>
         </Dialog>
         <ul>
           {groupMembers.map(groupMember => (
