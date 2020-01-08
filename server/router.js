@@ -39,7 +39,7 @@ const {
 } = require('./db/helpers');
 // require Google and Yelp API functions
 const { getRestaurants } = require('./config/yelp');
-const { getUserLocation } = require('./config/google');
+// const { getUserLocation } = require('./config/google');
 
 const router = Router();
 
@@ -54,7 +54,7 @@ router.post('/users', (req, res) => {
     })
     .catch(err => {
       console.error(err.message);
-      debugger;
+      // debugger;
       res.sendStatus(400);
     });
 });
@@ -69,8 +69,8 @@ router.post('/users/:userName/userName', (req, res) => {
       res.sendStatus(201);
     })
     .catch(err => {
-      console.error(err.message);
-      debugger;
+      // console.error(err.message);
+      // debugger;
       res.sendStatus(400);
     });
 });
@@ -230,7 +230,9 @@ router.post('/groups', (req, res) => {
     .then(() => {
       res.sendStatus(201);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error(err);
+      debugger;
       res.sendStatus(400);
     });
 });
@@ -460,20 +462,20 @@ router.get('/choices/:groupName/:categories', (req, res) => {
   return getAllUserRestrictions(groupName)
     .then(function(restrictions) {
       return getGroupPricePoint(groupName).then(function(pricePoint) {
-        return getUserLocation().then(function(location) {
-          const restrCats = restrictions[0].map(restriction => {
-            return restriction.restriction;
-          });
-          restrCats.forEach(restr => {
-            userCats.push(restr);
-          });
-          // console.log(userCats);
-          // const { lat, lng } = location.data.location;
-          // this is hard coded due to geolocation issues --> getUserLocaton returns location of google server
+        // return getUserLocation().then(function(location) {
+        //   const restrCats = restrictions[0].map(restriction => {
+        //     return restriction.restriction;
+        //   });
+        //   restrCats.forEach(restr => {
+        //     userCats.push(restr);
+        //   });
+        //   console.log(userCats);
+        //   // const { lat, lng } = location.data.location;
+        //   // this is hard coded due to geolocation issues --> getUserLocaton returns location of google server
           const query = {
-            latitude: 29.94789,
-            longitude: -90.12867,
-            radius: 40000,
+            latitude: 29.96856689453125,
+            longitude: -90.0733642578125,
+            radius: 5000,
             categories,
             price: 1,
           };
@@ -482,7 +484,6 @@ router.get('/choices/:groupName/:categories', (req, res) => {
             const { businesses } = response.data;
             res.status(200);
             res.send(businesses);
-          });
         });
       });
     })

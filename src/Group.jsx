@@ -7,6 +7,7 @@ import {
   Link,
 } from '@material-ui/core';
 import GroupMember from './GroupMember.jsx';
+import { TextField } from '@material-ui/core';
 
 /**
  * This is the component that is rendered when a user clicks on one of their groups
@@ -95,18 +96,9 @@ class Group extends React.Component {
             <h2></h2>
           )}
         </div>
-        <Dialog
-          onBackdropClick={() => {
-            toggleDialog('directionsPopup');
-          }}
-          open={directionsPopup}
-        >
-          <DialogTitle>
-            {chooser} chose {choiceName}.
-          </DialogTitle>
-          <Link href={mapsUrl} target="_blank" rel="noreferrer">
-            Click here for directions.
-          </Link>
+        <Dialog onBackdropClick={() => { toggleDialog('directionsPopup'); }} open={directionsPopup}>
+          <DialogTitle>{chooser} chose {choiceName}.</DialogTitle>
+          <Link href={mapsUrl} target="_blank" rel="noreferrer">Click here for directions.</Link>
         </Dialog>
         <ul>
           {groupMembers.map(groupMember => (

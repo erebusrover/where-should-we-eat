@@ -16,7 +16,7 @@ const getRestaurants = (query) => {
 
   // provide api key
   const headers = {
-    Authorization: 'Bearer xyOUPpjrO0BLAXR0sTbmQA',
+    Authorization: 'Bearer D4QMTbsw3hd4xnmj9_ZACPQZzX3H4Ro3VS2-VKGVqgK7rXKw_K-Ds8yVkWHY-nJMmBqLkkN6zQTv9ekX9-6R3yktX4pjNwCtTdus5VzB83TfetiHDXa1LVkcE_QUXnYx',
   };
   const url = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}&categories=${categories}&limit=5&sort_by=rating&price=${price}`;
   return axios.get(url, { headers });
