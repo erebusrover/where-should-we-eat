@@ -12,6 +12,7 @@ import { TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,12 +50,36 @@ class Group extends React.Component {
     super(props);
     this.state = {
       winner: '',
+      history: [],
+      loading: true,
     };
+    this.getHistory = this.getHistory.bind(this);
   }
+
+  componentDidMount() {
+    this.getHistory();
+  }
+
+  getHistory() {
+    const { groupName } = this.props;
+    axios.get(`api/groupHistory/${groupName}`)
+      .then(response => {
+        console.log(response);
+        console.log(response.data);
+        this.setState({
+          history: response.data,
+          loading: false,
+        })
+      })
+      .catch((error) => {
+        debugger;
+        console.log("error getting group history", error)
+      })
+  }
+
 
   render() {
     const {
-      history,
       user,
       groupName,
       pricePoint,
@@ -75,9 +100,127 @@ class Group extends React.Component {
       handleCategoriesInput,
     } = this.props;
 
+    let { history } = this.state;
+    history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
+    console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
 
-    return (
+    if (this.state.loading) {
+      return (
+        <Container>
+          <h2 style={{ color: '#d454ff' }}>{groupName}</h2>
+          <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
+          <br />
+          <div>
+            {' '}
+            {showWinner === true ? (
+              <div>
+                <h3>{chooser} is the lucky decision maker</h3>
+                <br />
+                <div>
+                  {' '}
+                  {chooser ? (
+                    <div>
+                      <Input
+                        id="categories"
+                        type="text"
+                        onChange={handleCategoriesInput}
+                      />{' '}
+                      <Button
+                        style={{ background: '#9900cc', color: 'white' }}
+                        onClick={() => {
+                          handleGetOptions();
+                        }}
+                      >{' '}
+                        show options
+              </Button>
+                    </div>
+                  ) : (
+                      <h2></h2>
+                    )}
+                </div>
+                <h3>
+                  {veto} may veto {chooser}'s decision
+                {/* veto options go here */}
+                </h3>
+              </div>
+            ) : (
+                <div>
+                  <h3>click 'start game' to generate the group's decision maker</h3>
+                  <h3>click 'allow vetoer' to generate a random vetoer</h3>
+                </div>
+              )}
+          </div>
+          <div></div>
+          <br />
+          <Dialog
+            onBackdropClick={() => {
+              toggleDialog('directionsPopup');
+              this.getHistory();
+            }}
+            open={directionsPopup}
+          >
+            <DialogTitle>
+              {chooser} chose {choiceName}.
+          </DialogTitle>
+            <Link href={mapsUrl} target="_blank" rel="noreferrer">
+              click here for directions
+          </Link>
+          </Dialog>
+          <div>
+            <ul>
+              {members.map(groupMember => (
+                <GroupMember userImages={userImages} groupMember={groupMember} />
+              ))}
+            </ul>
+          </div>
+          <br />
+          <div>
+            <Button
+              style={{ background: '#9900cc', color: 'white' }}
+              onClick={() => {
+                randomizer();
+              }}
+            >
+              start game
+        </Button>{'  '}
+          </div>
+          <br />
+          <div>
+            <Button
+              style={{ background: '#9900cc', color: 'white' }}
+              onClick={() => {
+                vetoRandomizer();
+              }}
+            >
+              allow vetoer
+        </Button>{'  '}
+          </div>
+          <br />
+          <div>
+            <Button
+              style={{ background: '#d454ff', color: 'white' }}
+              onClick={() => {
+                handleViewChange('addUserToGroup');
+              }}
+            >
+              add group member
+        </Button>{' '}
+            <div className={useStyles.root}>
+              <Grid container spacing={3}>
+                <Grid item xs={6} sm={6}>
+                  <Paper className={useStyles.paper}>
+                    <div>Previously chosen by {groupName}:</div>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </div>
+          </div>
+        </Container>
+      );
+    }
+
+    return ( 
       <Container>
         <h2 style={{ color: '#d454ff' }}>{groupName}</h2>
         <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
@@ -133,6 +276,7 @@ class Group extends React.Component {
         <Dialog
           onBackdropClick={() => {
             toggleDialog('directionsPopup');
+            this.getHistory();
           }}
           open={directionsPopup}
         >
@@ -178,17 +322,21 @@ class Group extends React.Component {
         <div>
           <Button
             style={{ background: '#d454ff', color: 'white' }}
-            onClick={() => {
-              handleViewChange('addUserToGroup');
-            }}
-          >
-            add group member
-          </Button>{' '}
-          <div className={useStyles.root}>
-            <Grid container spacing={3}>
-              <Grid item xs={6} sm={6}>
-                <Paper className={useStyles.paper}>history: {history}</Paper>
-              </Grid>
+          onClick={() => {
+            handleViewChange('addUserToGroup');
+          }}
+        >
+          add group member
+        </Button>{' '}
+        <div className={useStyles.root}>
+          <Grid container spacing={3}>
+            <Grid item xs={6} sm={6}>
+              <Paper className={useStyles.paper}>
+                  <div>Previously chosen by {groupName}:</div>
+                  {history.map(restaurant => {
+                    return <div>{restaurant}</div>
+                  })}
+              </Paper>
             </Grid>
           </div>
         </div>
