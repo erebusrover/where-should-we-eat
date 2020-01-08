@@ -20,7 +20,7 @@ const OptionItem = (props) => {
   const {
     id, name, address, city, state,
     zipCode, price, rating, imageUrl,
-    phone, handleChooseOption, url
+    phone, handleChooseOption, confirm, url
   } = props;
   return (
     <Container>

@@ -48,10 +48,16 @@ const useStyles = makeStyles(theme => ({
 class Group extends React.Component {
   constructor(props) {
     super(props);
+    const {
+      choiceName, directionsPopup, choiceId
+    } = this.props;
     this.state = {
       winner: '',
       history: [],
       loading: true,
+      choiceName,
+      choiceId,
+      directionsPopup,
     };
     this.getHistory = this.getHistory.bind(this);
   }
@@ -79,7 +85,7 @@ class Group extends React.Component {
 
 
   render() {
-    const {
+    let {
       user,
       groupName,
       pricePoint,
@@ -96,129 +102,13 @@ class Group extends React.Component {
       veto,
       showVeto,
       toggleDialog,
-      directionsPopup,
       handleCategoriesInput,
+      confirm,
     } = this.props;
-
-    let { history } = this.state;
+    let { history, loading, directionsPopup, choiceId } = this.state;
     history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
     console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
-
-    if (this.state.loading) {
-      return (
-        <Container>
-          <h2 style={{ color: '#d454ff' }}>{groupName}</h2>
-          <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
-          <br />
-          <div>
-            {' '}
-            {showWinner === true ? (
-              <div>
-                <h3>{chooser} is the lucky decision maker</h3>
-                <br />
-                <div>
-                  {' '}
-                  {chooser ? (
-                    <div>
-                      <Input
-                        id="categories"
-                        type="text"
-                        onChange={handleCategoriesInput}
-                      />{' '}
-                      <Button
-                        style={{ background: '#9900cc', color: 'white' }}
-                        onClick={() => {
-                          handleGetOptions();
-                        }}
-                      >{' '}
-                        show options
-              </Button>
-                    </div>
-                  ) : (
-                      <h2></h2>
-                    )}
-                </div>
-                <h3>
-                  {veto} may veto {chooser}'s decision
-                {/* veto options go here */}
-                </h3>
-              </div>
-            ) : (
-                <div>
-                  <h3>click 'start game' to generate the group's decision maker</h3>
-                  <h3>click 'allow vetoer' to generate a random vetoer</h3>
-                </div>
-              )}
-          </div>
-          <div></div>
-          <br />
-          <Dialog
-            onBackdropClick={() => {
-              toggleDialog('directionsPopup');
-              this.getHistory();
-            }}
-            open={directionsPopup}
-          >
-            <DialogTitle>
-              {chooser} chose {choiceName}.
-          </DialogTitle>
-            <Link href={mapsUrl} target="_blank" rel="noreferrer">
-              click here for directions
-          </Link>
-          </Dialog>
-          <div>
-            <ul>
-              {members.map(groupMember => (
-                <GroupMember userImages={userImages} groupMember={groupMember} />
-              ))}
-            </ul>
-          </div>
-          <br />
-          <div>
-            <Button
-              style={{ background: '#9900cc', color: 'white' }}
-              onClick={() => {
-                randomizer();
-              }}
-            >
-              start game
-        </Button>{'  '}
-          </div>
-          <br />
-          <div>
-            <Button
-              style={{ background: '#9900cc', color: 'white' }}
-              onClick={() => {
-                vetoRandomizer();
-              }}
-            >
-              allow vetoer
-        </Button>{'  '}
-          </div>
-          <br />
-          <div>
-            <Button
-              style={{ background: '#d454ff', color: 'white' }}
-              onClick={() => {
-                handleViewChange('addUserToGroup');
-              }}
-            >
-              add group member
-        </Button>{' '}
-            <div className={useStyles.root}>
-              <Grid container spacing={3}>
-                <Grid item xs={6} sm={6}>
-                  <Paper className={useStyles.paper}>
-                    <div>Previously chosen by {groupName}:</div>
-                  </Paper>
-                </Grid>
-              </Grid>
-            </div>
-          </div>
-        </Container>
-      );
-    }
 
     return ( 
       <Container>
@@ -230,6 +120,13 @@ class Group extends React.Component {
           {showWinner === true ? (
             <div>
               <h3>{chooser} is the lucky decision maker</h3>
+              {directionsPopup && (
+                <div>
+                <div>{chooser} chose {choiceName.toLowerCase()}</div>
+                <Link href={mapsUrl} target="_blank" rel="noreferrer">click here for directions</Link>{' '}
+                <Button style={{ background: '#d454ff', color: 'white' }} onClick={() => confirm(choiceId, groupName, choiceName)}>confirm</Button>
+                </div>
+              )}
               <br />
               <div>
                 {' '}
@@ -261,9 +158,13 @@ class Group extends React.Component {
                     </h3>{' '}
                     <Button
                       style={{ background: '#FF0000', color: 'white' }}
-                      // onClick={() => {
-                      //   vetoChoice();
-                      // }}
+                      onClick={() => {
+                        this.setState({
+                          directionsPopup: false,
+                        }, () => {
+                          vetoRandomizer();
+                        })
+                      }}
                     >
                       {' '}
                       Veto
@@ -279,22 +180,7 @@ class Group extends React.Component {
             </div>
           )}
         </div>
-        <div></div>
         <br />
-        <Dialog
-          onBackdropClick={() => {
-            toggleDialog('directionsPopup');
-            this.getHistory();
-          }}
-          open={directionsPopup}
-        >
-          <DialogTitle>
-            {chooser} chose {choiceName}.
-          </DialogTitle>
-          <Link href={mapsUrl} target="_blank" rel="noreferrer">
-            click here for directions
-          </Link>
-        </Dialog>
         <div>
           <ul>
             {members.map(groupMember => (
@@ -341,9 +227,11 @@ class Group extends React.Component {
             <Grid item xs={6} sm={6}>
               <Paper className={useStyles.paper}>
                   <div>Previously chosen by {groupName}:</div>
-                  {history.map(restaurant => {
-                    return <div>{restaurant}</div>
-                  })}
+                  {!loading && ( 
+                  history.map(restaurant => {
+                  return <div>{restaurant}</div>
+                  })
+                  )}
               </Paper>
               </Grid>
             </Grid>

@@ -27,7 +27,6 @@ const Home = props => {
     <Container>
       <div>
         <h1 style={{ color: '#d454ff' }}>hi {user}!</h1>
-        <Avatar src={userImage} />
       </div>
       <h2>your groups:</h2>
       <div>

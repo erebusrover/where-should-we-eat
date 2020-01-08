@@ -210,11 +210,12 @@ const deleteGroup = async groupName => {
 
 // add chosen location to grouphistory table
 const addToGroupHistory = async group => {
-  const { groupName, id, name } = group;
+  const { groupName, locId, name } = group;
+  // debugger;
   const sql = `INSERT into groupHistory (groupp_id, location_id, restaurant_name) VALUES 
                 ((SELECT groupp_id FROM groupp WHERE groupName = ?), ?, ?)`;
   // debugger;
-  return pool.query(sql, [groupName, id, name]);
+  return pool.query(sql, [groupName, locId, name]);
 };
 
 // get group location history
