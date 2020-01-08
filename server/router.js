@@ -266,13 +266,13 @@ router.get('/groups/:groupName/users', (req, res) => {
   const { groupName } = req.params;
   return getAllGroupMembers(groupName)
     .then(function(members) {
-      console.log(members);
-      console.log(groupName);
+      // console.log(members);
+      // console.log(groupName);
       // get user images
       return getAllGroupMembersImages(groupName)
         .then(function(images) {
-          console.log(images[0]);
-          console.log(members[0]);
+          // console.log(images[0]);
+          // console.log(members[0]);
           const allMembersInfo = members[0].map(member => {
             return images[0].map(image => {
               return _.defaults(member, image);
@@ -450,11 +450,11 @@ router.get('/logout', (req, res) => {
 // GET /choices renders page with a few choices of where to eat
 router.get('/choices/:groupName/:categories', (req, res) => {
   const { groupName, categories } = req.params;
-  console.log(req);
-  console.log(groupName);
+  // console.log(req);
+  // console.log(groupName);
   const userCats = [];
   userCats.push(categories);
-  console.log(userCats);
+  // console.log(userCats);
   // db query to get dietary restrictions, pricepoint?
   // const categories = getAllUserRestrictions(groupName);
   return getAllUserRestrictions(groupName)
@@ -467,7 +467,7 @@ router.get('/choices/:groupName/:categories', (req, res) => {
           restrCats.forEach(restr => {
             userCats.push(restr);
           });
-          console.log(userCats);
+          // console.log(userCats);
           // const { lat, lng } = location.data.location;
           // this is hard coded due to geolocation issues --> getUserLocaton returns location of google server
           const query = {
@@ -478,7 +478,7 @@ router.get('/choices/:groupName/:categories', (req, res) => {
             price: 1,
           };
           return getRestaurants(query).then(function(response) {
-            console.log(response);
+            // console.log(response);
             const { businesses } = response.data;
             res.status(200);
             res.send(businesses);
@@ -515,7 +515,7 @@ router.get('/groups/:groupName/chooser', (req, res) => {
       res.send(response[0]);
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
       res.sendStatus(400);
     });
 });
@@ -529,7 +529,7 @@ router.post('/groups/:groupName/chooser', (req, res) => {
       res.sendStatus(201);
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
       res.sendStatus(400);
     });
 });
