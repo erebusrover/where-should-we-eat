@@ -210,15 +210,16 @@ const deleteGroup = async groupName => {
 
 // add chosen location to grouphistory table
 const addToGroupHistory = async group => {
-  const { groupName, id } = group;
-  const sql = `INSERT into groupHistory (groupp_id, location_id) VALUES 
-                ((SELECT groupp_id FROM groupp WHERE groupName = ?), ?)`;
-  return pool.query(sql, [groupName, id]);
+  const { groupName, id, name } = group;
+  const sql = `INSERT into groupHistory (groupp_id, location_id, restaurant_name) VALUES 
+                ((SELECT groupp_id FROM groupp WHERE groupName = ?), ?, ?)`;
+  // debugger;
+  return pool.query(sql, [groupName, id, name]);
 };
 
 // get group location history
 const getGroupHistory = async groupName => {
-  const sql = `SELECT location_id FROM groupHistory WHERE 
+  const sql = `SELECT restaurant_name FROM groupHistory WHERE 
                 (SELECT groupp_id FROM groupp WHERE groupName = ?) = groupp_id`;
   return pool.query(sql, [groupName]);
 };
