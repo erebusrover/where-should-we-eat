@@ -170,7 +170,7 @@ class Group extends React.Component {
           <div>
             <ul>
               {members.map(groupMember => (
-                <GroupMember userImages={userImages} groupMember={groupMember} />
+                <GroupMember groupMember={groupMember} />
               ))}
             </ul>
           </div>
