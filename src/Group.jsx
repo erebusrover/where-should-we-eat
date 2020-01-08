@@ -183,6 +183,7 @@ class Group extends React.Component {
             </Grid>
           </Grid>
         </div>
+        </div>
       </Container>
     );
   }
