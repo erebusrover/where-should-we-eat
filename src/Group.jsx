@@ -337,8 +337,9 @@ class Group extends React.Component {
                     return <div>{restaurant}</div>
                   })}
               </Paper>
+              </Grid>
             </Grid>
-          </div>
+        </div>
         </div>
       </Container>
     );
