@@ -75,5 +75,5 @@ CREATE TABLE groupHistory (
         REFERENCES groupp(groupp_id)
         ON DELETE CASCADE,
     location_id varchar(200) NOT NULL,
-    restaurant_name varchar(200) NOT NULL,
+    restaurant_name varchar(200) NOT NULL
 );
