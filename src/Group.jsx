@@ -5,7 +5,7 @@ import {
   Dialog,
   DialogTitle,
   Link,
-  Input
+  Input,
 } from '@material-ui/core';
 import GroupMember from './GroupMember.jsx';
 import { TextField } from '@material-ui/core';
@@ -222,7 +222,7 @@ class Group extends React.Component {
 
     return ( 
       <Container>
-        <h2 style={{ color: '#d454ff'}}>{groupName}</h2>
+        <h2 style={{ color: '#d454ff' }}>{groupName}</h2>
         <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
         <br />
         <div>
@@ -231,32 +231,38 @@ class Group extends React.Component {
             <div>
               <h3>{chooser} is the lucky decision maker</h3>
               <br />
-        <div>
-          {' '}
-          {chooser ? (
-            <div>
-              <Input
-                id="categories"
-                type="text"
-                onChange={handleCategoriesInput}
-              />{' '}
-              <Button
-                style={{ background: '#9900cc', color: 'white' }}
-                onClick={() => {
-                  handleGetOptions();
-                }}
-              >{' '}
-                show options
-              </Button>
-            </div>
-          ) : (
-            <h2></h2>
-          )}
-        </div>
-              <h3>
-                {veto} may veto {chooser}'s decision
-                {/* veto options go here */}
-              </h3>
+              <div>
+                {' '}
+                {chooser && (
+                  <div>
+                    <Input
+                      id="categories"
+                      type="text"
+                      onChange={handleCategoriesInput}
+                    />{' '}
+                    <Button
+                      style={{ background: '#9900cc', color: 'white' }}
+                      onClick={() => {
+                        handleGetOptions();
+                      }}
+                    >
+                      {' '}
+                      show options
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <div>
+                {' '}
+                {veto && (
+                  <div>
+                    <h3>
+                      {veto} may veto {chooser}'s decision
+                      {/* veto options go here */}
+                    </h3>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <div>
@@ -282,37 +288,39 @@ class Group extends React.Component {
           </Link>
         </Dialog>
         <div>
-        <ul>
-          {members.map(groupMember => (
-            <GroupMember userImages={userImages} groupMember={groupMember} />
-          ))}
-        </ul>
+          <ul>
+            {members.map(groupMember => (
+              <GroupMember userImages={userImages} groupMember={groupMember} />
+            ))}
+          </ul>
         </div>
         <br />
         <div>
-        <Button
-          style={{ background: '#9900cc', color: 'white' }}
-          onClick={() => {
-            randomizer();
-          }}
-        >
-          start game
-        </Button>{'  '}
+          <Button
+            style={{ background: '#9900cc', color: 'white' }}
+            onClick={() => {
+              randomizer();
+            }}
+          >
+            start game
+          </Button>
+          {'  '}
         </div>
         <br />
         <div>
-        <Button
-          style={{ background: '#9900cc', color: 'white' }}
-          onClick={() => {
-            vetoRandomizer();
-          }}
-        >
-          allow vetoer
-        </Button>{'  '}
+          <Button
+            style={{ background: '#9900cc', color: 'white' }}
+            onClick={() => {
+              vetoRandomizer();
+            }}
+          >
+            allow vetoer
+          </Button>
+          {'  '}
         </div>
-        <br /> 
+        <br />
         <div>
-        <Button
+          <Button
             style={{ background: '#d454ff', color: 'white' }}
           onClick={() => {
             handleViewChange('addUserToGroup');
@@ -330,8 +338,7 @@ class Group extends React.Component {
                   })}
               </Paper>
             </Grid>
-          </Grid>
-        </div>
+          </div>
         </div>
       </Container>
     );
