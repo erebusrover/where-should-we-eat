@@ -11,6 +11,8 @@ const YelpInfo = ({info}) => {
 
 return (
 <div>
+<br /> 
+    <div style={{ fontSize: "20px", color:'#ff9500', fontWeight: "bolder"}}>{price}</div>
   <div>
     <Phone fontSize="small" color="primary" />{' '}
     {phone}
@@ -18,7 +20,6 @@ return (
   <div>
     <Room fontSize="small" color="secondary" />{' '}
   {address}</div>
-  <div>{price}</div>
   <Rating
     name="read-only"
     value={rating}
