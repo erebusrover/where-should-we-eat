@@ -3,6 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { Container } from '@material-ui/core';
 import RemoveUserForm from './RemoveUserForm.jsx';
 import Preferences from './Preferences.jsx';
 import SignIn from './SignIn.jsx';
@@ -254,6 +255,7 @@ class App extends React.Component {
     const theChosen = members[memberIndex].userName;
     console.log(members);
     this.setState({ chooser: theChosen, showWinner: true });
+
     const vetoIndex = Math.floor(Math.random() * members.length);
     const vetoCaster = members[vetoIndex].userName;
     this.setState({ veto: vetoCaster, showVeto: true });
@@ -617,7 +619,7 @@ class App extends React.Component {
     }
 
     return (
-      <div>
+      <Container>
         <div>
           <Header
             handleViewChange={handleViewChange}
@@ -642,7 +644,7 @@ class App extends React.Component {
           <DialogTitle>Welcome {user} You have signed in</DialogTitle>
         </Dialog>
         {View}
-      </div>
+      </Container>
     );
   }
 }

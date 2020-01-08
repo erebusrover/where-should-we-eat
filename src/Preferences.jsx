@@ -7,6 +7,7 @@ import { Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 import { TextField } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 
 const PurpleRadio = withStyles({
   root: {
@@ -46,7 +47,7 @@ const Preferences = props => {
   };
 
   return (
-    <div>
+    <Container>
       <ul>
         <h1>Pick A User Name</h1>
         <TextField id="outlined-basic" label="User Name" variant="outlined" onChange={handleUserNameInput} />
@@ -213,7 +214,7 @@ const Preferences = props => {
       >
         Submit & SignIn
       </Button>
-    </div>
+    </Container>
   );
 };
 

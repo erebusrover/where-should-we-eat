@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from '@material-ui/core';
+import { Avatar, Container } from '@material-ui/core';
 import GroupItem from './GroupItem.jsx';
 import './App.css';
 
@@ -22,8 +22,7 @@ const Home = props => {
   } = props;
 
   return (
-    <div>
-      <div>Home</div>
+    <Container>
       <div>
         <h1>hi {user}!</h1>
         <Avatar src={userImage} />
@@ -50,7 +49,7 @@ const Home = props => {
           </div>
         )}
       </div>
-    </div>
+    </Container>
   );
 };
 
