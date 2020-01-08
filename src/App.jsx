@@ -213,7 +213,8 @@ class App extends React.Component {
 
   getHistory() {
     console.log("we're clicking to get history");
-    axios.get('/api/groupHistory')
+    const groupName = this.groupName
+    axios.get('/api/groupHistory', { headers: groupName })
       .then((response) => {
         console.log("successfully  got group history", response);
         // this.setState({
