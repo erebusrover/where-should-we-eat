@@ -254,12 +254,20 @@ class Group extends React.Component {
               </div>
               <div>
                 {' '}
-                {veto && (
+                {showVeto && (
                   <div>
                     <h3>
                       {veto} may veto {chooser}'s decision
-                      {/* veto options go here */}
-                    </h3>
+                    </h3>{' '}
+                    <Button
+                      style={{ background: '#FF0000', color: 'white' }}
+                      onClick={() => {
+                        vetoChoice();
+                      }}
+                    >
+                      {' '}
+                      Veto
+                    </Button>
                   </div>
                 )}
               </div>
