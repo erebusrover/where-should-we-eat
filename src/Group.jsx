@@ -9,6 +9,25 @@ import {
 } from '@material-ui/core';
 import GroupMember from './GroupMember.jsx';
 import { TextField } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: theme.spacing(16),
+      height: theme.spacing(16),
+    },
+  },
+  // paper: {
+  //   padding: theme.spacing(2),
+  //   textAlign: 'center',
+  //   color: theme.palette.text.secondary,
+  // },
+}));
 
 /**
  * This is the component that is rendered when a user clicks on one of their groups
@@ -35,10 +54,11 @@ class Group extends React.Component {
 
   render() {
     const {
+      history,
       user,
       groupName,
       pricePoint,
-      groupMembers,
+      members,
       handleViewChange,
       userImages,
       handleGetOptions,
@@ -47,13 +67,16 @@ class Group extends React.Component {
       randomizer,
       chooser,
       showWinner,
+      vetoRandomizer,
       veto,
       showVeto,
       toggleDialog,
       directionsPopup,
       handleCategoriesInput,
     } = this.props;
+
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
+
     return (
       <Container>
         <h2 style={{ color: '#d454ff'}}>{groupName}</h2>
@@ -116,7 +139,7 @@ class Group extends React.Component {
         </Dialog>
         <div>
         <ul>
-          {groupMembers.map(groupMember => (
+          {members.map(groupMember => (
             <GroupMember userImages={userImages} groupMember={groupMember} />
           ))}
         </ul>
@@ -137,7 +160,7 @@ class Group extends React.Component {
         <Button
           style={{ background: '#9900cc', color: 'white' }}
           onClick={() => {
-            randomizer();
+            vetoRandomizer();
           }}
         >
           allow vetoer
@@ -153,6 +176,12 @@ class Group extends React.Component {
         >
           add group member
         </Button>{' '}
+        <div className={useStyles.root}>
+          <Grid container spacing={3}>
+            <Grid item xs={6} sm={6}>
+              <Paper className={useStyles.paper}>History: {history}</Paper>
+            </Grid>
+          </Grid>
         </div>
       </Container>
     );
