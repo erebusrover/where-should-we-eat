@@ -52,6 +52,10 @@ class Group extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.getHistory();
+  }
+
   render() {
     const {
       history,
@@ -122,11 +126,11 @@ class Group extends React.Component {
               </div>
             </div>
           ) : (
-            <div>
-              <h3>click 'start game' to generate the group's decision maker</h3>
-              <h3>click 'allow vetoer' to generate a random vetoer</h3>
-            </div>
-          )}
+              <div>
+                <h3>click 'start game' to generate the group's decision maker</h3>
+                <h3>click 'allow vetoer' to generate a random vetoer</h3>
+              </div>
+            )}
         </div>
         <div></div>
         <br />
@@ -187,7 +191,13 @@ class Group extends React.Component {
           <div className={useStyles.root}>
             <Grid container spacing={3}>
               <Grid item xs={6} sm={6}>
-                <Paper className={useStyles.paper}>history: {history}</Paper>
+                <h3>History</h3>
+                {history.map(place =>
+
+                  <Paper className={useStyles.paper}>
+                    {place} <br />
+                  </Paper>
+                )}
               </Grid>
             </Grid>
           </div>
