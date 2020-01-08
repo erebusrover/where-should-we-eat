@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Button, Card, CardActions, CardMedia, CardActionArea, Typography, CardContent, Link
+  Button, Card, CardMedia, CardActionArea, Typography, CardContent, Container
 } from '@material-ui/core/';
 import YelpInfo from './OptionsYelpInfo.jsx';
 
@@ -23,6 +23,7 @@ const OptionItem = (props) => {
     phone, handleChooseOption, url
   } = props;
   return (
+    <Container>
       <div>
         <Card maxWidth="345">
           <CardActionArea>
@@ -39,7 +40,7 @@ const OptionItem = (props) => {
         <Button
           style={{ background: '#9900cc', color: 'white' }}
           onClick={ () => handleChooseOption(id, name, address, city, state, zipCode) }>
-          We're eating here
+          we're eating here
         </Button>
         {/* component here to display the card details  */}
         <YelpInfo info={props}/>
@@ -47,6 +48,7 @@ const OptionItem = (props) => {
           </CardActionArea>
         </Card>
       </div>
+    </Container>
   );
 };
 
