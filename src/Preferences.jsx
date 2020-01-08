@@ -48,17 +48,16 @@ const Preferences = props => {
 
   return (
     <Container>
-      <ul>
-        <h1>Pick A User Name</h1>
-        <TextField id="outlined-basic" label="User Name" variant="outlined" onChange={handleUserNameInput} />
-        <h1>Select a User Image </h1>
-        <RadioGroup row="true" aria-label="image" name="image">
-          <img
+      <h3 style={{ color: '#d454ff' }}>username</h3>
+       <TextField id="outlined-basic" label="User Name" variant="outlined" onChange={handleUserNameInput} />
+        {/* <h1>Select a User Image </h1>
+        // {/* <RadioGroup row="true" aria-label="image" name="image"> */}
+          {/* <img
             className="userImages"
             src={oppossum}
             width="130"
             height="121"
-            border="5"
+            // border="5"
           />
           <FormControlLabel
             className="radio"
@@ -203,8 +202,9 @@ const Preferences = props => {
             label="None"
             onClick={() => handlePreferenceChange('dietaryRestriction', 'None')}
           />
-        </RadioGroup>
-      </ul>
+        </RadioGroup> */}
+      <div>
+      <br />
       <Button
         variant="contained"
         style={{ background: '#9900cc', color: 'white' }}
@@ -214,6 +214,7 @@ const Preferences = props => {
       >
         Submit & SignIn
       </Button>
+      </div>
     </Container>
   );
 };
