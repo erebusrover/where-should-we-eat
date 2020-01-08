@@ -7,10 +7,15 @@ import { Button } from '@material-ui/core';
 
 const Title = (props) => {
   const { handleViewChange } = props;
-  return (<div>
-    <h1>Welcome to WSWE </h1>
-    <h2>Please Create an Account</h2>
-    <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('profile'); }}>Create an Account</Button>
+  return (<div style={{ color: '#d454ff' }}>
+    <h1>WSWE</h1>
+    <h3>Login</h3>
+    <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('profile'); }}>Login</Button>{' '}
+    <div>{' '}
+    <br />
+    <h3>Create Account</h3>
+    <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('profile'); }}>Create Account</Button>
+    </div>
 </div>);
 };
 export default Title;
