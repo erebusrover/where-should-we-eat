@@ -66,7 +66,7 @@ class App extends React.Component {
       login: false,
       directionsPopup: false,
       users: [],
-      history: 'PizzaHut',
+      history: ['PizzaHut', 'Little Korea', 'Tacos and Beer'],
     };
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
@@ -185,6 +185,7 @@ class App extends React.Component {
         this.toggleDialog('open');
       });
   }
+
   //*********options history  */
   handleChooseOption(id, name, address, city, state, zipCode) {
     console.log('hey');
