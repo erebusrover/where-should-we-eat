@@ -12,6 +12,22 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: theme.spacing(16),
+      height: theme.spacing(16),
+    },
+  },
+  // paper: {
+  //   padding: theme.spacing(2),
+  //   textAlign: 'center',
+  //   color: theme.palette.text.secondary,
+  // },
+}));
+
 /**
  * This is the component that is rendered when a user clicks on one of their groups
  * from their home page.
@@ -57,7 +73,9 @@ class Group extends React.Component {
       directionsPopup,
       handleCategoriesInput,
     } = this.props;
+
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
+
     return (
       <Container maxWidth="sm">
         <h1>{groupName}</h1>
@@ -159,4 +177,3 @@ class Group extends React.Component {
 }
 
 export default Group;
-
