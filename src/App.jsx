@@ -59,6 +59,7 @@ class App extends React.Component {
       choiceAddress: '',
       chosen: false,
       veto: '',
+      vetoers: [],
       showWinner: false,
       showVeto: false,
       open: false,
@@ -91,6 +92,7 @@ class App extends React.Component {
     this.handleUserStatusInput = this.handleUserStatusInput.bind(this);
     this.handleViewChange = this.handleViewChange.bind(this);
     this.randomizer = this.randomizer.bind(this);
+    this.vetoRandomizer = this.vetoRandomizer.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
     this.getHistory = this.getHistory.bind(this);
   }
@@ -268,15 +270,19 @@ class App extends React.Component {
   }
 
   randomizer() {
-    const { members, groupName } = this.state;
+    const { members, groupName, vetoers } = this.state;
     const memberIndex = Math.floor(Math.random() * members.length);
     const theChosen = members[memberIndex].userName;
-    console.log(members);
-    this.setState({ chooser: theChosen, showWinner: true });
-
-    const vetoIndex = Math.floor(Math.random() * members.length);
-    const vetoCaster = members[vetoIndex].userName;
-    this.setState({ veto: vetoCaster, showVeto: true });
+    this.setState({ chooser: theChosen, showWinner: true, members: members });
+    members.forEach(member => {
+      if (member.userName !== theChosen) {
+        vetoers.push(member);
+      }
+      this.setState({
+        vetoers,
+      });
+      console.log(members, vetoers);
+    });
 
     axios
       .post(`/api/groups/${groupName}`)
@@ -287,6 +293,14 @@ class App extends React.Component {
         console.error(err);
         this.toggleDialog();
       });
+  }
+
+  vetoRandomizer() {
+    const { vetoers } = this.state;
+    console.log(vetoers);
+    const vetoIndex = Math.floor(Math.random() * vetoers.length);
+    const vetoCaster = vetoers[vetoIndex].userName;
+    this.setState({ veto: vetoCaster, showVeto: true });
   }
 
   handlePreferenceChange(k, v) {
@@ -445,6 +459,7 @@ class App extends React.Component {
     const {
       getHistory,
       randomizer,
+      vetoRandomizer,
       getGroupMembers,
       getGroupPricePoint,
       handleGroupSetState,
@@ -578,7 +593,7 @@ class App extends React.Component {
           userImages={userImages}
           group={group}
           groupName={groupName}
-          groupMembers={members}
+          members={members}
           pricePoint={pricePoint}
           handleGetOptions={handleGetOptions}
           handleCategoriesInput={handleCategoriesInput}
@@ -586,6 +601,7 @@ class App extends React.Component {
           getGroupPricePoint={getGroupPricePoint}
           handleViewChange={handleViewChange}
           randomizer={randomizer}
+          vetoRandomizer={vetoRandomizer}
           chooser={chooser}
           veto={veto}
           showWinner={showWinner}
