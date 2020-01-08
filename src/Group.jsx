@@ -13,13 +13,18 @@ import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: theme.spacing(16),
+      height: theme.spacing(16),
+    },
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
+  // paper: {
+  //   padding: theme.spacing(2),
+  //   textAlign: 'center',
+  //   color: theme.palette.text.secondary,
+  // },
 }));
 
 
@@ -84,7 +89,7 @@ class Group extends React.Component {
         <ul>
           {groupMembers.map((groupMember) => <GroupMember userImages={userImages} groupMember={groupMember} />)}
         </ul>
-        <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>
+        <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { handleViewChange('addUserToGroup'); }}>Add Group Member</Button>{' '}
         {/* add padding/margin here between buttons */}
         <Button style={{ background: '#9900cc', color: 'white' }} onClick={() => { randomizer(); }}>Start Game</Button>
         {/* <Box color="black" bgcolor="palevioletred" width={"25%"} height={"25%"} p={1} >{History}</Box> */}
