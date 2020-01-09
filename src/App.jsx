@@ -14,6 +14,7 @@ import UserSettings from './UserSettings.jsx';
 import Group from './Group.jsx';
 import AddUserForm from './AddUserForm.jsx';
 import Options from './Options.jsx';
+import RandomPlace from './RandomPlace.jsx';
 import './App.css';
 import Title from './TitlePage.jsx';
 import AltHeader from './AltHeader.jsx';
@@ -654,6 +655,15 @@ class App extends React.Component {
       View = (
         <Options
           options={options}
+          handlePass={handlePass}
+          handleChooseOption={handleChooseOption}
+        />
+      );
+    }
+    else if (view === '/randomPlace') {
+      View = (
+        <RandomPlace
+          randomPlace={randomPlace}
           handlePass={handlePass}
           handleChooseOption={handleChooseOption}
         />
