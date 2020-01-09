@@ -499,6 +499,9 @@ class App extends React.Component {
       choices,
       randomPlace,
       showRandom,
+      randomId,
+      randomName,
+      randomAddress,
     } = this.state;
     const {
       randomChoice,
