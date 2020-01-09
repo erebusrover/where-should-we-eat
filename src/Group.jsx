@@ -49,7 +49,7 @@ class Group extends React.Component {
   constructor(props) {
     super(props);
     const {
-      choiceName, directionsPopup, choiceId
+      choiceName, directionsPopup, choiceId, randomPlace
     } = this.props;
     this.state = {
       winner: '',
@@ -58,6 +58,7 @@ class Group extends React.Component {
       choiceName,
       choiceId,
       directionsPopup,
+      randomPlace,
     };
     this.getHistory = this.getHistory.bind(this);
   }
@@ -104,11 +105,10 @@ class Group extends React.Component {
       showVeto,
       toggleDialog,
       handleCategoriesInput,
-      randomPlace,
       randomChoice,
       confirm,
     } = this.props;
-    let { history, loading, directionsPopup, choiceId } = this.state;
+    let { history, loading, directionsPopup, choiceId, randomPlace } = this.state;
     history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
     // console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
@@ -128,6 +128,14 @@ class Group extends React.Component {
                 <div>{chooser} chose {choiceName.toLowerCase()}</div>
                 <Link href={mapsUrl} target="_blank" rel="noreferrer">click here for directions</Link>{' '}
                 <Button style={{ background: '#d454ff', color: 'white' }} onClick={() => confirm(choiceId, groupName, choiceName)}>confirm</Button>
+                </div>
+              )}
+              {randomPlace.name && (
+                <div>
+                  <div style={{ color: '#d454ff' }}>randomly chosen: <p style={{color: 'black'}}>{randomPlace.name}</p></div>
+                  <div style={{ color: '#d454ff' }}>fate has decided for {groupName}</div>
+                  <div style={{ color: '#ff0000' }}>no veto allowed</div>
+                  <div style={{ color: '#d454ff' }}>start another game to choose again</div>
                 </div>
               )}
               <br />
@@ -206,6 +214,9 @@ class Group extends React.Component {
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
               randomizer();
+              this.setState({
+                randomPlace: '',
+              })
             }}
           >
             start game
@@ -234,7 +245,6 @@ class Group extends React.Component {
           >
             add group member
         </Button>{' '}
-          <h1> {randomPlace.name} </h1>
           <div className={useStyles.root}>
             <Grid container spacing={3}>
               <Grid item xs={6} sm={6}>
