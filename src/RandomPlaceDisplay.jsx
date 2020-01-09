@@ -20,7 +20,7 @@ const RandomPlaceDisplay = (props) => {
   const {
     id, name, address, city, state,
     zipCode, price, rating, imageUrl,
-    phone, handleChooseOption, url
+    phone, handleRandomOption, url
   } = props;
   return (
     <Container>

@@ -529,6 +529,7 @@ class App extends React.Component {
       toggleDialog,
       handlePass,
       handleSignOutWithGoogle,
+      handleRandomOption,
     } = this;
     /**
      * The following lines handle view changes.
