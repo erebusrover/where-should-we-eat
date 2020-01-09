@@ -273,19 +273,19 @@ class App extends React.Component {
       })
       .then(() => {
         // this.handleViewChange('options');
+        console.log("clicking random choice", this.state.options);
+        const choiceIndex = Math.floor(Math.random() * this.state.options
+          .length);
+
+        console.log("trying to get random", this.state.options[choiceIndex])
+        const randomPlace = this.state.options[choiceIndex]
+        this.setState({ randomPlace: randomPlace, showRandom: true })
       })
       .catch(error => {
         console.error(error);
         this.toggleDialog('open');
       });
 
-    console.log("clicking random choice", this.state.options);
-    const choiceIndex = Math.floor(Math.random() * this.state.options
-      .length);
-
-    console.log("trying to get random", this.state.options[choiceIndex])
-    const randomPlace = this.state.options[choiceIndex]
-    this.setState({ randomPlace: randomPlace, showRandom: true })
   }
 
   randomizer() {
