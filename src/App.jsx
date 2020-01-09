@@ -303,6 +303,7 @@ class App extends React.Component {
       })
       .then(() => {
         // this.handleViewChange('options');
+        this.handleViewChange('randomPlace');
         console.log("clicking random choice", this.state.options);
         const choiceIndex = Math.floor(Math.random() * this.state.options
           .length);
