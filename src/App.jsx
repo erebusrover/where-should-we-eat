@@ -61,11 +61,13 @@ class App extends React.Component {
       veto: '',
       vetoers: [],
       showWinner: false,
+      showRandom: false,
       showVeto: false,
       open: false,
       login: false,
       directionsPopup: false,
       users: [],
+      randomPlace: {},
     };
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
@@ -92,6 +94,7 @@ class App extends React.Component {
     this.handleViewChange = this.handleViewChange.bind(this);
     this.randomizer = this.randomizer.bind(this);
     this.vetoRandomizer = this.vetoRandomizer.bind(this);
+    this.randomChoice = this.randomChoice.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
   }
 
@@ -249,6 +252,40 @@ class App extends React.Component {
       .catch(() => {
         this.toggleDialog();
       });
+  }
+
+  randomChoice() {
+    // const { members } = this.state;
+    // console.log("we're looking at choices", members);
+    const { groupName, categories } = this.state;
+    axios
+      .get(`/api/choices/${groupName}/${categories}`, {
+        params: {
+          groupName,
+          categories,
+        },
+      })
+      .then(response => {
+        const { data } = response;
+        this.setState({
+          options: data,
+        });
+      })
+      .then(() => {
+        // this.handleViewChange('options');
+      })
+      .catch(error => {
+        console.error(error);
+        this.toggleDialog('open');
+      });
+
+    console.log("clicking random choice", this.state.options);
+    const choiceIndex = Math.floor(Math.random() * this.state.options
+      .length);
+
+    console.log("trying to get random", this.state.options[choiceIndex])
+    const randomPlace = this.state.options[choiceIndex]
+    this.setState({ randomPlace: randomPlace, showRandom: true })
   }
 
   randomizer() {
@@ -428,8 +465,12 @@ class App extends React.Component {
       dietaryRestriction,
       users,
       tempMember,
+      choices,
+      randomPlace,
+      showRandom,
     } = this.state;
     const {
+      randomChoice,
       randomizer,
       vetoRandomizer,
       getGroupMembers,
@@ -583,6 +624,9 @@ class App extends React.Component {
           users={users}
           choiceName={choiceName}
           history={history}
+          randomPlace={randomPlace}
+          showRandom={showRandom}
+          randomChoice={randomChoice}
 
         />
       );

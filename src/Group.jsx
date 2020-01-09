@@ -23,11 +23,11 @@ const useStyles = makeStyles(theme => ({
       height: theme.spacing(16),
     },
   },
-  // paper: {
-  //   padding: theme.spacing(2),
-  //   textAlign: 'center',
-  //   color: theme.palette.text.secondary,
-  // },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
 }));
 
 /**
@@ -52,6 +52,9 @@ class Group extends React.Component {
       winner: '',
       history: [],
       loading: true,
+      // showRandom: ,
+      // randomPlace,
+
     };
     this.getHistory = this.getHistory.bind(this);
   }
@@ -81,6 +84,7 @@ class Group extends React.Component {
   render() {
     const {
       user,
+      showRandom,
       groupName,
       pricePoint,
       members,
@@ -98,11 +102,13 @@ class Group extends React.Component {
       toggleDialog,
       directionsPopup,
       handleCategoriesInput,
+      randomPlace,
+      randomChoice,
     } = this.props;
 
     let { history } = this.state;
     history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
-    console.log(history)
+    // console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
 
     if (this.state.loading) {
@@ -176,6 +182,7 @@ class Group extends React.Component {
           </div>
           <br />
           <div>
+
             <Button
               style={{ background: '#9900cc', color: 'white' }}
               onClick={() => {
@@ -220,7 +227,7 @@ class Group extends React.Component {
       );
     }
 
-    return ( 
+    return (
       <Container>
         <h2 style={{ color: '#d454ff' }}>{groupName}</h2>
         <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
@@ -261,9 +268,9 @@ class Group extends React.Component {
                     </h3>{' '}
                     <Button
                       style={{ background: '#FF0000', color: 'white' }}
-                      // onClick={() => {
-                      //   vetoChoice();
-                      // }}
+                    // onClick={() => {
+                    //   vetoChoice();
+                    // }}
                     >
                       {' '}
                       Veto
@@ -273,11 +280,11 @@ class Group extends React.Component {
               </div>
             </div>
           ) : (
-            <div>
-              <h3>click 'start game' to generate the group's decision maker</h3>
-              <h3>click 'allow vetoer' to generate a random vetoer</h3>
-            </div>
-          )}
+              <div>
+                <h3>click 'start game' to generate the group's decision maker</h3>
+                <h3>click 'allow vetoer' to generate a random vetoer</h3>
+              </div>
+            )}
         </div>
         <div></div>
         <br />
@@ -330,24 +337,49 @@ class Group extends React.Component {
         <div>
           <Button
             style={{ background: '#d454ff', color: 'white' }}
-          onClick={() => {
-            handleViewChange('addUserToGroup');
-          }}
-        >
-          add group member
+            onClick={() => {
+              handleViewChange('addUserToGroup');
+            }}
+          >
+            add group member
         </Button>{' '}
-        <div className={useStyles.root}>
-          <Grid container spacing={3}>
-            <Grid item xs={6} sm={6}>
-              <Paper className={useStyles.paper}>
+          <Button
+            style={{ background: '#d454ff', color: 'white' }}
+            onClick={() => {
+              randomChoice();
+            }}
+          >
+            Get random choice
+        </Button>{' '}&nbsp;
+        <br />
+          <h1> {randomPlace.name} </h1>
+          {/* <div className="row">
+            {showRandom === 'true' ? (
+              <div className="alert alert-danger" role="alert">
+                {randomPlace.name}
+
+              </div>
+            ) : 'Something went wrong'}
+          </div> */}
+          {/* <div className="row">
+            { //Check if message failed
+              (showRandom === 'true')
+                ? <div> {randomPlace}</div>
+                : <div> something went wrong </div>
+            }
+          </div> */}
+          <div className={useStyles.root}>
+            <Grid container spacing={3}>
+              <Grid item xs={6} sm={6}>
+                <Paper className={useStyles.paper}>
                   <div>Previously chosen by {groupName}:</div>
                   {history.map(restaurant => {
                     return <div>{restaurant}</div>
                   })}
-              </Paper>
+                </Paper>
               </Grid>
             </Grid>
-        </div>
+          </div>
         </div>
       </Container>
     );
