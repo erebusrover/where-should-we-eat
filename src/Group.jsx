@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import { maxWidth } from '@material-ui/system';
+import { top } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,9 +50,7 @@ const useStyles = makeStyles(theme => ({
 class Group extends React.Component {
   constructor(props) {
     super(props);
-    const {
-      choiceName, directionsPopup, choiceId, randomPlace
-    } = this.props;
+    const { choiceName, directionsPopup, choiceId, showOptions, randomPlace } = this.props;
     this.state = {
       winner: '',
       history: [],
@@ -87,6 +86,7 @@ class Group extends React.Component {
 
 
   render() {
+    // const useStyles = useStyles();
     let {
       user,
       showRandom,
@@ -104,21 +104,41 @@ class Group extends React.Component {
       vetoRandomizer,
       veto,
       showVeto,
+      showOptions,
       toggleDialog,
       handleCategoriesInput,
       randomChoice,
       confirm,
+      top,
     } = this.props;
     let { history, loading, directionsPopup, choiceId, randomPlace, confirmed} = this.state;
     history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
     // console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
 
-    return ( 
+    return (
       <Container>
         <h2 style={{ color: '#d454ff' }}>{groupName}</h2>
         <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
         <br />
+        <div className={useStyles.root}>
+          <Grid container spacing={3}
+            direction="column"
+            justify="flex-start"
+            alignItems="flex-end"
+            margin='top'>
+            <Grid item xs={6} sm={6}>
+              <Paper className={useStyles.paper}>
+                <div>Previously chosen by {groupName}:</div>
+                {!loading && (
+                  history.map(restaurant => {
+                    return <div>{restaurant}</div>
+                  })
+                )}
+              </Paper>
+            </Grid>
+          </Grid>
+        </div>
         <div>
           {' '}
           {showWinner === true ? (
@@ -152,7 +172,7 @@ class Group extends React.Component {
               <br />
               <div>
                 {' '}
-                {chooser && (
+                {showOptions && (
                   <div style={{marginTop: "10px"}}>
                     <Input
                       id="categories"
@@ -164,6 +184,7 @@ class Group extends React.Component {
                     <br />
                     <Button
                       size="medium"
+                      className={useStyles.margin}
                       style={{ background: '#9900cc', color: 'white' }}
                       onClick={() => {
                         handleGetOptions();
@@ -174,6 +195,8 @@ class Group extends React.Component {
                     </Button>{' '}
                     <Button
                       size="medium"
+                      variant="contained" 
+                      className={useStyles.margin}
                       style={{ background: '#9900cc', color: 'white' }}
                       onClick={() => {
                         randomChoice();
@@ -193,9 +216,10 @@ class Group extends React.Component {
                 {' '}
                 {showVeto && (
                   <div>
-                    <h3>{veto} may veto {chooser}'s decision</h3>{' '}
-                    <Button
-                      size="small"
+                    <h3>
+                      {veto} may veto {chooser}'s decision
+                    </h3>{' '}
+                    <Button variant="contained" size="small" className={useStyles.margin}
                       style={{ background: '#FF0000', color: 'white' }}
                       onClick={() => {
                         this.setState({
@@ -238,6 +262,7 @@ class Group extends React.Component {
         <div>
           <Button
             size="medium"
+            variant="contained"
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
               randomizer();
@@ -256,6 +281,7 @@ class Group extends React.Component {
         <div>
           <Button
             size="medium"
+            variant="contained"
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
               vetoRandomizer();
@@ -269,6 +295,7 @@ class Group extends React.Component {
         <div>
           <Button
             size="medium"
+            variant="contained" 
             style={{ background: '#d454ff', color: 'white' }}
             onClick={() => {
               handleViewChange('addUserToGroup');
@@ -276,17 +303,17 @@ class Group extends React.Component {
           >
             add group member
         </Button>{' '}
+          <h1> {randomPlace.name} </h1>
           <div className={useStyles.root}>
             <Grid container spacing={3}>
               <Grid item xs={6} sm={6}>
                 <Paper className={useStyles.paper}>
                   <div>Previously chosen by {groupName}:</div>
-                  {!loading && ( 
-                  history.map(restaurant => {
-                  return <div>{restaurant}</div>
-                  })
-                  )}
-              </Paper>
+                  {!loading &&
+                    history.map(restaurant => {
+                      return <div>{restaurant}</div>;
+                    })}
+                </Paper>
               </Grid>
             </Grid>
           </div>
