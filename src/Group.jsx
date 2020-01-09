@@ -109,7 +109,7 @@ class Group extends React.Component {
       randomChoice,
       confirm,
     } = this.props;
-    let { history, loading, directionsPopup, choiceId, randomPlace } = this.state;
+    let { history, loading, directionsPopup, choiceId, randomPlace, confirmed} = this.state;
     history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
     // console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
@@ -128,7 +128,17 @@ class Group extends React.Component {
                 <div>
                 <div>{chooser} chose {choiceName.toLowerCase()}</div>
                 <Link href={mapsUrl} target="_blank" rel="noreferrer">click here for directions</Link>{' '}
-                <Button style={{ background: '#d454ff', color: 'white' }} onClick={() => confirm(choiceId, groupName, choiceName)}>confirm</Button>
+                <div>
+                <br />
+                <Button size="small" style={{ background: '#d454ff', color: 'white' }} onClick={() => {
+                  confirm(choiceId, groupName, choiceName);
+                  this.setState({
+                    confirmed: true,
+                  })
+                }}>confirm</Button>
+                </div>
+                <br />
+                  {confirmed && (<div style={{ fontWeight: 'bold', color: '#ff0000' }}>{groupName} is eating at {choiceName.toLowerCase()}</div>)}
                 </div>
               )}
               {randomPlace.name && (
@@ -143,13 +153,17 @@ class Group extends React.Component {
               <div>
                 {' '}
                 {chooser && (
-                  <div>
+                  <div style={{marginTop: "10px"}}>
                     <Input
                       id="categories"
                       type="text"
                       onChange={handleCategoriesInput}
+                      style={{ backgroundColor: '#e8f0fe50'}}
                     />{' '}
+                    <div>
+                    <br />
                     <Button
+                      size="medium"
                       style={{ background: '#9900cc', color: 'white' }}
                       onClick={() => {
                         handleGetOptions();
@@ -159,13 +173,18 @@ class Group extends React.Component {
                       show options
                     </Button>{' '}
                     <Button
+                      size="medium"
                       style={{ background: '#9900cc', color: 'white' }}
                       onClick={() => {
                         randomChoice();
+                        this.setState({
+                          confirmed: true,
+                        })
                       }}
                     >
-                      Get random choice
+                      random choice
         </Button>{' '}&nbsp;
+        </div>
         <br />
                   </div>
                 )}
@@ -174,10 +193,9 @@ class Group extends React.Component {
                 {' '}
                 {showVeto && (
                   <div>
-                    <h3>
-                      {veto} may veto {chooser}'s decision
-                    </h3>{' '}
+                    <h3>{veto} may veto {chooser}'s decision</h3>{' '}
                     <Button
+                      size="small"
                       style={{ background: '#FF0000', color: 'white' }}
                       onClick={() => {
                         this.setState({
@@ -219,11 +237,14 @@ class Group extends React.Component {
         <br />
         <div>
           <Button
+            size="medium"
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
               randomizer();
               this.setState({
                 randomPlace: '',
+                confirmed: false,
+                directionsPopup: false,
               })
             }}
           >
@@ -234,6 +255,7 @@ class Group extends React.Component {
         <br />
         <div>
           <Button
+            size="medium"
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
               vetoRandomizer();
@@ -246,6 +268,7 @@ class Group extends React.Component {
         <br />
         <div>
           <Button
+            size="medium"
             style={{ background: '#d454ff', color: 'white' }}
             onClick={() => {
               handleViewChange('addUserToGroup');
