@@ -23,11 +23,11 @@ const useStyles = makeStyles(theme => ({
       height: theme.spacing(16),
     },
   },
-  // paper: {
-  //   padding: theme.spacing(2),
-  //   textAlign: 'center',
-  //   color: theme.palette.text.secondary,
-  // },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
 }));
 
 /**
@@ -82,9 +82,11 @@ class Group extends React.Component {
       });
   }
 
+
   render() {
     let {
       user,
+      showRandom,
       groupName,
       pricePoint,
       members,
@@ -113,7 +115,7 @@ class Group extends React.Component {
 
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
 
-    return (
+    return ( 
       <Container>
         <h2 style={{ color: '#d454ff' }}>{groupName}</h2>
         <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
@@ -157,7 +159,16 @@ class Group extends React.Component {
                     >
                       {' '}
                       show options
-                    </Button>
+                    </Button>{' '}
+                    <Button
+                      style={{ background: '#9900cc', color: 'white' }}
+                      onClick={() => {
+                        // randomChoice();
+                      }}
+                    >
+                      Get random choice
+        </Button>{' '}&nbsp;
+        <br />
                   </div>
                 )}
               </div>
@@ -189,11 +200,11 @@ class Group extends React.Component {
               </div>
             </div>
           ) : (
-            <div>
-              <h3>click 'start game' to generate the group's decision maker</h3>
-              <h3>click 'allow vetoer' to generate a random vetoer</h3>
-            </div>
-          )}
+              <div>
+                <h3>click 'start game' to generate the group's decision maker</h3>
+                <h3>click 'allow vetoer' to generate a random vetoer</h3>
+              </div>
+            )}
         </div>
         <br />
         <div>
@@ -237,7 +248,7 @@ class Group extends React.Component {
             }}
           >
             add group member
-          </Button>{' '}
+        </Button>{' '}
           <div className={useStyles.root}>
             <Grid container spacing={3}>
               <Grid item xs={6} sm={6}>

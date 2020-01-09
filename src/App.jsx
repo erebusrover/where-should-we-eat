@@ -14,6 +14,7 @@ import UserSettings from './UserSettings.jsx';
 import Group from './Group.jsx';
 import AddUserForm from './AddUserForm.jsx';
 import Options from './Options.jsx';
+import RandomPlace from './RandomPlace.jsx';
 import './App.css';
 import Title from './TitlePage.jsx';
 import AltHeader from './AltHeader.jsx';
@@ -61,12 +62,17 @@ class App extends React.Component {
       veto: '',
       vetoers: [],
       showWinner: false,
+      showRandom: false,
       showVeto: false,
       showOptions: false,
       open: false,
       login: false,
       directionsPopup: false,
       users: [],
+      randomPlace: {},
+      randomId: '',
+      randomName: '',
+      randomAddress: '',
     };
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
@@ -93,8 +99,11 @@ class App extends React.Component {
     this.handleViewChange = this.handleViewChange.bind(this);
     this.randomizer = this.randomizer.bind(this);
     this.vetoRandomizer = this.vetoRandomizer.bind(this);
+    this.randomChoice = this.randomChoice.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
+    this.handleRandomOption = this.handleRandomOption.bind(this);
     this.confirm = this.confirm.bind(this);
+        
   }
 
   toggleDialog(type) {
@@ -185,6 +194,7 @@ class App extends React.Component {
         console.error(error);
         this.toggleDialog('open');
       });
+
   }
 
   //*********options history  */
@@ -196,39 +206,47 @@ class App extends React.Component {
       choiceName: name,
       choiceAddress: `${address} ${city} ${state} ${zipCode}`,
     });
-    const { groupName } = this.state;
-    // make axios request to add choice to database
-    // axios
-    //   .post('/api/groupHistory', { id, groupName, name })
-    //   .then(() => {
-    //     // render group view
+        this.handleViewChange('group');
+        this.setState({
+          chosen: true,
+          directionsPopup: true,
+        });
+  }
+
+  handleRandomOption(id, name, address, city, state, zipCode) {
+    console.log('hey');
+    // set state
+    this.setState({
+      randomId: id,
+      randomName: name,
+      randomAddress: `${address} ${city} ${state} ${zipCode}`,
+    });
     this.handleViewChange('group');
     this.setState({
       chosen: true,
-      directionsPopup: true,
+      directionsPopup: false,
     });
-    //   })
-    //   .catch(() => {
-    //     this.toggleDialoque('open');
-    //   });
+
   }
 
   confirm(locId, groupName, name) {
     // make axios request to add choice to database
-    axios.post('/api/groupHistory', { locId, groupName, name }).then(() => {
-      // render group view
-      debugger;
-    });
-    //   this.handleViewChange('group');
-    //   this.setState({
-    //     chosen: true,
-    //     directionsPopup: true,
-    //   });
-    // })
-    // .catch(() => {
-    //   this.toggleDialoque('open');
-    // });
-  }
+    axios
+      .post('/api/groupHistory', { locId, groupName, name })
+      .then(() => {
+        // render group view
+        debugger
+      });
+      //   this.handleViewChange('group');
+      //   this.setState({
+      //     chosen: true,
+      //     directionsPopup: true,
+      //   });
+      // })
+      // .catch(() => {
+      //   this.toggleDialoque('open');
+      // });
+  };
 
   handleSetState(k, v) {
     this.setState([k, v]);
@@ -272,11 +290,40 @@ class App extends React.Component {
       });
   }
 
-  // toggleShowOptions() {
-  //   this.setState({
-  //     showOptions: !showOptions,
-  //   });
-  // }
+  randomChoice() {
+    // const { members } = this.state;
+    // console.log("we're looking at choices", members);
+    const { groupName, categories } = this.state;
+    axios
+      .get(`/api/choices/${groupName}/${categories}`, {
+        params: {
+          groupName,
+          categories,
+        },
+      })
+      .then(response => {
+        const { data } = response;
+        this.setState({
+          options: data,
+        });
+      })
+      .then(() => {
+        // this.handleViewChange('options');
+        this.handleViewChange('randomPlace');
+        console.log("clicking random choice", this.state.options);
+        const choiceIndex = Math.floor(Math.random() * this.state.options
+          .length);
+
+        console.log("trying to get random", this.state.options[choiceIndex])
+        const randomPlace = this.state.options[choiceIndex]
+        this.setState({ randomPlace: randomPlace, showRandom: true })
+      })
+      .catch(error => {
+        console.error(error);
+        this.toggleDialog('open');
+      });
+
+  }
 
   randomizer() {
     const { members, groupName, vetoers } = this.state;
@@ -459,8 +506,15 @@ class App extends React.Component {
       dietaryRestriction,
       users,
       tempMember,
+      choices,
+      randomPlace,
+      showRandom,
+      randomId,
+      randomName,
+      randomAddress,
     } = this.state;
     const {
+      randomChoice,
       randomizer,
       vetoRandomizer,
       getGroupMembers,
@@ -489,6 +543,7 @@ class App extends React.Component {
       toggleDialog,
       handlePass,
       handleSignOutWithGoogle,
+      handleRandomOption,
       confirm,
     } = this;
     /**
@@ -601,7 +656,11 @@ class App extends React.Component {
           choiceName={choiceName}
           choiceId={choiceId}
           history={history}
+          randomPlace={randomPlace}
+          showRandom={showRandom}
+          randomChoice={randomChoice}
           confirm={confirm}
+
         />
       );
     } else if (view === '/addUserToGroup') {
@@ -631,6 +690,15 @@ class App extends React.Component {
           handlePass={handlePass}
           handleChooseOption={handleChooseOption}
           confirm={confirm}
+        />
+      );
+    }
+    else if (view === '/randomPlace') {
+      View = (
+        <RandomPlace
+          randomPlace={randomPlace}
+          handlePass={handlePass}
+          handleRandomOption={handleRandomOption}
         />
       );
     } else {

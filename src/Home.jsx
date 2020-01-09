@@ -21,11 +21,12 @@ const Home = props => {
     userImages,
   } = props;
 
+  console.log(userImage);
+
   return (
     <Container>
       <div>
-        <h1>hi {user}!</h1>
-        <Avatar src={userImage} />
+        <h1 style={{ color: '#d454ff' }}>hi {user}!</h1>
       </div>
       <h2>your groups:</h2>
       <div>

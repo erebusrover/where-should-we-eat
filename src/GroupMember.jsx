@@ -8,11 +8,11 @@ import { Avatar } from '@material-ui/core';
  */
 
 const GroupMember = (props) => {
-  const { groupMember } = props;
+  const { groupMember} = props;
   return (
       <div>
-        <h2><Avatar src={groupMember.image}/>
-          {groupMember.userName}</h2>
+      <h3 style={{ color: '#d454ff' }}>
+          {groupMember.userName}</h3>
           {/* <h2>{groupMember.status}</h2> */}
       </div>
   );

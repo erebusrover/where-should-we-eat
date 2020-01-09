@@ -401,30 +401,38 @@ router.get('/groups/:groupName/pricePoint', (req, res) => {
 // whenever a choice is made
 // how are we storing the locations in this table? by name? id?
 router.post('/groupHistory', (req, res) => {
-  const { groupName, id } = req.body;
+  const { groupName, locId, name } = req.body;
+  // debugger;
   const group = {
     groupName,
-    id,
+    locId,
+    name
   };
   addToGroupHistory(group)
     .then(() => {
+      // debugger;
       res.sendStatus(201);
     })
     .catch(error => {
+      // debugger;
       console.error(error);
       res.sendStatus(400);
     });
 });
 
 // GET /groupHistory retrieves group history
-router.get('/groupHistory', (req, res) => {
-  const { groupName } = req.body;
+router.get('/groupHistory/:groupName', (req, res) => {
+  const { groupName } = req.params;
+  // debugger;
   getGroupHistory(groupName)
     .then(response => {
+      // debugger;
       res.status(200);
       res.send(response[0]);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error(err);
+      // debugger;
       res.sendStatus(400);
     });
 });

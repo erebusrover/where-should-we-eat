@@ -16,11 +16,11 @@ import YelpInfo from './OptionsYelpInfo.jsx';
  * to the given place.
  */
 
-const OptionItem = (props) => {
+const RandomPlaceDisplay = (props) => {
   const {
     id, name, address, city, state,
     zipCode, price, rating, imageUrl,
-    phone, handleChooseOption, confirm, url
+    phone, handleRandomOption, url
   } = props;
   return (
     <Container>
@@ -35,15 +35,15 @@ const OptionItem = (props) => {
             <img height="200" width="200" href={url} src={imageUrl} />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
-              {name}
+                {name}
               </Typography>
-        <Button
-          style={{ background: '#9900cc', color: 'white' }}
-          onClick={ () => handleChooseOption(id, name, address, city, state, zipCode) }>
-          we're eating here
+              <Button
+                style={{ background: '#9900cc', color: 'white' }}
+                onClick={() => handleRandomOption(id, name, address, city, state, zipCode)}>
+                we're eating here
         </Button>
-        {/* component here to display the card details  */}
-        <YelpInfo info={props}/>
+              {/* component here to display the card details  */}
+              <YelpInfo info={props} />
             </CardContent>
           </CardActionArea>
         </Card>
@@ -52,4 +52,4 @@ const OptionItem = (props) => {
   );
 };
 
-export default OptionItem;
+export default RandomPlaceDisplay;

@@ -74,5 +74,6 @@ CREATE TABLE groupHistory (
     FOREIGN KEY (groupp_id)
         REFERENCES groupp(groupp_id)
         ON DELETE CASCADE,
-    location_id varchar(200) NOT NULL
+    location_id varchar(200) NOT NULL,
+    restaurant_name varchar(200) NOT NULL
 );
