@@ -255,7 +255,16 @@ class Group extends React.Component {
                     >
                       {' '}
                       show options
-                    </Button>
+                    </Button>{' '}
+                    <Button
+                      style={{ background: '#d454ff', color: 'white' }}
+                      onClick={() => {
+                        randomChoice();
+                      }}
+                    >
+                      Get random choice
+        </Button>{' '}&nbsp;
+        <br />
                   </div>
                 )}
               </div>
@@ -343,15 +352,6 @@ class Group extends React.Component {
           >
             add group member
         </Button>{' '}
-          <Button
-            style={{ background: '#d454ff', color: 'white' }}
-            onClick={() => {
-              randomChoice();
-            }}
-          >
-            Get random choice
-        </Button>{' '}&nbsp;
-        <br />
           <h1> {randomPlace.name} </h1>
           <div className={useStyles.root}>
             <Grid container spacing={3}>
