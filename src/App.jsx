@@ -69,10 +69,6 @@ class App extends React.Component {
       login: false,
       directionsPopup: false,
       users: [],
-      randomPlace: {},
-      randomId: '',
-      randomName: '',
-      randomAddress: '',
     };
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
