@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
+import { top } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -108,6 +109,7 @@ class Group extends React.Component {
       randomPlace,
       randomChoice,
       confirm,
+      top,
     } = this.props;
     let { history, loading, directionsPopup, choiceId } = this.state;
     history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
@@ -119,6 +121,24 @@ class Group extends React.Component {
         <h2 style={{ color: '#d454ff' }}>{groupName}</h2>
         <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
         <br />
+        <div className={useStyles.root}>
+          <Grid container spacing={3}
+            direction="column"
+            justify="flex-start"
+            alignItems="flex-end"
+            margin='top'>
+            <Grid item xs={6} sm={6}>
+              <Paper className={useStyles.paper}>
+                <div>Previously chosen by {groupName}:</div>
+                {!loading && (
+                  history.map(restaurant => {
+                    return <div>{restaurant}</div>
+                  })
+                )}
+              </Paper>
+            </Grid>
+          </Grid>
+        </div>
         <div>
           {' '}
           {showWinner === true ? (
@@ -236,8 +256,12 @@ class Group extends React.Component {
             add group member
         </Button>{' '}
           <h1> {randomPlace.name} </h1>
-          <div className={useStyles.root}>
-            <Grid container spacing={3}>
+          {/* <div className={useStyles.root}>
+            <Grid container spacing={3}
+              direction="column"
+              justify="flex-start"
+              alignItems="flex-end"
+              margin='top'>
               <Grid item xs={6} sm={6}>
                 <Paper className={useStyles.paper}>
                   <div>Previously chosen by {groupName}:</div>
@@ -249,7 +273,7 @@ class Group extends React.Component {
                 </Paper>
               </Grid>
             </Grid>
-          </div>
+          </div> */}
         </div>
       </Container>
     );
