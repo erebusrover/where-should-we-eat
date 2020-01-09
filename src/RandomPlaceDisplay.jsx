@@ -39,7 +39,7 @@ const RandomPlaceDisplay = (props) => {
               </Typography>
               <Button
                 style={{ background: '#9900cc', color: 'white' }}
-                onClick={() => handleChooseOption(id, name, address, city, state, zipCode)}>
+                onClick={() => handleRandomOption(id, name, address, city, state, zipCode)}>
                 we're eating here
         </Button>
               {/* component here to display the card details  */}

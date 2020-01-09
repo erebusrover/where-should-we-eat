@@ -11,9 +11,9 @@ import RandomPlaceDisplay from './RandomPlaceDisplay.jsx';
  */
 
 const RandomPlace = (props) => {
-  const { randomPlace, handlePass, handleChooseOption } = props;
+  const { randomPlace, handlePass, handleRandomOption } = props;
   return (
-    <div>
+    <div>xxx
       <h2>{}</h2>
       <div>
         <RandomPlaceDisplay
