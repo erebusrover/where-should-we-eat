@@ -101,6 +101,8 @@ class App extends React.Component {
     this.randomChoice = this.randomChoice.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
     this.handleRandomOption = this.handleRandomOption.bind(this);
+    this.confirm = this.confirm.bind(this);
+        
   }
 
   toggleDialog(type) {
@@ -190,10 +192,12 @@ class App extends React.Component {
         console.error(error);
         this.toggleDialog('open');
       });
+
   }
+
   //*********options history  */
   handleChooseOption(id, name, address, city, state, zipCode) {
-    console.log('hey');
+    // console.log('hey');
     // set state
     this.setState({
       choiceId: id,
@@ -202,19 +206,19 @@ class App extends React.Component {
     });
     const { groupName } = this.state;
     // make axios request to add choice to database
-    axios
-      .post('/api/groupHistory', { id, groupName, name })
-      .then(() => {
-        // render group view
+    // axios
+    //   .post('/api/groupHistory', { id, groupName, name })
+    //   .then(() => {
+    //     // render group view
         this.handleViewChange('group');
         this.setState({
           chosen: true,
           directionsPopup: true,
         });
-      })
-      .catch(() => {
-        this.toggleDialoque('open');
-      });
+    //   })
+    //   .catch(() => {
+    //     this.toggleDialoque('open');
+    //   });
   }
 
   handleRandomOption(id, name, address, city, state, zipCode) {
@@ -241,6 +245,25 @@ class App extends React.Component {
         this.toggleDialoque('open');
       });
   }
+
+  confirm(locId, groupName, name) {
+    // make axios request to add choice to database
+    axios
+      .post('/api/groupHistory', { locId, groupName, name })
+      .then(() => {
+        // render group view
+        debugger
+      });
+      //   this.handleViewChange('group');
+      //   this.setState({
+      //     chosen: true,
+      //     directionsPopup: true,
+      //   });
+      // })
+      // .catch(() => {
+      //   this.toggleDialoque('open');
+      // });
+  };
 
   handleSetState(k, v) {
     this.setState([k, v]);
@@ -534,6 +557,7 @@ class App extends React.Component {
       handlePass,
       handleSignOutWithGoogle,
       handleRandomOption,
+      confirm,
     } = this;
     /**
      * The following lines handle view changes.
@@ -658,10 +682,12 @@ class App extends React.Component {
           choiceAddress={choiceAddress}
           users={users}
           choiceName={choiceName}
+          choiceId={choiceId}
           history={history}
           randomPlace={randomPlace}
           showRandom={showRandom}
           randomChoice={randomChoice}
+          confirm={confirm}
 
         />
       );
@@ -691,6 +717,7 @@ class App extends React.Component {
           options={options}
           handlePass={handlePass}
           handleChooseOption={handleChooseOption}
+          confirm={confirm}
         />
       );
     }
