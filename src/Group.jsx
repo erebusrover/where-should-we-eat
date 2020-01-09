@@ -353,21 +353,6 @@ class Group extends React.Component {
         </Button>{' '}&nbsp;
         <br />
           <h1> {randomPlace.name} </h1>
-          {/* <div className="row">
-            {showRandom === 'true' ? (
-              <div className="alert alert-danger" role="alert">
-                {randomPlace.name}
-
-              </div>
-            ) : 'Something went wrong'}
-          </div> */}
-          {/* <div className="row">
-            { //Check if message failed
-              (showRandom === 'true')
-                ? <div> {randomPlace}</div>
-                : <div> something went wrong </div>
-            }
-          </div> */}
           <div className={useStyles.root}>
             <Grid container spacing={3}>
               <Grid item xs={6} sm={6}>
