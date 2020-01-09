@@ -56,6 +56,7 @@ class Group extends React.Component {
       choiceName,
       choiceId,
       directionsPopup,
+      randomPlace,
     };
     this.getHistory = this.getHistory.bind(this);
   }
@@ -66,20 +67,19 @@ class Group extends React.Component {
 
   getHistory() {
     const { groupName } = this.props;
-    axios
-      .get(`api/groupHistory/${groupName}`)
+    axios.get(`api/groupHistory/${groupName}`)
       .then(response => {
         console.log(response);
         console.log(response.data);
         this.setState({
           history: response.data,
           loading: false,
-        });
+        })
       })
-      .catch(error => {
+      .catch((error) => {
         debugger;
-        console.log('error getting group history', error);
-      });
+        console.log("error getting group history", error)
+      })
   }
 
 
@@ -104,15 +104,12 @@ class Group extends React.Component {
       showOptions,
       toggleDialog,
       handleCategoriesInput,
+      randomChoice,
       confirm,
     } = this.props;
-
-    let { history, loading, directionsPopup, choiceId } = this.state;
-
-    history = [
-      ...new Set(history.map(restaurant => restaurant.restaurant_name)),
-    ];
-
+    let { history, loading, directionsPopup, choiceId, randomPlace } = this.state;
+    history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
+    // console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
 
     return ( 
@@ -127,18 +124,17 @@ class Group extends React.Component {
               <h3>{chooser} is the lucky decision maker</h3>
               {directionsPopup && (
                 <div>
-                  <div>
-                    {chooser} chose {choiceName.toLowerCase()}
-                  </div>
-                  <Link href={mapsUrl} target="_blank" rel="noreferrer">
-                    click here for directions
-                  </Link>{' '}
-                  <Button
-                    style={{ background: '#d454ff', color: 'white' }}
-                    onClick={() => confirm(choiceId, groupName, choiceName)}
-                  >
-                    confirm
-                  </Button>
+                <div>{chooser} chose {choiceName.toLowerCase()}</div>
+                <Link href={mapsUrl} target="_blank" rel="noreferrer">click here for directions</Link>{' '}
+                <Button style={{ background: '#d454ff', color: 'white' }} onClick={() => confirm(choiceId, groupName, choiceName)}>confirm</Button>
+                </div>
+              )}
+              {randomPlace.name && (
+                <div>
+                  <div style={{ color: '#d454ff' }}>randomly chosen: <p style={{color: 'black'}}>{randomPlace.name}</p></div>
+                  <div style={{ color: '#d454ff' }}>fate has decided for {groupName}</div>
+                  <div style={{ color: '#ff0000' }}>no veto allowed</div>
+                  <div style={{ color: '#d454ff' }}>start another game to choose again</div>
                 </div>
               )}
               <br />
@@ -163,7 +159,7 @@ class Group extends React.Component {
                     <Button
                       style={{ background: '#9900cc', color: 'white' }}
                       onClick={() => {
-                        // randomChoice();
+                        randomChoice();
                       }}
                     >
                       Get random choice
@@ -182,14 +178,11 @@ class Group extends React.Component {
                     <Button
                       style={{ background: '#FF0000', color: 'white' }}
                       onClick={() => {
-                        this.setState(
-                          {
-                            directionsPopup: false,
-                          },
-                          () => {
-                            vetoRandomizer();
-                          },
-                        );
+                        this.setState({
+                          directionsPopup: false,
+                        }, () => {
+                          vetoRandomizer();
+                        })
                       }}
                     >
                       {' '}
@@ -220,7 +213,9 @@ class Group extends React.Component {
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
               randomizer();
-              // startGame();
+              this.setState({
+                randomPlace: '',
+              })
             }}
           >
             start game
