@@ -33,7 +33,7 @@ const RandomPlace = (props) => {
           lat={randomPlace.coordinates.latitude}
           lng={randomPlace.coordinates.longitude}
           className='randomPlace'
-          handleChooseOption={handleChooseOption}
+          handleRandomOption={handleRandomOption}
         />
       </div>
     </div>
