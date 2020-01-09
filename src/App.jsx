@@ -62,11 +62,11 @@ class App extends React.Component {
       vetoers: [],
       showWinner: false,
       showVeto: false,
+      showOptions: false,
       open: false,
       login: false,
       directionsPopup: false,
       users: [],
-      history: 'PizzaHut',
     };
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
@@ -94,7 +94,7 @@ class App extends React.Component {
     this.randomizer = this.randomizer.bind(this);
     this.vetoRandomizer = this.vetoRandomizer.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
-    this.getHistory = this.getHistory.bind(this);
+    this.confirm = this.confirm.bind(this);
   }
 
   toggleDialog(type) {
@@ -175,6 +175,7 @@ class App extends React.Component {
         const { data } = response;
         this.setState({
           options: data,
+          showOptions: false,
         });
       })
       .then(() => {
@@ -185,9 +186,10 @@ class App extends React.Component {
         this.toggleDialog('open');
       });
   }
+
   //*********options history  */
   handleChooseOption(id, name, address, city, state, zipCode) {
-    console.log('hey');
+    // console.log('hey');
     // set state
     this.setState({
       choiceId: id,
@@ -196,36 +198,37 @@ class App extends React.Component {
     });
     const { groupName } = this.state;
     // make axios request to add choice to database
-    axios
-      .post('/api/groupHistory', { id, groupName })
-      .then(() => {
-        // render group view
-        this.handleViewChange('group');
-        this.setState({
-          chosen: true,
-          directionsPopup: true,
-        });
-      })
-      .catch(() => {
-        this.toggleDialoque('open');
-      });
+    // axios
+    //   .post('/api/groupHistory', { id, groupName, name })
+    //   .then(() => {
+    //     // render group view
+    this.handleViewChange('group');
+    this.setState({
+      chosen: true,
+      directionsPopup: true,
+    });
+    //   })
+    //   .catch(() => {
+    //     this.toggleDialoque('open');
+    //   });
   }
 
-  getHistory() {
-    console.log("we're clicking to get history");
-    axios.get('/groupHistory')
-      .then((response) => {
-        console.log("successfully  got group history", response);
-        this.setState({
-          //may have to change this? See what response is responce.blablala
-          // places: response.location_id
-        })
-      })
-      .catch((error) => {
-        console.log("error getting group history", error)
-      })
+  confirm(locId, groupName, name) {
+    // make axios request to add choice to database
+    axios.post('/api/groupHistory', { locId, groupName, name }).then(() => {
+      // render group view
+      debugger;
+    });
+    //   this.handleViewChange('group');
+    //   this.setState({
+    //     chosen: true,
+    //     directionsPopup: true,
+    //   });
+    // })
+    // .catch(() => {
+    //   this.toggleDialoque('open');
+    // });
   }
-
 
   handleSetState(k, v) {
     this.setState([k, v]);
@@ -269,11 +272,22 @@ class App extends React.Component {
       });
   }
 
+  // toggleShowOptions() {
+  //   this.setState({
+  //     showOptions: !showOptions,
+  //   });
+  // }
+
   randomizer() {
     const { members, groupName, vetoers } = this.state;
     const memberIndex = Math.floor(Math.random() * members.length);
     const theChosen = members[memberIndex].userName;
-    this.setState({ chooser: theChosen, showWinner: true, members: members });
+    this.setState({
+      chooser: theChosen,
+      showWinner: true,
+      members: members,
+      showOptions: true,
+    });
     members.forEach(member => {
       if (member.userName !== theChosen) {
         vetoers.push(member);
@@ -281,26 +295,15 @@ class App extends React.Component {
       this.setState({
         vetoers,
       });
-      console.log(members, vetoers);
     });
-
-    axios
-      .post(`/api/groups/${groupName}`)
-      .then(() => {
-        console.log('hey');
-      })
-      .catch(err => {
-        console.error(err);
-        this.toggleDialog();
-      });
+    this.toggleDialog();
   }
 
   vetoRandomizer() {
     const { vetoers } = this.state;
-    console.log(vetoers);
     const vetoIndex = Math.floor(Math.random() * vetoers.length);
     const vetoCaster = vetoers[vetoIndex].userName;
-    this.setState({ veto: vetoCaster, showVeto: true });
+    this.setState({ veto: vetoCaster, showVeto: true, showOptions: true });
   }
 
   handlePreferenceChange(k, v) {
@@ -450,6 +453,7 @@ class App extends React.Component {
       userImage,
       showWinner,
       showVeto,
+      showOptions,
       user,
       userImages,
       dietaryRestriction,
@@ -457,7 +461,6 @@ class App extends React.Component {
       tempMember,
     } = this.state;
     const {
-      getHistory,
       randomizer,
       vetoRandomizer,
       getGroupMembers,
@@ -486,6 +489,7 @@ class App extends React.Component {
       toggleDialog,
       handlePass,
       handleSignOutWithGoogle,
+      confirm,
     } = this;
     /**
      * The following lines handle view changes.
@@ -567,25 +571,8 @@ class App extends React.Component {
           getGroupPricePoint={getGroupPricePoint}
           handleViewChange={handleViewChange}
           handleGroupSetState={handleGroupSetState}
-          getHistory={getHistory}
         />
       );
-      // } else if (view === '/userSetting') {
-      //   View = <UserSettings
-      //             koala={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353505/image4.jpg'}
-      //             oppossum={'https://cdn.discordapp.com/attachments/635332255178424335/661017399109353502/image3.jpg'}
-      //             bilby={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854074/image1.jpg'}
-      //             kangaroo={'https://cdn.discordapp.com/attachments/635332255178424335/661017398496854075/image2.jpg'}
-      //             sugarGlider={'https://cdn.discordapp.com/attachments/635332255178424335/661017398068903937/image0.jpg'}
-      //             handleDietaryRestrictionsSetState={handleDietaryRestrictionsSetState}
-      //             handleUserStatusInput={handleUserStatusInput}
-      //             handleSignInWithGoogle={handleSignInWithGoogle}
-      //             handleSetState={handleSetState}
-      //             handleViewChange={handleViewChange}
-      //             handlePreferenceChange={handlePreferenceChange}
-      //             handleSubmitPreferences={handleSubmitPreferences}
-      //             handleUserNameInput={handleUserNameInput}
-      //             userImages={userImages}/>;
     } else if (view === '/group') {
       View = (
         <Group
@@ -606,13 +593,15 @@ class App extends React.Component {
           veto={veto}
           showWinner={showWinner}
           showVeto={showVeto}
+          showOptions={showOptions}
           directionsPopup={directionsPopup}
           toggleDialog={toggleDialog}
           choiceAddress={choiceAddress}
           users={users}
           choiceName={choiceName}
+          choiceId={choiceId}
           history={history}
-
+          confirm={confirm}
         />
       );
     } else if (view === '/addUserToGroup') {
@@ -623,7 +612,6 @@ class App extends React.Component {
           handleViewChange={handleViewChange}
           handleNewGroupMember={handleNewGroupMember}
           handleAddUserToGroup={handleAddUserToGroup}
-          getHistory={getHistory}
         />
       );
     } else if (view === '/removeUserFromGroup') {
@@ -642,6 +630,7 @@ class App extends React.Component {
           options={options}
           handlePass={handlePass}
           handleChooseOption={handleChooseOption}
+          confirm={confirm}
         />
       );
     } else {
@@ -652,8 +641,6 @@ class App extends React.Component {
           handleViewChange={handleViewChange}
           handleGroupSetState={handleGroupSetState}
           userImage={userImage}
-          getHistory={getHistory}
-
         />
       );
 
