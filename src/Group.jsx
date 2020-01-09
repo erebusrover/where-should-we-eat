@@ -49,9 +49,7 @@ const useStyles = makeStyles(theme => ({
 class Group extends React.Component {
   constructor(props) {
     super(props);
-    const {
-      choiceName, directionsPopup, choiceId
-    } = this.props;
+    const { choiceName, directionsPopup, choiceId, showOptions, randomPlace } = this.props;
     this.state = {
       winner: '',
       history: [],
@@ -59,6 +57,7 @@ class Group extends React.Component {
       choiceName,
       choiceId,
       directionsPopup,
+      randomPlace,
     };
     this.getHistory = this.getHistory.bind(this);
   }
@@ -104,14 +103,14 @@ class Group extends React.Component {
       vetoRandomizer,
       veto,
       showVeto,
+      showOptions,
       toggleDialog,
       handleCategoriesInput,
-      randomPlace,
       randomChoice,
       confirm,
       top,
     } = this.props;
-    let { history, loading, directionsPopup, choiceId } = this.state;
+    let { history, loading, directionsPopup, choiceId, randomPlace } = this.state;
     history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
     // console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
@@ -151,10 +150,18 @@ class Group extends React.Component {
                   <Button variant="contained" size="small" className={useStyles.margin} style={{ background: '#d454ff', color: 'white' }} onClick={() => confirm(choiceId, groupName, choiceName)}>confirm</Button>
                 </div>
               )}
+              {randomPlace.name && (
+                <div>
+                  <div style={{ color: '#d454ff' }}>randomly chosen: <p style={{color: 'black'}}>{randomPlace.name}</p></div>
+                  <div style={{ color: '#d454ff' }}>fate has decided for {groupName}</div>
+                  <div style={{ color: '#ff0000' }}>no veto allowed</div>
+                  <div style={{ color: '#d454ff' }}>start another game to choose again</div>
+                </div>
+              )}
               <br />
               <div>
                 {' '}
-                {chooser && (
+                {showOptions && (
                   <div>
                     <Input
                       id="categories"
@@ -227,6 +234,9 @@ class Group extends React.Component {
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
               randomizer();
+              this.setState({
+                randomPlace: '',
+              })
             }}
           >
             start game
@@ -256,24 +266,19 @@ class Group extends React.Component {
             add group member
         </Button>{' '}
           <h1> {randomPlace.name} </h1>
-          {/* <div className={useStyles.root}>
-            <Grid container spacing={3}
-              direction="column"
-              justify="flex-start"
-              alignItems="flex-end"
-              margin='top'>
+          <div className={useStyles.root}>
+            <Grid container spacing={3}>
               <Grid item xs={6} sm={6}>
                 <Paper className={useStyles.paper}>
                   <div>Previously chosen by {groupName}:</div>
-                  {!loading && (
+                  {!loading &&
                     history.map(restaurant => {
-                      return <div>{restaurant}</div>
-                    })
-                  )}
+                      return <div>{restaurant}</div>;
+                    })}
                 </Paper>
               </Grid>
             </Grid>
-          </div> */}
+          </div>
         </div>
       </Container>
     );
