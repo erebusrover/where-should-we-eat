@@ -48,9 +48,7 @@ const useStyles = makeStyles(theme => ({
 class Group extends React.Component {
   constructor(props) {
     super(props);
-    const {
-      choiceName, directionsPopup, choiceId, randomPlace
-    } = this.props;
+    const { choiceName, directionsPopup, choiceId, showOptions, randomPlace } = this.props;
     this.state = {
       winner: '',
       history: [],
@@ -103,6 +101,7 @@ class Group extends React.Component {
       vetoRandomizer,
       veto,
       showVeto,
+      showOptions,
       toggleDialog,
       handleCategoriesInput,
       randomChoice,
@@ -141,7 +140,7 @@ class Group extends React.Component {
               <br />
               <div>
                 {' '}
-                {chooser && (
+                {showOptions && (
                   <div>
                     <Input
                       id="categories"
@@ -250,12 +249,11 @@ class Group extends React.Component {
               <Grid item xs={6} sm={6}>
                 <Paper className={useStyles.paper}>
                   <div>Previously chosen by {groupName}:</div>
-                  {!loading && ( 
-                  history.map(restaurant => {
-                  return <div>{restaurant}</div>
-                  })
-                  )}
-              </Paper>
+                  {!loading &&
+                    history.map(restaurant => {
+                      return <div>{restaurant}</div>;
+                    })}
+                </Paper>
               </Grid>
             </Grid>
           </div>
