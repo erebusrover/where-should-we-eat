@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
+import { maxWidth } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -202,11 +203,18 @@ class Group extends React.Component {
         </div>
         <br />
         <div>
-          <ul>
+          <Container style={{ 
+            margin: 0,
+            background: '#faf2ff',
+            maxWidth: '400px',
+            boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+      }} fixed>
             {members.map(groupMember => (
+              <div style={{padding: '5px'}}>
               <GroupMember userImages={userImages} groupMember={groupMember} />
+              </div>
             ))}
-          </ul>
+          </Container>
         </div>
         <br />
         <div>
