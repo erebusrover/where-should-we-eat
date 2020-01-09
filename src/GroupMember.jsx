@@ -1,5 +1,4 @@
 import React from 'react';
-import { Avatar } from '@material-ui/core';
 
 /**
  * Each GroupMember is a current member of a given group.
@@ -13,7 +12,6 @@ const GroupMember = (props) => {
       <div>
       <h3 style={{ color: '#d454ff' }}>
           {groupMember.userName}</h3>
-          {/* <h2>{groupMember.status}</h2> */}
       </div>
   );
 };
