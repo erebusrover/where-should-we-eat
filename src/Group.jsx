@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
+import { maxWidth } from '@material-ui/system';
 import { top } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
@@ -110,7 +111,7 @@ class Group extends React.Component {
       confirm,
       top,
     } = this.props;
-    let { history, loading, directionsPopup, choiceId, randomPlace } = this.state;
+    let { history, loading, directionsPopup, choiceId, randomPlace, confirmed} = this.state;
     history = [...new Set(history.map(restaurant => restaurant.restaurant_name))];
     // console.log(history)
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
@@ -145,9 +146,19 @@ class Group extends React.Component {
               <h3>{chooser} is the lucky decision maker</h3>
               {directionsPopup && (
                 <div>
-                  <div>{chooser} chose {choiceName.toLowerCase()}</div>
-                  <Link href={mapsUrl} target="_blank" rel="noreferrer">click here for directions</Link>{' '}
-                  <Button variant="contained" size="small" className={useStyles.margin} style={{ background: '#d454ff', color: 'white' }} onClick={() => confirm(choiceId, groupName, choiceName)}>confirm</Button>
+                <div>{chooser} chose {choiceName.toLowerCase()}</div>
+                <Link href={mapsUrl} target="_blank" rel="noreferrer">click here for directions</Link>{' '}
+                <div>
+                <br />
+                <Button size="small" style={{ background: '#d454ff', color: 'white' }} onClick={() => {
+                  confirm(choiceId, groupName, choiceName);
+                  this.setState({
+                    confirmed: true,
+                  })
+                }}>confirm</Button>
+                </div>
+                <br />
+                  {confirmed && (<div style={{ fontWeight: 'bold', color: '#ff0000' }}>{groupName} is eating at {choiceName.toLowerCase()}</div>)}
                 </div>
               )}
               {randomPlace.name && (
@@ -162,13 +173,18 @@ class Group extends React.Component {
               <div>
                 {' '}
                 {showOptions && (
-                  <div>
+                  <div style={{marginTop: "10px"}}>
                     <Input
                       id="categories"
                       type="text"
                       onChange={handleCategoriesInput}
+                      style={{ backgroundColor: '#e8f0fe50'}}
                     />{' '}
-                    <Button variant="contained" size="small" className={useStyles.margin}
+                    <div>
+                    <br />
+                    <Button
+                      size="medium"
+                      className={useStyles.margin}
                       style={{ background: '#9900cc', color: 'white' }}
                       onClick={() => {
                         handleGetOptions();
@@ -177,14 +193,21 @@ class Group extends React.Component {
                       {' '}
                       show options
                     </Button>{' '}
-                    <Button variant="contained" size="small" className={useStyles.margin}
+                    <Button
+                      size="medium"
+                      variant="contained" 
+                      className={useStyles.margin}
                       style={{ background: '#9900cc', color: 'white' }}
                       onClick={() => {
                         randomChoice();
+                        this.setState({
+                          confirmed: true,
+                        })
                       }}
                     >
-                      Random Choice
+                      random choice
         </Button>{' '}&nbsp;
+        </div>
         <br />
                   </div>
                 )}
@@ -222,20 +245,31 @@ class Group extends React.Component {
         </div>
         <br />
         <div>
-          <ul>
+          <Container style={{ 
+            margin: 0,
+            background: '#faf2ff',
+            maxWidth: '400px',
+            boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+      }} fixed>
             {members.map(groupMember => (
+              <div style={{padding: '5px'}}>
               <GroupMember userImages={userImages} groupMember={groupMember} />
+              </div>
             ))}
-          </ul>
+          </Container>
         </div>
         <br />
         <div>
-          <Button variant="contained" size="small" className={useStyles.margin}
+          <Button
+            size="medium"
+            variant="contained"
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
               randomizer();
               this.setState({
                 randomPlace: '',
+                confirmed: false,
+                directionsPopup: false,
               })
             }}
           >
@@ -245,7 +279,9 @@ class Group extends React.Component {
         </div>
         <br />
         <div>
-          <Button variant="contained" size="small" className={useStyles.margin}
+          <Button
+            size="medium"
+            variant="contained"
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
               vetoRandomizer();
@@ -257,7 +293,9 @@ class Group extends React.Component {
         </div>
         <br />
         <div>
-          <Button variant="contained" size="small" className={useStyles.margin}
+          <Button
+            size="medium"
+            variant="contained" 
             style={{ background: '#d454ff', color: 'white' }}
             onClick={() => {
               handleViewChange('addUserToGroup');
