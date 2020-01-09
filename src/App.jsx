@@ -65,6 +65,7 @@ class App extends React.Component {
       showRandom: false,
       showVeto: false,
       showOptions: false,
+      randomPlace: {},
       open: false,
       login: false,
       directionsPopup: false,

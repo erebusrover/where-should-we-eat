@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 class Group extends React.Component {
   constructor(props) {
     super(props);
-    const { choiceName, directionsPopup, choiceId, showOptions } = this.props;
+    const { choiceName, directionsPopup, choiceId, showOptions, randomPlace } = this.props;
     this.state = {
       winner: '',
       history: [],
