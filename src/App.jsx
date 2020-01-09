@@ -69,6 +69,9 @@ class App extends React.Component {
       directionsPopup: false,
       users: [],
       randomPlace: {},
+      randomId: '',
+      randomName: '',
+      randomAddress: '',
     };
     this.getGroupMembers = this.getGroupMembers.bind(this);
     this.getGroupPricePoint = this.getGroupPricePoint.bind(this);
@@ -97,6 +100,7 @@ class App extends React.Component {
     this.vetoRandomizer = this.vetoRandomizer.bind(this);
     this.randomChoice = this.randomChoice.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
+    this.handleRandomOption = this.handleRandomOption.bind(this);
   }
 
   toggleDialog(type) {
@@ -195,6 +199,31 @@ class App extends React.Component {
       choiceId: id,
       choiceName: name,
       choiceAddress: `${address} ${city} ${state} ${zipCode}`,
+    });
+    const { groupName } = this.state;
+    // make axios request to add choice to database
+    axios
+      .post('/api/groupHistory', { id, groupName, name })
+      .then(() => {
+        // render group view
+        this.handleViewChange('group');
+        this.setState({
+          chosen: true,
+          directionsPopup: true,
+        });
+      })
+      .catch(() => {
+        this.toggleDialoque('open');
+      });
+  }
+
+  handleRandomOption(id, name, address, city, state, zipCode) {
+    console.log('hey');
+    // set state
+    this.setState({
+      randomId: id,
+      randomName: name,
+      randomAddress: `${address} ${city} ${state} ${zipCode}`,
     });
     const { groupName } = this.state;
     // make axios request to add choice to database
@@ -665,7 +694,7 @@ class App extends React.Component {
         <RandomPlace
           randomPlace={randomPlace}
           handlePass={handlePass}
-          handleChooseOption={handleChooseOption}
+          handleRandomOption={handleRandomOption}
         />
       );
     } else {
