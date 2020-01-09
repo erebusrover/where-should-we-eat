@@ -204,21 +204,11 @@ class App extends React.Component {
       choiceName: name,
       choiceAddress: `${address} ${city} ${state} ${zipCode}`,
     });
-    const { groupName } = this.state;
-    // make axios request to add choice to database
-    // axios
-    //   .post('/api/groupHistory', { id, groupName, name })
-    //   .then(() => {
-    //     // render group view
         this.handleViewChange('group');
         this.setState({
           chosen: true,
           directionsPopup: true,
         });
-    //   })
-    //   .catch(() => {
-    //     this.toggleDialoque('open');
-    //   });
   }
 
   handleRandomOption(id, name, address, city, state, zipCode) {
@@ -229,21 +219,12 @@ class App extends React.Component {
       randomName: name,
       randomAddress: `${address} ${city} ${state} ${zipCode}`,
     });
-    const { groupName } = this.state;
-    // make axios request to add choice to database
-    axios
-      .post('/api/groupHistory', { id, groupName, name })
-      .then(() => {
-        // render group view
-        this.handleViewChange('group');
-        this.setState({
-          chosen: true,
-          directionsPopup: true,
-        });
-      })
-      .catch(() => {
-        this.toggleDialoque('open');
-      });
+    this.handleViewChange('group');
+    this.setState({
+      chosen: true,
+      directionsPopup: false,
+    });
+
   }
 
   confirm(locId, groupName, name) {
