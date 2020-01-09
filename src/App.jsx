@@ -66,6 +66,9 @@ class App extends React.Component {
       showVeto: false,
       showOptions: false,
       randomPlace: {},
+      randomId: '',
+      randomName: '',
+      randomAddress: '',
       open: false,
       login: false,
       directionsPopup: false,
@@ -100,7 +103,6 @@ class App extends React.Component {
     this.toggleDialog = this.toggleDialog.bind(this);
     this.handleRandomOption = this.handleRandomOption.bind(this);
     this.confirm = this.confirm.bind(this);
-        
   }
 
   toggleDialog(type) {
@@ -191,7 +193,6 @@ class App extends React.Component {
         console.error(error);
         this.toggleDialog('open');
       });
-
   }
 
   //*********options history  */
@@ -203,11 +204,11 @@ class App extends React.Component {
       choiceName: name,
       choiceAddress: `${address} ${city} ${state} ${zipCode}`,
     });
-        this.handleViewChange('group');
-        this.setState({
-          chosen: true,
-          directionsPopup: true,
-        });
+    this.handleViewChange('group');
+    this.setState({
+      chosen: true,
+      directionsPopup: true,
+    });
   }
 
   handleRandomOption(id, name, address, city, state, zipCode) {
@@ -223,27 +224,24 @@ class App extends React.Component {
       chosen: true,
       directionsPopup: false,
     });
-
   }
 
   confirm(locId, groupName, name) {
     // make axios request to add choice to database
-    axios
-      .post('/api/groupHistory', { locId, groupName, name })
-      .then(() => {
-        // render group view
-        debugger
-      });
-      //   this.handleViewChange('group');
-      //   this.setState({
-      //     chosen: true,
-      //     directionsPopup: true,
-      //   });
-      // })
-      // .catch(() => {
-      //   this.toggleDialoque('open');
-      // });
-  };
+    axios.post('/api/groupHistory', { locId, groupName, name }).then(() => {
+      // render group view
+      debugger;
+    });
+    //   this.handleViewChange('group');
+    //   this.setState({
+    //     chosen: true,
+    //     directionsPopup: true,
+    //   });
+    // })
+    // .catch(() => {
+    //   this.toggleDialoque('open');
+    // });
+  }
 
   handleSetState(k, v) {
     this.setState([k, v]);
@@ -307,19 +305,19 @@ class App extends React.Component {
       .then(() => {
         // this.handleViewChange('options');
         this.handleViewChange('randomPlace');
-        console.log("clicking random choice", this.state.options);
-        const choiceIndex = Math.floor(Math.random() * this.state.options
-          .length);
+        console.log('clicking random choice', this.state.options);
+        const choiceIndex = Math.floor(
+          Math.random() * this.state.options.length,
+        );
 
-        console.log("trying to get random", this.state.options[choiceIndex])
-        const randomPlace = this.state.options[choiceIndex]
-        this.setState({ randomPlace: randomPlace, showRandom: true })
+        console.log('trying to get random', this.state.options[choiceIndex]);
+        const randomPlace = this.state.options[choiceIndex];
+        this.setState({ randomPlace: randomPlace, showRandom: true });
       })
       .catch(error => {
         console.error(error);
         this.toggleDialog('open');
       });
-
   }
 
   randomizer() {
@@ -657,7 +655,6 @@ class App extends React.Component {
           showRandom={showRandom}
           randomChoice={randomChoice}
           confirm={confirm}
-
         />
       );
     } else if (view === '/addUserToGroup') {
@@ -689,8 +686,7 @@ class App extends React.Component {
           confirm={confirm}
         />
       );
-    }
-    else if (view === '/randomPlace') {
+    } else if (view === '/randomPlace') {
       View = (
         <RandomPlace
           randomPlace={randomPlace}
