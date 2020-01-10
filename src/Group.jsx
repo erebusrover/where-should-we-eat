@@ -117,28 +117,11 @@ class Group extends React.Component {
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${choiceName} ${choiceAddress}`;
 
     return (
-      <Container>
+    <Grid container spacing={4}>
+      <Grid item xs={8}>
         <h2 style={{ color: '#d454ff' }}>{groupName}</h2>
         <h3 style={{ color: '#d454ff' }}>price point: {pricePoint}</h3>
         <br />
-        <div className={useStyles.root}>
-          <Grid container spacing={3}
-            direction="column"
-            justify="flex-start"
-            alignItems="flex-end"
-            margin='top'>
-            <Grid item xs={6} sm={6}>
-              <Paper className={useStyles.paper}>
-                <div>Previously chosen by {groupName}:</div>
-                {!loading && (
-                  history.map(restaurant => {
-                    return <div>{restaurant}</div>
-                  })
-                )}
-              </Paper>
-            </Grid>
-          </Grid>
-        </div>
         <div>
           {' '}
           {showWinner === true ? (
@@ -150,10 +133,11 @@ class Group extends React.Component {
                 <Link href={mapsUrl} target="_blank" rel="noreferrer">click here for directions</Link>{' '}
                 <div>
                 <br />
-                <Button size="small" style={{ background: '#d454ff', color: 'white' }} onClick={() => {
+                      <Button size="small" style={{ background: '#9900cc', color: 'white' }} onClick={() => {
                   confirm(choiceId, groupName, choiceName);
                   this.setState({
                     confirmed: true,
+                    randomPlace: {},
                   })
                 }}>confirm</Button>
                 </div>
@@ -238,8 +222,8 @@ class Group extends React.Component {
             </div>
           ) : (
               <div>
-                <h3>click 'start game' to generate the group's decision maker</h3>
-                <h3>click 'allow vetoer' to generate a random vetoer</h3>
+                <h4>click 'start game' to generate the group's decision maker</h4>
+                <h4>click 'allow vetoer' to generate a random vetoer</h4>
               </div>
             )}
         </div>
@@ -265,11 +249,12 @@ class Group extends React.Component {
             variant="contained"
             style={{ background: '#9900cc', color: 'white' }}
             onClick={() => {
-              randomizer();
               this.setState({
-                randomPlace: '',
+                randomPlace: {},
                 confirmed: false,
                 directionsPopup: false,
+              }, () => {
+                randomizer();
               })
             }}
           >
@@ -296,29 +281,27 @@ class Group extends React.Component {
           <Button
             size="medium"
             variant="contained" 
-            style={{ background: '#d454ff', color: 'white' }}
+              style={{ background: '#f8faff', color: 'black' }}
             onClick={() => {
               handleViewChange('addUserToGroup');
             }}
           >
             add group member
         </Button>{' '}
-          <h1> {randomPlace.name} </h1>
-          <div className={useStyles.root}>
-            <Grid container spacing={3}>
-              <Grid item xs={6} sm={6}>
-                <Paper className={useStyles.paper}>
-                  <div>Previously chosen by {groupName}:</div>
-                  {!loading &&
-                    history.map(restaurant => {
-                      return <div>{restaurant}</div>;
-                    })}
-                </Paper>
-              </Grid>
-            </Grid>
-          </div>
         </div>
-      </Container>
+      </Grid>
+        <Grid item xs={4} justify="flex-start" direction="row">
+          <p>
+            <h5 style={{ color: '#9900cc' }}>Previously chosen by {groupName}:</h5>
+            <Paper style={{backgroundColor: '#f8faff'}} className={useStyles.paper}>
+              {!loading &&
+                history.map(restaurant => {
+                  return <div>{restaurant}</div>;
+                })}
+            </Paper>
+          </p>
+        </Grid>
+      </Grid>
     );
   }
 }
