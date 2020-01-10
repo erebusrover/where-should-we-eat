@@ -470,6 +470,7 @@ router.get('/choices/:groupName/:categories', (req, res) => {
   return getAllUserRestrictions(groupName)
     .then(function(restrictions) {
       return getGroupPricePoint(groupName).then(function(pricePoint) {
+        const price = Object.values(pricePoint[0][0]).toString().length;
         // return getUserLocation().then(function(location) {
         //   const restrCats = restrictions[0].map(restriction => {
         //     return restriction.restriction;
@@ -485,7 +486,7 @@ router.get('/choices/:groupName/:categories', (req, res) => {
             longitude: -90.0733642578125,
             radius: 5000,
             categories,
-            price: 1,
+            price,
           };
           return getRestaurants(query).then(function(response) {
             // console.log(response);
